@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Company;
 use App\Models\User;
 
 return [
@@ -42,6 +43,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // 企業側は求職者(users/webガード)とは別テーブル・別ガードで管理する(DB_DESIGN.md「4. 補足」参照)。
+        // 同一ブラウザセッション内でも、求職者としてのログインと企業としてのログインは独立して扱える
+        'company' => [
+            'driver' => 'session',
+            'provider' => 'companies',
+        ],
     ],
 
     /*
@@ -67,10 +75,10 @@ return [
             'model' => env('AUTH_MODEL', User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'companies' => [
+            'driver' => 'eloquent',
+            'model' => Company::class,
+        ],
     ],
 
     /*
@@ -96,6 +104,13 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'companies' => [
+            'provider' => 'companies',
+            'table' => 'company_password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],
