@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\CompanyAuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
-// 求職者(users)向けの認証エンドポイント。企業(companies)側は別途/company配下に実装する
+// 求職者(users)向けの認証エンドポイント
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest:web');
 
@@ -13,3 +15,15 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:web');
+
+// 企業(companies)向けの認証エンドポイント。usersとは別ガード(company)で完全に分離する
+Route::prefix('company')->group(function () {
+    Route::post('/register', [RegisteredCompanyController::class, 'store'])
+        ->middleware('guest:company');
+
+    Route::post('/login', [CompanyAuthenticatedSessionController::class, 'store'])
+        ->middleware('guest:company');
+
+    Route::post('/logout', [CompanyAuthenticatedSessionController::class, 'destroy'])
+        ->middleware('auth:company');
+});
