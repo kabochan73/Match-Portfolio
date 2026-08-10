@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -29,5 +30,31 @@ class User extends Authenticatable
             // dateにキャストすることでCarbonインスタンスとして扱えるようにする(年齢計算等で使う)
             'birth_date' => 'date',
         ];
+    }
+
+    /**
+     * 職歴一覧。DB_DESIGN.mdの方針通りstarted_onの降順(新しいものが先頭)で返す
+     *
+     * @return HasMany<WorkExperience, $this>
+     */
+    public function workExperiences(): HasMany
+    {
+        return $this->hasMany(WorkExperience::class)->orderByDesc('started_on');
+    }
+
+    /**
+     * @return HasMany<Education, $this>
+     */
+    public function educations(): HasMany
+    {
+        return $this->hasMany(Education::class);
+    }
+
+    /**
+     * @return HasMany<Certification, $this>
+     */
+    public function certifications(): HasMany
+    {
+        return $this->hasMany(Certification::class);
     }
 }
