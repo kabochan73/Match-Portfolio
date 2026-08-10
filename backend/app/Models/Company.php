@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\MemberCountRange;
+use App\Enums\Prefecture;
 use Database\Factories\CompanyFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -31,6 +33,9 @@ class Company extends Authenticatable
         return [
             'password' => 'hashed',
             'founded_year' => 'integer',
+            // nullableなカラムだが、backed enumへのキャストはnullをそのまま通してくれる
+            'prefecture' => Prefecture::class,
+            'member_count_range' => MemberCountRange::class,
         ];
     }
 
