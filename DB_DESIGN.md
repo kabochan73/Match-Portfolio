@@ -197,6 +197,8 @@ erDiagram
 | applied_at | timestamp | not null | 求職者が「いいね」した日時 |
 | response_deadline | timestamp | not null | `applied_at` + 7日。企業の反応期限(`like_type`によらず共通) |
 | company_responded_at | timestamp | nullable | 企業が「気になる」を押した日時 |
+| user_hidden_at | timestamp | nullable | 求職者がこのスレッド(メッセージ一覧)を自分の一覧から非表示にした日時 |
+| company_hidden_at | timestamp | nullable | 企業がこのスレッド(メッセージ一覧)を自分の一覧から非表示にした日時 |
 | created_at / updated_at | timestamp | | |
 
 - 部分ユニークインデックス: `UNIQUE (user_id, job_posting_id) WHERE status <> 'expired'`(反応待ち・マッチ成立中の同一求人への重複応募を防止する一方、`expired`[マッチ不成立]になった求人には再度いいね[応募]できるようにするため、`expired`のレコードはこの一意制約の対象外とする)
@@ -207,6 +209,8 @@ erDiagram
 - `expired`: 7日以内に企業の反応がなく自動的に不成立(バッチ処理で更新)。同一求人への再応募が可能な状態
 
 マッチ成立後の選考プロセス(書類選考・面接・内定など)はステータスとして管理しない(要件4.2「選考ステータス管理機能は設けない」)。そのためステータス変更履歴テーブルは持たない。
+
+**メッセージ一覧からの削除(非表示)**: 求職者・企業はそれぞれ、自分のメッセージ一覧からスレッド(=`likes`1件)単位で「削除」できる。実体は自分側からの論理的な非表示であり、`messages`のレコードは削除しない(相手側の一覧には引き続き表示される)。削除操作時に自分側の`user_hidden_at`/`company_hidden_at`へ現在時刻を記録し、一覧取得時にこれがnullでないスレッドを除外する。相手から新着メッセージが届いた場合は、`messages`作成時に受信側の`hidden_at`をnullにリセットする処理を行い、再び一覧に表示させる。
 
 **月間上限(通常10件/スーパー1件、月初リセット)の数え方**: 専用のカウンタテーブルは設けず、`likes`を`user_id` + `like_type` + `applied_at`(当月分)でカウントするクエリで判定する。カウンタを別テーブルで持つと応募の取消等が発生した際に同期ズレのリスクがあるため、都度集計する方針とする。
 
@@ -299,6 +303,8 @@ erDiagram
 - `likes` の一意制約を単純な`UNIQUE(user_id, job_posting_id)`から部分ユニークインデックス`UNIQUE (user_id, job_posting_id) WHERE status <> 'expired'`に変更し、`expired`(マッチ不成立)後の再応募を許容するようにした
 - `job_postings.desired_candidate` / `salary_min` / `salary_max` を`nullable`から`not null`に変更し、必須項目に統一した
 - enum系カラムの実装方針を「`string`カラム + CHECK制約」に決定した(詳細は「4. 補足」参照)
+
+**2026-08-10追記**: `likes.user_hidden_at` / `likes.company_hidden_at`を追加した。マッチ成立後のメッセージスレッドが一覧に溜まり続けて整理できない、という抜けが見つかったため、スレッド単位・自分側のみの論理削除(非表示)機能を追加した。相手から新着メッセージが届いた場合は自動的に再表示される。
 
 ## 6. 未決事項
 
