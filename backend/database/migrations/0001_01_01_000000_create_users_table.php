@@ -15,9 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            // 自己紹介コメント。200文字程度という要件のため長さ制限をかけている
+            $table->string('comment', 200)->nullable();
+            // GitHubや個人ポートフォリオサイト等のURL
+            $table->string('portfolio_url')->nullable();
+            // 生年月日。18〜60歳の範囲であることはアプリ側(FormRequest)で動的にバリデーションする
+            $table->date('birth_date');
             $table->timestamps();
         });
 
