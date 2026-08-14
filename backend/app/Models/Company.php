@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -52,7 +53,7 @@ class Company extends Authenticatable
     protected function avatarUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->avatar_path ? Storage::disk('public')->url($this->avatar_path) : null,
+            get: fn () => $this->avatar_path ? self::publicDisk()->url($this->avatar_path) : null,
         );
     }
 
@@ -62,8 +63,18 @@ class Company extends Authenticatable
     protected function coverImageUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->cover_image_path ? Storage::disk('public')->url($this->cover_image_path) : null,
+            get: fn () => $this->cover_image_path ? self::publicDisk()->url($this->cover_image_path) : null,
         );
+    }
+
+    /**
+     * Storage::disk()の戻り値はFilesystem contract型で、url()はcontractに含まれないため
+     * (public/local disk限定のメソッド)、IDEが未定義メソッド扱いにしてしまう。
+     * ここで具象クラスの型を明示し、avatarUrl/coverImageUrlアクセサから使い回す
+     */
+    private static function publicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 
     /**
