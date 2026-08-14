@@ -4,15 +4,20 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['name', 'email', 'password', 'comment', 'portfolio_url', 'birth_date'])]
-#[Hidden(['password'])]
+#[Fillable(['name', 'email', 'password', 'comment', 'portfolio_url', 'birth_date', 'avatar_path'])]
+// avatar_pathはストレージ上の相対パスという実装詳細なので隠し、代わりにavatar_url(完全なURL)をJSONへ含める
+#[Hidden(['password', 'avatar_path'])]
+#[Appends(['avatar_url'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -30,6 +35,16 @@ class User extends Authenticatable
             // dateにキャストすることでCarbonインスタンスとして扱えるようにする(年齢計算等で使う)
             'birth_date' => 'date',
         ];
+    }
+
+    /**
+     * @return Attribute<string|null, never>
+     */
+    protected function avatarUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->avatar_path ? Storage::disk('public')->url($this->avatar_path) : null,
+        );
     }
 
     /**
