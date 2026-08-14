@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\CompanyAuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
+use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use Illuminate\Support\Facades\Route;
 
 // 求職者(users)向けの認証エンドポイント
@@ -34,5 +36,19 @@ Route::prefix('company')->group(function () {
         ->middleware('guest:company');
 
     Route::post('/logout', [CompanyAuthenticatedSessionController::class, 'destroy'])
+        ->middleware('auth:company');
+
+    // 企業のプロフィール画像。POSTを使う理由は求職者側と同じ(上記コメント参照)
+    Route::post('/profile/avatar', [CompanyAvatarController::class, 'update'])
+        ->middleware('auth:company');
+
+    Route::delete('/profile/avatar', [CompanyAvatarController::class, 'destroy'])
+        ->middleware('auth:company');
+
+    // 企業ホーム画面のカバー画像
+    Route::post('/profile/cover-image', [CompanyCoverImageController::class, 'update'])
+        ->middleware('auth:company');
+
+    Route::delete('/profile/cover-image', [CompanyCoverImageController::class, 'destroy'])
         ->middleware('auth:company');
 });
