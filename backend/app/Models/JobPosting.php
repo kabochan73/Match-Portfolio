@@ -48,4 +48,14 @@ class JobPosting extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    /**
+     * 求人画像一覧。position昇順(表示順)で返す
+     *
+     * @return HasMany<JobPostingImage, $this>
+     */
+    public function jobPostingImages(): HasMany
+    {
+        return $this->hasMany(JobPostingImage::class)->orderBy('position');
+    }
 }

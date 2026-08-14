@@ -42,6 +42,10 @@ return new class extends Migration
             $table->unsignedSmallInteger('founded_year')->nullable();
             $table->string('member_count_range')->nullable();
             $table->string('website_url')->nullable();
+            // プロフィール画像(ロゴ等)。画像自体はストレージ(public disk)に保存し、ここには相対パスのみ持つ
+            $table->string('avatar_path')->nullable();
+            // 企業ホーム画面のカバー画像。avatar_pathと同様、相対パスのみ持つ
+            $table->string('cover_image_path')->nullable();
             // Laravel CashierのBillableトレイトが内部でこのカラム名を決め打ちで参照するため、
             // Cashier標準のカラム名(stripe_id)に合わせている
             $table->string('stripe_id')->nullable()->unique();

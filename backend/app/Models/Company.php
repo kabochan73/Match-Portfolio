@@ -16,6 +16,7 @@ use Illuminate\Notifications\Notifiable;
 #[Fillable([
     'name', 'email', 'password', 'description', 'phone_number',
     'prefecture', 'address_line', 'founded_year', 'member_count_range', 'website_url',
+    'avatar_path', 'cover_image_path',
 ])]
 #[Hidden(['password'])]
 class Company extends Authenticatable

@@ -9,6 +9,7 @@
 ```mermaid
 erDiagram
     COMPANIES ||--o{ JOB_POSTINGS : "posts"
+    JOB_POSTINGS ||--o{ JOB_POSTING_IMAGES : "has"
     USERS ||--o{ WORK_EXPERIENCES : "has"
     USERS ||--o{ EDUCATIONS : "has"
     USERS ||--o{ CERTIFICATIONS : "has"
@@ -29,6 +30,8 @@ erDiagram
         string member_count_range
         string website_url
         string stripe_id
+        string avatar_path
+        string cover_image_path
     }
     USERS {
         bigint id PK
@@ -38,6 +41,7 @@ erDiagram
         string comment
         string portfolio_url
         date birth_date
+        string avatar_path
     }
     JOB_POSTINGS {
         bigint id PK
@@ -48,6 +52,12 @@ erDiagram
         string employment_type
         string status
         timestamp published_at
+    }
+    JOB_POSTING_IMAGES {
+        bigint id PK
+        bigint job_posting_id FK
+        string path
+        tinyint position
     }
     WORK_EXPERIENCES {
         bigint id PK
@@ -107,6 +117,7 @@ erDiagram
 | comment | string(200) | nullable | 自己紹介コメント |
 | portfolio_url | string | nullable | GitHub・個人ポートフォリオサイト等のURL |
 | birth_date | date | not null | 生年月日。18歳以上60歳以下のみ許可(バックエンドは`now()->subYears()`で動的にバリデーション)。企業側の応募者一覧・詳細では年齢に変換して表示 |
+| avatar_path | string | nullable | プロフィール画像。画像自体はストレージ(public disk)に保存し、相対パスのみ持つ |
 | created_at / updated_at | timestamp | | |
 
 ### companies(企業。1社1アカウント)
@@ -124,6 +135,8 @@ erDiagram
 | member_count_range | string(enum) | nullable | メンバー数レンジ。`1_10` / `11_50` / `51_100` / `101_300` / `301_plus` |
 | website_url | string | nullable | 企業WebサイトのURL |
 | stripe_id | string | nullable, unique | Stripe顧客ID。カラム名はCashierの`Billable`トレイトが内部で決め打ち参照するため(Webhookでの顧客検索`findBillable`等)、Cashier標準の`stripe_id`に合わせる |
+| avatar_path | string | nullable | プロフィール画像(ロゴ等)。画像自体はストレージ(public disk)に保存し、相対パスのみ持つ |
+| cover_image_path | string | nullable | 企業ホーム画面のカバー画像。avatar_pathと同様、相対パスのみ持つ |
 | created_at / updated_at | timestamp | | |
 
 所在地は検索・絞り込みには使わない(job_postings.prefectureとは無関係)ため、`prefecture`と`address_line`を分けるのは表示上の整形のためのみ。Webサイトは要件に明記がないため今回は含めない(「6. 未決事項」参照)。
@@ -184,6 +197,18 @@ erDiagram
 検索の絞り込み対象は「キーワード(`title`/`description`) + `prefecture` + `employment_type`」の3つのみ(要件4.2)。`salary_min`/`salary_max`は表示専用。
 
 **いいね数(応募数)の表示**: 求職者・企業双方の求人一覧で、各求人のいいね数(=応募数)を表示する(要件4.2/4.3)。`job_postings`に専用のカウンタカラムは持たず、`likes`を`job_posting_id`でCOUNTするクエリで都度算出する(likesの月間上限カウントと同じ考え方で、削除等による同期ズレを避けるため)。
+
+### job_posting_images(求人に添付する画像。最大5枚)
+| カラム | 型 | 制約 | 備考 |
+|---|---|---|---|
+| id | bigint | PK | |
+| job_posting_id | bigint FK → job_postings.id | not null | |
+| path | string | not null | 画像自体はストレージ(public disk)に保存し、相対パスのみ持つ |
+| position | unsigned tinyint | not null | 表示順(0始まり)。企業側で並び替え可能にする |
+| created_at / updated_at | timestamp | | |
+
+- unique制約: `(job_posting_id, position)`(同一求人内でのposition重複を防止)
+- 1求人あたり最大5枚という上限はDB制約ではなくアプリ側(FormRequest/Service層)で検証する(他のenum系カラムと異なり件数制約であり、CHECK制約で表現しづらいため)。
 
 ### likes(応募 = 求職者からの「いいね」)
 求職者が求人に「いいね」した時点でレコードが作成される。「いいね」は求職者の応募意思そのものであり、応募(いいね)とは別に`applications`のような独立したテーブルは持たない。テーブル名は「いいね」という操作起点の呼び名を採用している。
@@ -264,6 +289,7 @@ erDiagram
 ## 3. インデックス方針
 
 - `job_postings(status, prefecture, employment_type)`(検索の絞り込み)
+- `job_posting_images(job_posting_id, position)`(unique制約と兼用。求人ごとの画像一覧をposition順で取得)
 - `likes(user_id, like_type, applied_at)`(月間上限のカウント用)
 - `likes(job_posting_id)`
 - `messages(like_id, created_at)`
@@ -308,6 +334,8 @@ erDiagram
 
 **2026-08-10追記**: `likes.user_hidden_at` / `likes.company_hidden_at`を追加した。マッチ成立後のメッセージスレッドが一覧に溜まり続けて整理できない、という抜けが見つかったため、スレッド単位・自分側のみの論理削除(非表示)機能を追加した。相手から新着メッセージが届いた場合は自動的に再表示される。
 
+**2026-08-14追記**: `users.avatar_path`(プロフィール画像)、`companies.avatar_path`(プロフィール画像)・`companies.cover_image_path`(企業ホーム画面のカバー画像)を追加し、求人に画像(最大5枚)を添付できるよう`job_posting_images`テーブルを新設した。いずれも画像本体はストレージ(まずはpublic disk。本番化の際はRailwayの永続ボリュームかS3への切り替えを別途検討する)に保存し、DBには相対パスのみ持たせる方針とした。`job_posting_images`の並び順は`position`列で管理し、企業側で並び替え可能にする。1求人あたり最大5枚という上限はDB制約ではなくアプリ側で検証する。
+
 ## 6. 未決事項
 
-(現時点でなし)
+- ストレージの本番運用先(Railwayの永続ボリューム or S3)。現状はローカル(public disk)で開発を進めており、デプロイ時に別途決定する。

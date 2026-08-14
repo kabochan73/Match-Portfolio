@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('portfolio_url')->nullable();
             // 生年月日。18〜60歳の範囲であることはアプリ側(FormRequest)で動的にバリデーションする
             $table->date('birth_date');
+            // プロフィール画像。画像自体はストレージ(public disk)に保存し、ここには相対パスのみ持つ
+            $table->string('avatar_path')->nullable();
             $table->timestamps();
         });
 
