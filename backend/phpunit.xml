@@ -20,20 +20,31 @@
     <php>
         <!-- PHP CLIの既定値(128M)だとモデル・テストが増えるにつれ全テストを1プロセスで実行しきれなくなるため引き上げる -->
         <ini name="memory_limit" value="512M"/>
-        <env name="APP_ENV" value="testing"/>
-        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
-        <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="BROADCAST_CONNECTION" value="null"/>
-        <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="pgsql"/>
+        <!--
+            <env>ではなく<server>を使う: Docker Compose側でAPP_ENV=local等の実環境変数がコンテナに
+            既に設定されており、CLI起動時点でこれが$_SERVERにも入ってしまっている。PHPUnitの<env>は
+            (force="true"付きでも)putenv()と$_ENVしか更新しないため$_SERVERの値が古いまま残り、
+            Laravel(vlucas/phpdotenv)の環境変数解決は$_SERVERを$_ENVより優先して見に行くので、結局
+            コンテナ側のAPP_ENV=local等が勝ってしまっていた。<server>は$_SERVERを直接無条件に上書きする
+            ため、この優先順位の問題を回避できる。
+            この設定漏れにより、APP_ENVがtestingにならずSanctumのstatefulAPI環境下でCSRF検証がテスト
+            モード判定でバイパスされず419エラーになる、DB_DATABASEが効かず開発用DBに対して
+            RefreshDatabaseが走る、といった問題が実際に発生していた。
+        -->
+        <server name="APP_ENV" value="testing"/>
+        <server name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="BROADCAST_CONNECTION" value="null"/>
+        <server name="CACHE_STORE" value="array"/>
+        <server name="DB_CONNECTION" value="pgsql"/>
         <!-- 開発用DB(match_portfolio)とは別のテスト専用DBを使う。接続先ホスト等は.envの値をそのまま使う -->
-        <env name="DB_DATABASE" value="match_portfolio_test"/>
-        <env name="DB_URL" value=""/>
-        <env name="MAIL_MAILER" value="array"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
-        <env name="SESSION_DRIVER" value="array"/>
-        <env name="PULSE_ENABLED" value="false"/>
-        <env name="TELESCOPE_ENABLED" value="false"/>
-        <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <server name="DB_DATABASE" value="match_portfolio_test"/>
+        <server name="DB_URL" value=""/>
+        <server name="MAIL_MAILER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="PULSE_ENABLED" value="false"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="NIGHTWATCH_ENABLED" value="false"/>
     </php>
 </phpunit>
