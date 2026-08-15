@@ -4,7 +4,6 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Password;
 
 it('sends a password reset link to a registered email', function () {
     Notification::fake();
@@ -33,7 +32,7 @@ it('rejects a password reset link request for an unregistered email', function (
 
 it('resets the password with a valid token', function () {
     $user = User::factory()->create(['password' => 'old-password']);
-    $token = Password::broker('users')->createToken($user);
+    $token = passwordBroker('users')->createToken($user);
 
     $response = $this->postJson('/api/reset-password', [
         'token' => $token,

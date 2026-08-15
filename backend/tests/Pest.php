@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Auth\Passwords\PasswordBroker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
 /*
@@ -44,7 +46,13 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Password::broker()の戻り値の型はPasswordBrokerコントラクト(interface)だが、
+ * createToken()はこのコントラクトに含まれない(実体であるIlluminate\Auth\Passwords\PasswordBroker
+ * クラス固有のメソッド)ため、IDEが未定義メソッド扱いにしてしまう。ここで具象クラスの型を明示し、
+ * パスワードリセット系のテストから使い回す
+ */
+function passwordBroker(string $name): PasswordBroker
 {
-    // ..
+    return Password::broker($name);
 }

@@ -5,7 +5,6 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Password;
 
 it('sends a password reset link to a registered email', function () {
     Notification::fake();
@@ -34,7 +33,7 @@ it('rejects a password reset link request for an unregistered email', function (
 
 it('resets the password with a valid token', function () {
     $company = Company::factory()->create(['password' => 'old-password']);
-    $token = Password::broker('companies')->createToken($company);
+    $token = passwordBroker('companies')->createToken($company);
 
     $response = $this->postJson('/api/company/reset-password', [
         'token' => $token,
@@ -63,7 +62,7 @@ it('rejects resetting the password with an invalid token', function () {
 
 it('keeps the user and company password reset tokens independent of each other', function () {
     $company = Company::factory()->create(['email' => 'shared@example.com', 'password' => 'old-password']);
-    $userToken = Password::broker('users')->createToken(
+    $userToken = passwordBroker('users')->createToken(
         User::factory()->create(['email' => 'shared@example.com'])
     );
 
