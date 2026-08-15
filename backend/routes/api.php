@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,19 @@ Route::put('/profile/work-experiences/{workExperience}', [WorkExperienceControll
     ->middleware('auth:web');
 
 Route::delete('/profile/work-experiences/{workExperience}', [WorkExperienceController::class, 'destroy'])
+    ->middleware('auth:web');
+
+// 求職者の学歴一覧
+Route::get('/profile/educations', [EducationController::class, 'index'])
+    ->middleware('auth:web');
+
+Route::post('/profile/educations', [EducationController::class, 'store'])
+    ->middleware('auth:web');
+
+Route::put('/profile/educations/{education}', [EducationController::class, 'update'])
+    ->middleware('auth:web');
+
+Route::delete('/profile/educations/{education}', [EducationController::class, 'destroy'])
     ->middleware('auth:web');
 
 // 求職者のプロフィール画像。PUTではなくPOSTなのは、PHPがPUT+multipart(ファイルアップロード)を
