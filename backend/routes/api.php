@@ -18,6 +18,7 @@ use App\Http\Controllers\Seeker\CertificationController;
 use App\Http\Controllers\Seeker\EducationController;
 use App\Http\Controllers\Seeker\ProfileController;
 use App\Http\Controllers\Seeker\WorkExperienceController;
+use App\Http\Controllers\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 
 // 求職者(users)向けの認証エンドポイント
@@ -87,6 +88,10 @@ Route::post('/profile/avatar', [AvatarController::class, 'update'])
 
 Route::delete('/profile/avatar', [AvatarController::class, 'destroy'])
     ->middleware('auth:web');
+
+// StripeからのWebhook。認証済みユーザーからのリクエストではないためauth系ミドルウェアは付けず、
+// 署名検証(StripeWebhookController内でSTRIPE_WEBHOOK_SECRETが設定されていれば自動的に有効になる)で保護する
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 
 // 企業(companies)向けの認証エンドポイント。usersとは別ガード(company)で完全に分離する
 Route::prefix('company')->group(function () {

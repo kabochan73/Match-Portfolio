@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
             'user' => User::class,
             'company' => Company::class,
         ]);
+
+        // Cashierはデフォルトで顧客モデルをApp\Models\Userとみなす(findBillable等の内部検索に使われる)。
+        // このアプリでBillableなのはCompanyなので明示的に差し替える
+        Cashier::useCustomerModel(Company::class);
 
         // パスワードリセット通知のリンク先は、デフォルトだとバックエンドの名前付きルートを指すが、
         // このアプリはNext.js側にリセット画面を持つSPA構成のため、フロントエンドのURLを指すよう差し替える。
