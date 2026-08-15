@@ -45,4 +45,14 @@ class BillingController extends Controller
 
         return response()->json(['checkout_url' => $checkout->url]);
     }
+
+    /**
+     * 請求履歴一覧(paymentsテーブルはStripe Webhookで同期されるキャッシュ)。新しい順で返す
+     */
+    public function payments(Request $request): JsonResponse
+    {
+        return response()->json(
+            $request->user('company')->payments()->latest('created_at')->get()
+        );
+    }
 }

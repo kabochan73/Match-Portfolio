@@ -162,4 +162,8 @@ Route::prefix('company')->group(function () {
     // 求人掲載プランのサブスクリプション開始(Stripe Checkoutへのリダイレクト用URLを返す)
     Route::post('/billing/checkout', [BillingController::class, 'checkout'])
         ->middleware('auth:company');
+
+    // 請求履歴(Stripe Webhookで同期されたpaymentsテーブルの一覧)
+    Route::get('/billing/payments', [BillingController::class, 'payments'])
+        ->middleware('auth:company');
 });
