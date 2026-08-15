@@ -153,4 +153,8 @@ Route::prefix('company')->group(function () {
     // 課金ステータス(未契約/課金中/未払い)確認
     Route::get('/billing/status', [BillingController::class, 'status'])
         ->middleware('auth:company');
+
+    // 求人掲載プランのサブスクリプション開始(Stripe Checkoutへのリダイレクト用URLを返す)
+    Route::post('/billing/checkout', [BillingController::class, 'checkout'])
+        ->middleware('auth:company');
 });
