@@ -12,6 +12,7 @@ use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
+use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkExperienceController;
@@ -102,6 +103,10 @@ Route::prefix('company')->group(function () {
 
     Route::post('/reset-password', [CompanyNewPasswordController::class, 'store'])
         ->middleware('guest:company');
+
+    // 企業の基本プロフィール(会社名・会社概要・電話番号・所在地・設立年・メンバー数・WebサイトURL)
+    Route::put('/profile', [CompanyProfileController::class, 'update'])
+        ->middleware('auth:company');
 
     // 企業のプロフィール画像。POSTを使う理由は求職者側と同じ(上記コメント参照)
     Route::post('/profile/avatar', [CompanyAvatarController::class, 'update'])
