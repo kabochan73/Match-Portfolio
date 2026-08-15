@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\EmploymentType;
+use App\Enums\JobPostingStatus;
 use Database\Factories\JobPostingFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +32,12 @@ class JobPosting extends Model
             'salary_min' => 'integer',
             'salary_max' => 'integer',
             'published_at' => 'datetime',
+            'employment_type' => EmploymentType::class,
+            'status' => JobPostingStatus::class,
+            // prefectureはPrefecture enumにキャストしない: 求人の勤務地には都道府県に加えて
+            // 「リモート」が入り得るが、Prefecture enumは会社所在地用の47都道府県のみでリモートを含まないため、
+            // backed enumのcastだと不正な値としてエラーになってしまう。文字列のまま扱い、
+            // バリデーション(JobPostingRequest)側でPrefecture::values()+['リモート']の範囲を検証する
         ];
     }
 

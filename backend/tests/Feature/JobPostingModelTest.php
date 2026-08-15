@@ -12,9 +12,10 @@ it('creates a job posting belonging to a company', function () {
         ->and($company->jobPostings->pluck('id')->all())->toBe([$jobPosting->id]);
 });
 
-it('rejects an invalid status via the DB check constraint', function () {
+it('rejects an invalid status via the JobPostingStatus enum cast', function () {
+    // statusはモデル側でbacked enumにキャストしているため、DBのCHECK制約に届く前にPHP側(ValueError)で弾かれる
     expect(fn () => JobPosting::factory()->create(['status' => 'invalid_status']))
-        ->toThrow(QueryException::class);
+        ->toThrow(ValueError::class);
 });
 
 it('rejects an invalid prefecture via the DB check constraint', function () {
