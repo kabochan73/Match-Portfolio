@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // 求職者(users)向けの認証エンドポイント
@@ -29,6 +30,10 @@ Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
 
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest:web');
+
+// 求職者の基本プロフィール(氏名・自己紹介コメント・ポートフォリオURL・生年月日)
+Route::put('/profile', [ProfileController::class, 'update'])
+    ->middleware('auth:web');
 
 // 求職者のプロフィール画像。PUTではなくPOSTなのは、PHPがPUT+multipart(ファイルアップロード)を
 // ネイティブにパースできないため、素直にPOSTの「アクション」として扱う方針にしたため

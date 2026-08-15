@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Profile;
 
 use App\Http\Requests\Concerns\ValidatesBirthDate;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class RegisterUserRequest extends FormRequest
+class UpdateUserProfileRequest extends FormRequest
 {
     use ValidatesBirthDate;
 
-    /**
-     * 会員登録は誰でも実行できる操作なので常にtrue(ログイン済みかどうかのチェックはルート側のミドルウェアで行う)
-     */
     public function authorize(): bool
     {
         return true;
@@ -25,27 +21,19 @@ class RegisterUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            // confirmedルールにより、リクエストにpassword_confirmationも一致させて送る必要がある
-            'password' => ['required', 'confirmed', Password::defaults()],
             'comment' => ['nullable', 'string', 'max:200'],
             'portfolio_url' => ['nullable', 'string', 'url', 'max:255'],
-            // 18歳以上60歳以下のみ登録可能(DB_DESIGN.md参照)
             'birth_date' => $this->birthDateRules(),
         ];
     }
 
     /**
-     * バリデーションエラーメッセージ内で使われる項目名を日本語化する
-     *
      * @return array<string, string>
      */
     public function attributes(): array
     {
         return [
             'name' => '氏名',
-            'email' => 'メールアドレス',
-            'password' => 'パスワード',
             'comment' => '自己紹介コメント',
             'portfolio_url' => 'ポートフォリオURL',
             'birth_date' => '生年月日',
