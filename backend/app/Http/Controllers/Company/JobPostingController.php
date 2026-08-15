@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Company;
 
+use App\Enums\BillingStatus;
 use App\Enums\JobPostingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPosting\JobPostingRequest;
@@ -60,16 +61,26 @@ class JobPostingController extends Controller
     }
 
     /**
-     * 下書きを公開する。公開できるのは下書き状態のみ(非公開中の求人は課金状態が復旧するまでシステム側でしか戻せない)。
+     * 求人を公開する。下書き(初回公開)、または課金失敗で自動非公開になった求人
+     * (支払い方法更新後の再公開)のいずれかからのみ遷移できる。
+     * 「決済が有効な間は求人を何件でも掲載できる」(REQUIREMENTS.md 4.4)という要件のため、
+     * 課金ステータスが課金中でない場合はここで拒否する(未契約のまま/未払いのままでは公開できない)。
      * published_atは初回公開日時のため、再公開(公開→非公開→再公開)では上書きしない
      */
     public function publish(Request $request, int $jobPosting): JsonResponse
     {
+        $company = $request->user('company');
         $model = $this->findOwn($request, $jobPosting);
 
-        if ($model->status !== JobPostingStatus::Draft) {
+        if (! in_array($model->status, [JobPostingStatus::Draft, JobPostingStatus::Unpublished], true)) {
             throw ValidationException::withMessages([
-                'status' => ['下書き状態の求人のみ公開できます。'],
+                'status' => ['下書き、または非公開状態の求人のみ公開できます。'],
+            ]);
+        }
+
+        if ($company->billingStatus() !== BillingStatus::Active) {
+            throw ValidationException::withMessages([
+                'billing' => ['求人を公開するには、課金設定(サブスクリプション)を有効にしてください。'],
             ]);
         }
 

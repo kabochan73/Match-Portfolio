@@ -6,6 +6,7 @@ use App\Models\JobPosting;
 
 it('publishes a draft job posting and sets published_at', function () {
     $company = Company::factory()->create();
+    createSubscriptionFor($company, 'active');
     $jobPosting = JobPosting::factory()->for($company)->create(['status' => 'draft', 'published_at' => null]);
 
     $response = $this->actingAs($company, 'company')->patchJson("/api/company/job-postings/{$jobPosting->id}/publish");
@@ -16,8 +17,32 @@ it('publishes a draft job posting and sets published_at', function () {
         ->published_at->not->toBeNull();
 });
 
+it('republishes a job posting that was auto-unpublished for non-payment', function () {
+    $company = Company::factory()->create();
+    createSubscriptionFor($company, 'active');
+    $jobPosting = JobPosting::factory()->for($company)->create([
+        'status' => 'unpublished',
+        'published_at' => now()->subDays(10),
+    ]);
+
+    $response = $this->actingAs($company, 'company')->patchJson("/api/company/job-postings/{$jobPosting->id}/publish");
+
+    $response->assertOk();
+    expect($jobPosting->fresh()->status)->toBe(JobPostingStatus::Published);
+});
+
+it('rejects publishing when the company has no active subscription', function () {
+    $company = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($company)->create(['status' => 'draft']);
+
+    $response = $this->actingAs($company, 'company')->patchJson("/api/company/job-postings/{$jobPosting->id}/publish");
+
+    $response->assertUnprocessable()->assertJsonValidationErrors('billing');
+});
+
 it('does not overwrite published_at when republishing', function () {
     $company = Company::factory()->create();
+    createSubscriptionFor($company, 'active');
     $firstPublishedAt = now()->subDays(10);
     $jobPosting = JobPosting::factory()->for($company)->create([
         'status' => 'draft',

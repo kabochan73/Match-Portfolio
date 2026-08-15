@@ -1,24 +1,6 @@
 <?php
 
 use App\Models\Company;
-use Illuminate\Support\Str;
-use Laravel\Cashier\Subscription;
-
-/**
- * Stripe APIを叩かずローカルのsubscriptionsテーブルへ直接行を作ることで、
- * billingStatus()の分岐ロジックだけを検証する(実際のCheckout/Webhook経由の同期は別テストで扱う)
- */
-function createSubscriptionFor(Company $company, string $stripeStatus): Subscription
-{
-    return Subscription::create([
-        'company_id' => $company->id,
-        'type' => 'default',
-        'stripe_id' => 'sub_'.Str::random(14),
-        'stripe_status' => $stripeStatus,
-        'stripe_price' => config('services.stripe.job_posting_price_id'),
-        'quantity' => 1,
-    ]);
-}
 
 it('reports uncontracted when the company has no subscription', function () {
     $company = Company::factory()->create();

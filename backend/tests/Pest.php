@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\Company;
 use Illuminate\Auth\Passwords\PasswordBroker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Laravel\Cashier\Subscription;
 use Tests\TestCase;
 
 /*
@@ -55,4 +58,20 @@ expect()->extend('toBeOne', function () {
 function passwordBroker(string $name): PasswordBroker
 {
     return Password::broker($name);
+}
+
+/**
+ * Stripe APIを叩かずローカルのsubscriptionsテーブルへ直接行を作ることで、
+ * billingStatus()等の分岐ロジックだけを検証するためのヘルパー(課金系のテストで共用する)
+ */
+function createSubscriptionFor(Company $company, string $stripeStatus): Subscription
+{
+    return Subscription::create([
+        'company_id' => $company->id,
+        'type' => 'default',
+        'stripe_id' => 'sub_'.Str::random(14),
+        'stripe_status' => $stripeStatus,
+        'stripe_price' => config('services.stripe.job_posting_price_id'),
+        'quantity' => 1,
+    ]);
 }
