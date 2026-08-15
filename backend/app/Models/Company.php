@@ -15,6 +15,7 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Cashier\Billable;
 
 // Userと同様、companiesは1社1アカウントのログイン主体を兼ねるためAuthenticatableを継承する
 #[Fillable([
@@ -23,11 +24,14 @@ use Illuminate\Support\Facades\Storage;
     'avatar_path', 'cover_image_path',
 ])]
 // avatar_path/cover_image_pathはストレージ上の相対パスという実装詳細なので隠し、
-// 代わりにavatar_url/cover_image_url(完全なURL)をJSONへ含める
-#[Hidden(['password', 'avatar_path', 'cover_image_path'])]
+// 代わりにavatar_url/cover_image_url(完全なURL)をJSONへ含める。stripe_idも同様に内部実装なので隠す
+#[Hidden(['password', 'avatar_path', 'cover_image_path', 'stripe_id'])]
 #[Appends(['avatar_url', 'cover_image_url'])]
 class Company extends Authenticatable
 {
+    // 企業単位でStripeの1顧客・1サブスクリプション(name="default")として課金する(DB_DESIGN.md「4. 補足」参照)
+    use Billable;
+
     /** @use HasFactory<CompanyFactory> */
     use HasFactory, Notifiable;
 

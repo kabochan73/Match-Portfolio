@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'stripe' => [
+        // 求人掲載プラン(月額1,000円、企業単位のサブスクリプション)のPrice ID
+        'job_posting_price_id' => env('STRIPE_JOB_POSTING_PRICE_ID'),
+    ],
+
 ];
