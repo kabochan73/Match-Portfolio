@@ -12,6 +12,7 @@ use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
 // 求職者(users)向けの認証エンドポイント
@@ -33,6 +34,19 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
 
 // 求職者の基本プロフィール(氏名・自己紹介コメント・ポートフォリオURL・生年月日)
 Route::put('/profile', [ProfileController::class, 'update'])
+    ->middleware('auth:web');
+
+// 求職者の職歴一覧(この一覧が職務経歴書代わりになる。求人ごとに個別の応募書類は作らない)
+Route::get('/profile/work-experiences', [WorkExperienceController::class, 'index'])
+    ->middleware('auth:web');
+
+Route::post('/profile/work-experiences', [WorkExperienceController::class, 'store'])
+    ->middleware('auth:web');
+
+Route::put('/profile/work-experiences/{workExperience}', [WorkExperienceController::class, 'update'])
+    ->middleware('auth:web');
+
+Route::delete('/profile/work-experiences/{workExperience}', [WorkExperienceController::class, 'destroy'])
     ->middleware('auth:web');
 
 // 求職者のプロフィール画像。PUTではなくPOSTなのは、PHPがPUT+multipart(ファイルアップロード)を

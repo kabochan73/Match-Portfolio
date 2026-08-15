@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EmploymentType;
 use Database\Factories\WorkExperienceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,7 @@ class WorkExperience extends Model
             'started_on' => 'date',
             // ended_onがnullの場合は「在籍中」を表す
             'ended_on' => 'date',
+            'employment_type' => EmploymentType::class,
         ];
     }
 
