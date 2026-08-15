@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\CompanyAuthenticatedSessionController;
+use App\Http\Controllers\Auth\CompanyNewPasswordController;
+use App\Http\Controllers\Auth\CompanyPasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredCompanyController;
@@ -46,6 +48,13 @@ Route::prefix('company')->group(function () {
 
     Route::post('/logout', [CompanyAuthenticatedSessionController::class, 'destroy'])
         ->middleware('auth:company');
+
+    // 企業のパスワードリセット。ログイン済みの状態で使う操作ではないためguestミドルウェアで保護する
+    Route::post('/forgot-password', [CompanyPasswordResetLinkController::class, 'store'])
+        ->middleware('guest:company');
+
+    Route::post('/reset-password', [CompanyNewPasswordController::class, 'store'])
+        ->middleware('guest:company');
 
     // 企業のプロフィール画像。POSTを使う理由は求職者側と同じ(上記コメント参照)
     Route::post('/profile/avatar', [CompanyAvatarController::class, 'update'])
