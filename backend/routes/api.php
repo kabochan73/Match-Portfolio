@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\CompanyAuthenticatedSessionController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AvatarController;
@@ -18,6 +20,13 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:web');
+
+// 求職者のパスワードリセット。ログイン済みの状態で使う操作ではないためguestミドルウェアで保護する
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware('guest:web');
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+    ->middleware('guest:web');
 
 // 求職者のプロフィール画像。PUTではなくPOSTなのは、PHPがPUT+multipart(ファイルアップロード)を
 // ネイティブにパースできないため、素直にPOSTの「アクション」として扱う方針にしたため

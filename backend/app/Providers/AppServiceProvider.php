@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,5 +30,20 @@ class AppServiceProvider extends ServiceProvider
             'user' => User::class,
             'company' => Company::class,
         ]);
+
+        // パスワードリセット通知のリンク先は、デフォルトだとバックエンドの名前付きルートを指すが、
+        // このアプリはNext.js側にリセット画面を持つSPA構成のため、フロントエンドのURLを指すよう差し替える。
+        // User/Companyのどちらからのリクエストかでパスを分ける(2つのガードでリセット画面が別なため)
+        ResetPassword::createUrlUsing(function (object $notifiable, string $token): string {
+            $path = $notifiable instanceof Company ? 'company/reset-password' : 'reset-password';
+
+            return sprintf(
+                '%s/%s?token=%s&email=%s',
+                config('app.frontend_url'),
+                $path,
+                $token,
+                urlencode($notifiable->getEmailForPasswordReset())
+            );
+        });
     }
 }
