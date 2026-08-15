@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Company;
 use App\Enums\JobPostingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPosting\JobPostingRequest;
+use App\Models\JobPosting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class JobPostingController extends Controller
 {
@@ -34,20 +36,16 @@ class JobPostingController extends Controller
         return response()->json($jobPosting, 201);
     }
 
-    /**
-     * company()->jobPostings()経由でIDを引くことで、他社の求人を閲覧・編集・削除できないようスコープする
-     * (存在しないIDと同様404を返すため、他社のレコードの存在有無も推測されない)
-     */
     public function show(Request $request, int $jobPosting): JsonResponse
     {
-        $model = $request->user('company')->jobPostings()->withCount('likes')->findOrFail($jobPosting);
+        $model = $this->findOwn($request, $jobPosting)->loadCount('likes');
 
         return response()->json($model);
     }
 
     public function update(JobPostingRequest $request, int $jobPosting): JsonResponse
     {
-        $model = $request->user('company')->jobPostings()->findOrFail($jobPosting);
+        $model = $this->findOwn($request, $jobPosting);
 
         $model->update($request->validated());
 
@@ -56,8 +54,75 @@ class JobPostingController extends Controller
 
     public function destroy(Request $request, int $jobPosting): Response
     {
-        $request->user('company')->jobPostings()->findOrFail($jobPosting)->delete();
+        $this->findOwn($request, $jobPosting)->delete();
 
         return response()->noContent();
+    }
+
+    /**
+     * 下書きを公開する。公開できるのは下書き状態のみ(非公開中の求人は課金状態が復旧するまでシステム側でしか戻せない)。
+     * published_atは初回公開日時のため、再公開(公開→非公開→再公開)では上書きしない
+     */
+    public function publish(Request $request, int $jobPosting): JsonResponse
+    {
+        $model = $this->findOwn($request, $jobPosting);
+
+        if ($model->status !== JobPostingStatus::Draft) {
+            throw ValidationException::withMessages([
+                'status' => ['下書き状態の求人のみ公開できます。'],
+            ]);
+        }
+
+        $model->update([
+            'status' => JobPostingStatus::Published,
+            'published_at' => $model->published_at ?? now(),
+        ]);
+
+        return response()->json($model);
+    }
+
+    /**
+     * 公開中の求人を下書きに戻す(編集のための一時的な非公開)
+     */
+    public function unpublish(Request $request, int $jobPosting): JsonResponse
+    {
+        $model = $this->findOwn($request, $jobPosting);
+
+        if ($model->status !== JobPostingStatus::Published) {
+            throw ValidationException::withMessages([
+                'status' => ['公開中の求人のみ非公開にできます。'],
+            ]);
+        }
+
+        $model->update(['status' => JobPostingStatus::Draft]);
+
+        return response()->json($model);
+    }
+
+    /**
+     * 募集を終了する(恒久的に非表示。再度公開することはできない)
+     */
+    public function close(Request $request, int $jobPosting): JsonResponse
+    {
+        $model = $this->findOwn($request, $jobPosting);
+
+        if ($model->status === JobPostingStatus::Closed) {
+            throw ValidationException::withMessages([
+                'status' => ['この求人はすでに募集を終了しています。'],
+            ]);
+        }
+
+        $model->update(['status' => JobPostingStatus::Closed]);
+
+        return response()->json($model);
+    }
+
+    /**
+     * company()->jobPostings()経由でIDを引くことで、他社の求人を閲覧・編集・削除できないようスコープする
+     * (存在しないIDと同様404を返すため、他社のレコードの存在有無も推測されない)
+     */
+    private function findOwn(Request $request, int $jobPosting): JobPosting
+    {
+        return $request->user('company')->jobPostings()->findOrFail($jobPosting);
     }
 }

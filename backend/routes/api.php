@@ -138,4 +138,14 @@ Route::prefix('company')->group(function () {
 
     Route::delete('/job-postings/{jobPosting}', [JobPostingController::class, 'destroy'])
         ->middleware('auth:company');
+
+    // 求人の公開状態切り替え。unpublished(課金失敗による自動非公開)には企業側から直接遷移できない
+    Route::patch('/job-postings/{jobPosting}/publish', [JobPostingController::class, 'publish'])
+        ->middleware('auth:company');
+
+    Route::patch('/job-postings/{jobPosting}/unpublish', [JobPostingController::class, 'unpublish'])
+        ->middleware('auth:company');
+
+    Route::patch('/job-postings/{jobPosting}/close', [JobPostingController::class, 'close'])
+        ->middleware('auth:company');
 });
