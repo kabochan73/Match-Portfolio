@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BillingStatus;
 use App\Enums\MemberCountRange;
 use App\Enums\Prefecture;
 use Database\Factories\CompanyFactory;
@@ -95,5 +96,21 @@ class Company extends Authenticatable
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * 課金ステータス(未契約/課金中/未払い)。Cashierのsubscription('default')の状態から都度導出する。
+     * Subscription::active()はCashierのデフォルト設定でpast_due/unpaidの場合にfalseを返すため、
+     * 「未契約でもなくactiveでもない」場合はまとめて未払い扱いとする
+     */
+    public function billingStatus(): BillingStatus
+    {
+        $subscription = $this->subscription('default');
+
+        return match (true) {
+            $subscription === null => BillingStatus::Uncontracted,
+            $subscription->active() => BillingStatus::Active,
+            default => BillingStatus::Unpaid,
+        };
     }
 }

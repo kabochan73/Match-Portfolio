@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
+use App\Http\Controllers\Company\BillingController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use App\Http\Controllers\Company\JobPostingController;
 use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
@@ -147,5 +148,9 @@ Route::prefix('company')->group(function () {
         ->middleware('auth:company');
 
     Route::patch('/job-postings/{jobPosting}/close', [JobPostingController::class, 'close'])
+        ->middleware('auth:company');
+
+    // 課金ステータス(未契約/課金中/未払い)確認
+    Route::get('/billing/status', [BillingController::class, 'status'])
         ->middleware('auth:company');
 });

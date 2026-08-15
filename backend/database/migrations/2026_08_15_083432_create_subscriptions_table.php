@@ -9,14 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      *
-     * user_idという列名だが、外部キー制約はなくCashierの慣例的な命名(Billableトレイトを持つ
-     * モデルのIDを指す汎用カラム)。このアプリではBillableはCompanyなので、実際にはcompanies.idが入る
+     * 外部キー制約はなくCashierの慣例的な命名。列名はBillableモデルのgetForeignKey()の結果と
+     * 一致している必要があり(HasSubscriptions::subscriptions()がこれで動的にリレーションを組むため)、
+     * このアプリではBillableがCompanyなのでuser_idではなくcompany_idにする
      */
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('company_id');
             $table->string('type');
             $table->string('stripe_id')->unique();
             $table->string('stripe_status');
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->timestamp('ends_at')->nullable();
             $table->timestamps();
 
-            $table->index(['user_id', 'stripe_status']);
+            $table->index(['company_id', 'stripe_status']);
         });
     }
 
