@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
+use App\Http\Controllers\Company\JobPostingController;
 use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
 use App\Http\Controllers\Seeker\AvatarController;
 use App\Http\Controllers\Seeker\CertificationController;
@@ -120,5 +121,21 @@ Route::prefix('company')->group(function () {
         ->middleware('auth:company');
 
     Route::delete('/profile/cover-image', [CompanyCoverImageController::class, 'destroy'])
+        ->middleware('auth:company');
+
+    // 求人の投稿・編集・削除。公開/非公開/募集終了の切り替えは別エンドポイント(下記)で行う
+    Route::get('/job-postings', [JobPostingController::class, 'index'])
+        ->middleware('auth:company');
+
+    Route::post('/job-postings', [JobPostingController::class, 'store'])
+        ->middleware('auth:company');
+
+    Route::get('/job-postings/{jobPosting}', [JobPostingController::class, 'show'])
+        ->middleware('auth:company');
+
+    Route::put('/job-postings/{jobPosting}', [JobPostingController::class, 'update'])
+        ->middleware('auth:company');
+
+    Route::delete('/job-postings/{jobPosting}', [JobPostingController::class, 'destroy'])
         ->middleware('auth:company');
 });
