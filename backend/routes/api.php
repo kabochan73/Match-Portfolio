@@ -8,14 +8,14 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\AvatarController;
-use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
-use App\Http\Controllers\EducationController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\WorkExperienceController;
+use App\Http\Controllers\Seeker\AvatarController;
+use App\Http\Controllers\Seeker\CertificationController;
+use App\Http\Controllers\Seeker\EducationController;
+use App\Http\Controllers\Seeker\ProfileController;
+use App\Http\Controllers\Seeker\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
 // 求職者(users)向けの認証エンドポイント

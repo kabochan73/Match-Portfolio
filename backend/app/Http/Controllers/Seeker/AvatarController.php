@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Seeker;
 
 use App\Http\Controllers\Concerns\HandlesProfileImageUploads;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateImageRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

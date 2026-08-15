@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Seeker;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateUserProfileRequest;
 use Illuminate\Http\JsonResponse;
 
