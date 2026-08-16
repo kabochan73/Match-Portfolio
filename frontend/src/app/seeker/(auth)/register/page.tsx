@@ -1,11 +1,118 @@
-import { RegisterForm } from "@/app/seeker/_components/RegisterForm";
+"use client";
 
-// SCシェル。フォーム部分(react-hook-form + TanStack Query)のみCCアイランドとして切り出す
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { ApiValidationError } from "@/lib/api/client";
+import {
+  registerSchema,
+  type RegisterValues,
+  useRegister,
+} from "@/hooks/seeker/useRegister";
+
+// バックエンドのフィールド名(snake_case) → フォームのフィールド名(camelCase)
+const serverFieldMap: Record<string, keyof RegisterValues> = {
+  name: "name",
+  email: "email",
+  password: "password",
+  comment: "comment",
+  portfolio_url: "portfolioUrl",
+  birth_date: "birthDate",
+};
+
 export default function Page() {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterValues>({
+    resolver: zodResolver(registerSchema),
+  });
+  const registerMutation = useRegister();
+
+  const onSubmit = handleSubmit((values) => {
+    registerMutation.mutate(values, {
+      onError: (error) => {
+        if (error instanceof ApiValidationError) {
+          for (const [field, messages] of Object.entries(error.errors)) {
+            const formField = serverFieldMap[field];
+            if (formField && messages[0]) {
+              setError(formField, { type: "server", message: messages[0] });
+            }
+          }
+        }
+      },
+    });
+  });
+
   return (
     <>
       <h1>求職者会員登録</h1>
-      <RegisterForm />
+      <form onSubmit={onSubmit} noValidate>
+        <div>
+          <label htmlFor="name">氏名</label>
+          <input id="name" type="text" {...register("name")} />
+          {errors.name && <p role="alert">{errors.name.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="email">メールアドレス</label>
+          <input id="email" type="email" {...register("email")} />
+          {errors.email && <p role="alert">{errors.email.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="password">パスワード</label>
+          <input id="password" type="password" {...register("password")} />
+          {errors.password && <p role="alert">{errors.password.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="passwordConfirmation">パスワード(確認用)</label>
+          <input
+            id="passwordConfirmation"
+            type="password"
+            {...register("passwordConfirmation")}
+          />
+          {errors.passwordConfirmation && (
+            <p role="alert">{errors.passwordConfirmation.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="birthDate">生年月日</label>
+          <input id="birthDate" type="date" {...register("birthDate")} />
+          {errors.birthDate && <p role="alert">{errors.birthDate.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="comment">自己紹介コメント(任意)</label>
+          <textarea id="comment" {...register("comment")} />
+          {errors.comment && <p role="alert">{errors.comment.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="portfolioUrl">ポートフォリオURL(任意)</label>
+          <input id="portfolioUrl" type="text" {...register("portfolioUrl")} />
+          {errors.portfolioUrl && (
+            <p role="alert">{errors.portfolioUrl.message}</p>
+          )}
+        </div>
+
+        {registerMutation.isError &&
+          !(registerMutation.error instanceof ApiValidationError) && (
+            <p role="alert">
+              登録に失敗しました。時間をおいて再度お試しください。
+            </p>
+          )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting || registerMutation.isPending}
+        >
+          登録する
+        </button>
+      </form>
     </>
   );
 }
