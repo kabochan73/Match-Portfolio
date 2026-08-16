@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         // このアプリはNext.js側にリセット画面を持つSPA構成のため、フロントエンドのURLを指すよう差し替える。
         // User/Companyのどちらからのリクエストかでパスを分ける(2つのガードでリセット画面が別なため)
         ResetPassword::createUrlUsing(function (object $notifiable, string $token): string {
-            $path = $notifiable instanceof Company ? 'company/reset-password' : 'reset-password';
+            $path = $notifiable instanceof Company ? 'company/reset-password' : 'seeker/reset-password';
 
             return sprintf(
                 '%s/%s?token=%s&email=%s',

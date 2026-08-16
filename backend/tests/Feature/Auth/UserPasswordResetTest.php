@@ -17,7 +17,7 @@ it('sends a password reset link to a registered email', function () {
     Notification::assertSentTo($user, ResetPassword::class, function (ResetPassword $notification) use ($user) {
         $mailMessage = $notification->toMail($user);
 
-        return str_starts_with($mailMessage->actionUrl, config('app.frontend_url').'/reset-password?token=');
+        return str_starts_with($mailMessage->actionUrl, config('app.frontend_url').'/seeker/reset-password?token=');
     });
 });
 
