@@ -33,8 +33,10 @@ class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
-            // dateにキャストすることでCarbonインスタンスとして扱えるようにする(年齢計算等で使う)
-            'birth_date' => 'date',
+            // dateにキャストすることでCarbonインスタンスとして扱えるようにする(年齢計算等で使う)。
+            // フォーマットをY-m-dに固定しないとJSONシリアライズ時に時刻付きのISO8601文字列になり、
+            // <input type="date">がその値を受け付けられない
+            'birth_date' => 'date:Y-m-d',
         ];
     }
 
