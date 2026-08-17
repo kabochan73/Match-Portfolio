@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import { useProfile } from "@/hooks/seeker/useProfile";
@@ -67,7 +68,10 @@ export default function Page() {
 
   return (
     <>
-      <h1>マイページ(プロフィール編集)</h1>
+      <h1>プロフィール編集</h1>
+      <p>
+        <Link href="/seeker/mypage">マイページ表示に戻る</Link>
+      </p>
 
       <AvatarSection />
 
