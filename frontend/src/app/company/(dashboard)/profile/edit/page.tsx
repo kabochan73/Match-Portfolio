@@ -4,7 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
-import { memberCountRangeLabels, useProfile } from "@/hooks/company/useProfile";
+import {
+  PREFECTURES,
+  memberCountRangeLabels,
+  useProfile,
+} from "@/hooks/company/useProfile";
 import {
   type UpdateProfileValues,
   updateProfileSchema,
@@ -12,57 +16,6 @@ import {
 } from "@/hooks/company/useUpdateProfile";
 import { AvatarUploadSection } from "./_components/AvatarUploadSection";
 import { CoverImageUploadSection } from "./_components/CoverImageUploadSection";
-
-// バックエンドのcompanies.prefectureのCHECK制約(47都道府県)と対応する選択肢
-const PREFECTURES = [
-  "北海道",
-  "青森県",
-  "岩手県",
-  "宮城県",
-  "秋田県",
-  "山形県",
-  "福島県",
-  "茨城県",
-  "栃木県",
-  "群馬県",
-  "埼玉県",
-  "千葉県",
-  "東京都",
-  "神奈川県",
-  "新潟県",
-  "富山県",
-  "石川県",
-  "福井県",
-  "山梨県",
-  "長野県",
-  "岐阜県",
-  "静岡県",
-  "愛知県",
-  "三重県",
-  "滋賀県",
-  "京都府",
-  "大阪府",
-  "兵庫県",
-  "奈良県",
-  "和歌山県",
-  "鳥取県",
-  "島根県",
-  "岡山県",
-  "広島県",
-  "山口県",
-  "徳島県",
-  "香川県",
-  "愛媛県",
-  "高知県",
-  "福岡県",
-  "佐賀県",
-  "長崎県",
-  "熊本県",
-  "大分県",
-  "宮崎県",
-  "鹿児島県",
-  "沖縄県",
-] as const;
 
 // バックエンドのフィールド名(snake_case) → フォームのフィールド名(camelCase)
 const serverFieldMap: Record<string, keyof UpdateProfileValues> = {
