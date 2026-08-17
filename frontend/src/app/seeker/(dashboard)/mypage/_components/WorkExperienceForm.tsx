@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import {
@@ -43,6 +44,9 @@ export function WorkExperienceForm({
     resolver: zodResolver(workExperienceSchema),
     defaultValues,
   });
+  // 一覧の複数行を同時に編集状態にする(=このフォームが複数同時にマウントされる)と
+  // 素のidだと衝突するため、コンポーネントインスタンスごとに一意なidを付与する
+  const formId = useId();
 
   const handleServerError = (error: unknown) => {
     if (error instanceof ApiValidationError) {
@@ -62,14 +66,18 @@ export function WorkExperienceForm({
   return (
     <form onSubmit={submit} noValidate>
       <div>
-        <label htmlFor="companyName">会社名</label>
-        <input id="companyName" type="text" {...register("companyName")} />
+        <label htmlFor={`${formId}-companyName`}>会社名</label>
+        <input
+          id={`${formId}-companyName`}
+          type="text"
+          {...register("companyName")}
+        />
         {errors.companyName && <p role="alert">{errors.companyName.message}</p>}
       </div>
 
       <div>
-        <label htmlFor="employmentType">雇用形態</label>
-        <select id="employmentType" {...register("employmentType")}>
+        <label htmlFor={`${formId}-employmentType`}>雇用形態</label>
+        <select id={`${formId}-employmentType`} {...register("employmentType")}>
           <option value="">選択してください</option>
           <option value="full_time">正社員</option>
           <option value="contract">契約社員</option>
@@ -81,14 +89,20 @@ export function WorkExperienceForm({
       </div>
 
       <div>
-        <label htmlFor="startedOn">在籍開始年月日</label>
-        <input id="startedOn" type="date" {...register("startedOn")} />
+        <label htmlFor={`${formId}-startedOn`}>在籍開始年月日</label>
+        <input
+          id={`${formId}-startedOn`}
+          type="date"
+          {...register("startedOn")}
+        />
         {errors.startedOn && <p role="alert">{errors.startedOn.message}</p>}
       </div>
 
       <div>
-        <label htmlFor="endedOn">在籍終了年月日(在籍中は空欄)</label>
-        <input id="endedOn" type="date" {...register("endedOn")} />
+        <label htmlFor={`${formId}-endedOn`}>
+          在籍終了年月日(在籍中は空欄)
+        </label>
+        <input id={`${formId}-endedOn`} type="date" {...register("endedOn")} />
         {errors.endedOn && <p role="alert">{errors.endedOn.message}</p>}
       </div>
 

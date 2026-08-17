@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import {
@@ -40,6 +41,9 @@ export function EducationForm({
     resolver: zodResolver(educationSchema),
     defaultValues,
   });
+  // 一覧の複数行を同時に編集状態にする(=このフォームが複数同時にマウントされる)と
+  // 素のidだと衝突するため、コンポーネントインスタンスごとに一意なidを付与する
+  const formId = useId();
 
   const handleServerError = (error: unknown) => {
     if (error instanceof ApiValidationError) {
@@ -59,8 +63,12 @@ export function EducationForm({
   return (
     <form onSubmit={submit} noValidate>
       <div>
-        <label htmlFor="schoolName">学校名</label>
-        <input id="schoolName" type="text" {...register("schoolName")} />
+        <label htmlFor={`${formId}-schoolName`}>学校名</label>
+        <input
+          id={`${formId}-schoolName`}
+          type="text"
+          {...register("schoolName")}
+        />
         {errors.schoolName && <p role="alert">{errors.schoolName.message}</p>}
       </div>
 
