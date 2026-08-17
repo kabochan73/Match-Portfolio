@@ -42,9 +42,13 @@ export async function apiFetch<T>(
     await ensureCsrfCookie();
   }
 
+  // FormData(画像アップロードなど)はブラウザがboundary付きのContent-Typeを
+  // 自動設定するため、JSON.stringifyもContent-Type指定もせずそのまま渡す
+  const isFormData = options.body instanceof FormData;
+
   const headers = new Headers(options.headers);
   headers.set("Accept", "application/json");
-  if (options.body !== undefined) {
+  if (options.body !== undefined && !isFormData) {
     headers.set("Content-Type", "application/json");
   }
   const xsrfToken = getCookie("XSRF-TOKEN");
@@ -57,7 +61,12 @@ export async function apiFetch<T>(
     method,
     headers,
     credentials: "include",
-    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+    body:
+      options.body === undefined
+        ? undefined
+        : isFormData
+          ? (options.body as FormData)
+          : JSON.stringify(options.body),
   });
 
   if (response.status === 204) {
@@ -75,7 +84,8 @@ export async function apiFetch<T>(
 
   if (!response.ok) {
     throw new Error(
-      data?.message ?? `APIリクエストに失敗しました (status: ${response.status})`,
+      data?.message ??
+        `APIリクエストに失敗しました (status: ${response.status})`,
     );
   }
 

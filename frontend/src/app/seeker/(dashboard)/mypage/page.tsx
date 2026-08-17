@@ -9,6 +9,7 @@ import {
   updateProfileSchema,
   useUpdateProfile,
 } from "@/hooks/seeker/useUpdateProfile";
+import { AvatarSection } from "./_components/AvatarSection";
 import { CertificationSection } from "./_components/CertificationSection";
 import { EducationSection } from "./_components/EducationSection";
 import { WorkExperienceSection } from "./_components/WorkExperienceSection";
@@ -67,6 +68,9 @@ export default function Page() {
   return (
     <>
       <h1>マイページ(プロフィール編集)</h1>
+
+      <AvatarSection />
+
       <form onSubmit={onSubmit} noValidate>
         <div>
           <label htmlFor="name">氏名</label>
