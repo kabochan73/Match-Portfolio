@@ -2,6 +2,20 @@
 
 use App\Models\Company;
 
+it('returns the profile of the authenticated company', function () {
+    $company = Company::factory()->create(['name' => '表示株式会社']);
+
+    $response = $this->actingAs($company, 'company')->getJson('/api/company/profile');
+
+    $response->assertOk()->assertJsonFragment(['name' => '表示株式会社']);
+});
+
+it('rejects unauthenticated requests to view the profile', function () {
+    $response = $this->getJson('/api/company/profile');
+
+    $response->assertUnauthorized();
+});
+
 it('updates the profile of the authenticated company', function () {
     $company = Company::factory()->create([
         'name' => '旧株式会社',

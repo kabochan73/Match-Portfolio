@@ -115,6 +115,9 @@ Route::prefix('company')->group(function () {
         ->middleware('guest:company');
 
     // 企業の基本プロフィール(会社名・会社概要・電話番号・所在地・設立年・メンバー数・WebサイトURL)
+    Route::get('/profile', [CompanyProfileController::class, 'show'])
+        ->middleware('auth:company');
+
     Route::put('/profile', [CompanyProfileController::class, 'update'])
         ->middleware('auth:company');
 
