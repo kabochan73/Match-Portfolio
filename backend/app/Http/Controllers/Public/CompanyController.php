@@ -13,6 +13,10 @@ class CompanyController extends Controller
 {
     public function show(int $company): JsonResponse
     {
-        return response()->json(Company::findOrFail($company));
+        $model = Company::query()
+            ->select(Company::publicColumns())
+            ->findOrFail($company);
+
+        return response()->json($model);
     }
 }

@@ -15,3 +15,11 @@ it('returns 404 for a nonexistent company', function () {
 
     $response->assertNotFound();
 });
+
+it('does not expose the company email', function () {
+    $company = Company::factory()->create(['email' => 'secret@example.com']);
+
+    $response = $this->getJson("/api/companies/{$company->id}");
+
+    $response->assertOk()->assertJsonMissing(['email' => 'secret@example.com']);
+});

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Company;
 use App\Models\JobPosting;
 
 it('lists only published job postings', function () {
@@ -73,4 +74,14 @@ it('returns 404 for a nonexistent job posting', function () {
     $response = $this->getJson('/api/job-postings/999999');
 
     $response->assertNotFound();
+});
+
+it('does not expose the company email on the detail or listing', function () {
+    $jobPosting = JobPosting::factory()
+        ->for(Company::factory()->create(['email' => 'secret@example.com']))
+        ->create(['status' => 'published', 'published_at' => now()]);
+
+    $this->getJson('/api/job-postings')->assertOk()->assertJsonMissing(['email' => 'secret@example.com']);
+    $this->getJson("/api/job-postings/{$jobPosting->id}")->assertOk()
+        ->assertJsonMissing(['email' => 'secret@example.com']);
 });

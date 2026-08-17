@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Enums\JobPostingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Public\SearchJobPostingsRequest;
+use App\Models\Company;
 use App\Models\JobPosting;
 use Illuminate\Http\JsonResponse;
 
@@ -47,7 +48,8 @@ class JobPostingController extends Controller
     {
         $model = JobPosting::query()
             ->where('status', JobPostingStatus::Published)
-            ->with('company')
+            // emailを含む全カラムをそのまま公開しないよう、Company::publicColumns()に絞る
+            ->with(['company' => fn ($query) => $query->select(Company::publicColumns())])
             ->withCount('likes')
             ->findOrFail($jobPosting);
 

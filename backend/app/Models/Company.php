@@ -83,6 +83,22 @@ class Company extends Authenticatable
     }
 
     /**
+     * 未認証の公開エンドポイント(Public\CompanyController等)で選択するカラム一覧。
+     * emailはログイン用の個人情報であり、他のHidden項目と違って企業自身の認証済み画面では
+     * 必要なためモデル全体では隠さず、公開向けのselectでのみ明示的に除外する
+     *
+     * @return list<string>
+     */
+    public static function publicColumns(): array
+    {
+        return [
+            'id', 'name', 'description', 'phone_number',
+            'prefecture', 'address_line', 'founded_year', 'member_count_range', 'website_url',
+            'avatar_path', 'cover_image_path',
+        ];
+    }
+
+    /**
      * @return HasMany<JobPosting, $this>
      */
     public function jobPostings(): HasMany
