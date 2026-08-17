@@ -13,6 +13,8 @@ use App\Http\Controllers\Company\BillingController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use App\Http\Controllers\Company\JobPostingController;
 use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
+use App\Http\Controllers\Public\CompanyController as PublicCompanyController;
+use App\Http\Controllers\Public\JobPostingController as PublicJobPostingController;
 use App\Http\Controllers\Seeker\AvatarController;
 use App\Http\Controllers\Seeker\CertificationController;
 use App\Http\Controllers\Seeker\EducationController;
@@ -95,6 +97,12 @@ Route::delete('/profile/avatar', [AvatarController::class, 'destroy'])
 // StripeからのWebhook。認証済みユーザーからのリクエストではないためauth系ミドルウェアは付けず、
 // 署名検証(StripeWebhookController内でSTRIPE_WEBHOOK_SECRETが設定されていれば自動的に有効になる)で保護する
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
+
+// 未認証の求職者・訪問者向けの公開エンドポイント(求人検索・詳細、企業プロフィール閲覧)。
+// 認証系ミドルウェアは一切付けない
+Route::get('/job-postings', [PublicJobPostingController::class, 'index']);
+Route::get('/job-postings/{jobPosting}', [PublicJobPostingController::class, 'show']);
+Route::get('/companies/{company}', [PublicCompanyController::class, 'show']);
 
 // 企業(companies)向けの認証エンドポイント。usersとは別ガード(company)で完全に分離する
 Route::prefix('company')->group(function () {
