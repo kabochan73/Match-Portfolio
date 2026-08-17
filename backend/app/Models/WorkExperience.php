@@ -23,9 +23,11 @@ class WorkExperience extends Model
     protected function casts(): array
     {
         return [
-            'started_on' => 'date',
+            // Y-m-dで固定しないとJSONシリアライズ時に時刻付きのISO8601文字列になり、
+            // <input type="date">がその値を受け付けられない(Userモデルのbirth_date参照)
+            'started_on' => 'date:Y-m-d',
             // ended_onがnullの場合は「在籍中」を表す
-            'ended_on' => 'date',
+            'ended_on' => 'date:Y-m-d',
             'employment_type' => EmploymentType::class,
         ];
     }
