@@ -39,6 +39,9 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest:web');
 
 // 求職者の基本プロフィール(氏名・自己紹介コメント・ポートフォリオURL・生年月日)
+Route::get('/profile', [ProfileController::class, 'show'])
+    ->middleware('auth:web');
+
 Route::put('/profile', [ProfileController::class, 'update'])
     ->middleware('auth:web');
 

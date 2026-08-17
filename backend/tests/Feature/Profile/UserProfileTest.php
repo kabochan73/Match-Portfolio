@@ -2,6 +2,20 @@
 
 use App\Models\User;
 
+it('returns the profile of the authenticated user', function () {
+    $user = User::factory()->create(['name' => '表示 太郎']);
+
+    $response = $this->actingAs($user, 'web')->getJson('/api/profile');
+
+    $response->assertOk()->assertJsonFragment(['name' => '表示 太郎']);
+});
+
+it('rejects unauthenticated requests to view the profile', function () {
+    $response = $this->getJson('/api/profile');
+
+    $response->assertUnauthorized();
+});
+
 it('updates the profile of the authenticated user', function () {
     $user = User::factory()->create([
         'name' => '旧 太郎',
