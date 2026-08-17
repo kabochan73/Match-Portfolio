@@ -1,7 +1,5 @@
-import {
-  type CompanyProfile,
-  memberCountRangeLabels,
-} from "@/hooks/company/useProfile";
+import type { CompanyProfile } from "@/hooks/company/useProfile";
+import { memberCountRangeLabels } from "@/lib/memberCountRanges";
 
 // 基本プロフィール(会社名・会社概要・電話番号・所在地・設立年・メンバー数・
 // WebサイトURL)の表示専用コンポーネント

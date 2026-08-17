@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { apiFetch } from "@/lib/api/client";
-import { PREFECTURES, type Prefecture } from "@/hooks/company/useProfile";
+import { PREFECTURES, type Prefecture } from "@/lib/prefectures";
 
 // バックエンドのwork_experiences/job_postings共通のemployment_type区分。
 // seeker側のuseWorkExperiences.tsと同じ定義だが、actorをまたいだimportはしない方針のため
