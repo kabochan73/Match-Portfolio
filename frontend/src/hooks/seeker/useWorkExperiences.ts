@@ -7,6 +7,13 @@ import { apiFetch } from "@/lib/api/client";
 // バックエンドのwork_experiences.employment_typeのCHECK制約と対応する区分
 export type EmploymentType = "full_time" | "part_time" | "contract";
 
+// 編集フォームの<select>と表示専用コンポーネントの両方で使う日本語ラベル
+export const employmentTypeLabels: Record<EmploymentType, string> = {
+  full_time: "正社員",
+  contract: "契約社員",
+  part_time: "アルバイト",
+};
+
 // バックエンドのWorkExperienceモデルのJSON表現
 export type WorkExperience = {
   id: number;

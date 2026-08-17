@@ -2,20 +2,14 @@
 
 import { useState } from "react";
 import {
-  type EmploymentType,
   type WorkExperience,
+  employmentTypeLabels,
   useCreateWorkExperience,
   useDeleteWorkExperience,
   useUpdateWorkExperience,
   useWorkExperiences,
 } from "@/hooks/seeker/useWorkExperiences";
 import { WorkExperienceForm } from "./WorkExperienceForm";
-
-const employmentTypeLabels: Record<EmploymentType, string> = {
-  full_time: "正社員",
-  contract: "契約社員",
-  part_time: "アルバイト",
-};
 
 // 一覧の1件分。表示中/編集中の切り替えをこのコンポーネント単位のローカルstateで持つ
 function WorkExperienceItem({
