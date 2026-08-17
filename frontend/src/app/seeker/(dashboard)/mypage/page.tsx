@@ -9,6 +9,7 @@ import {
   updateProfileSchema,
   useUpdateProfile,
 } from "@/hooks/seeker/useUpdateProfile";
+import { CertificationSection } from "./_components/CertificationSection";
 import { EducationSection } from "./_components/EducationSection";
 import { WorkExperienceSection } from "./_components/WorkExperienceSection";
 
@@ -20,7 +21,6 @@ const serverFieldMap: Record<string, keyof UpdateProfileValues> = {
   birth_date: "birthDate",
 };
 
-// 資格は別ルートを作らずこのページ内の_components/に埋め込む予定(未実装)
 export default function Page() {
   const { data: profile, isLoading, isError } = useProfile();
   const {
@@ -113,6 +113,7 @@ export default function Page() {
 
       <WorkExperienceSection />
       <EducationSection />
+      <CertificationSection />
     </>
   );
 }
