@@ -9,6 +9,7 @@ import {
   updateProfileSchema,
   useUpdateProfile,
 } from "@/hooks/seeker/useUpdateProfile";
+import { WorkExperienceSection } from "./_components/WorkExperienceSection";
 
 // バックエンドのフィールド名(snake_case) → フォームのフィールド名(camelCase)
 const serverFieldMap: Record<string, keyof UpdateProfileValues> = {
@@ -18,7 +19,7 @@ const serverFieldMap: Record<string, keyof UpdateProfileValues> = {
   birth_date: "birthDate",
 };
 
-// 職歴・学歴・資格などのサブリソースは別ルートを作らずこのページ内の_components/に埋め込む予定(未実装)
+// 学歴・資格などの残りのサブリソースは別ルートを作らずこのページ内の_components/に埋め込む予定(未実装)
 export default function Page() {
   const { data: profile, isLoading, isError } = useProfile();
   const {
@@ -108,6 +109,8 @@ export default function Page() {
           保存する
         </button>
       </form>
+
+      <WorkExperienceSection />
     </>
   );
 }
