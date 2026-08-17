@@ -7,7 +7,7 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordValues,
   useForgotPassword,
-} from "@/hooks/seeker/useForgotPassword";
+} from "@/hooks/seeker/auth/useForgotPassword";
 
 export default function Page() {
   const {

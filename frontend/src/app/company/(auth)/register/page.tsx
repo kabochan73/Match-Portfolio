@@ -7,7 +7,7 @@ import {
   registerSchema,
   type RegisterValues,
   useRegister,
-} from "@/hooks/company/useRegister";
+} from "@/hooks/company/auth/useRegister";
 
 // バックエンドのフィールド名(snake_case) → フォームのフィールド名(camelCase)
 const serverFieldMap: Record<string, keyof RegisterValues> = {

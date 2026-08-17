@@ -7,7 +7,7 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordValues,
   useForgotPassword,
-} from "@/hooks/company/useForgotPassword";
+} from "@/hooks/company/auth/useForgotPassword";
 
 export default function Page() {
   const {

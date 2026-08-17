@@ -9,7 +9,7 @@ import {
   resetPasswordSchema,
   type ResetPasswordValues,
   useResetPassword,
-} from "@/hooks/company/useResetPassword";
+} from "@/hooks/company/auth/useResetPassword";
 
 export default function Page() {
   // useSearchParams()はSuspense境界を要求するため、本体をSuspenseで包んで切り出す
@@ -75,9 +75,7 @@ function ResetPasswordForm() {
         </div>
 
         <div>
-          <label htmlFor="passwordConfirmation">
-            新しいパスワード(確認用)
-          </label>
+          <label htmlFor="passwordConfirmation">新しいパスワード(確認用)</label>
           <input
             id="passwordConfirmation"
             type="password"

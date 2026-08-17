@@ -3,7 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
-import { loginSchema, type LoginValues, useLogin } from "@/hooks/seeker/useLogin";
+import {
+  loginSchema,
+  type LoginValues,
+  useLogin,
+} from "@/hooks/seeker/auth/useLogin";
 
 export default function Page() {
   const {
@@ -53,7 +57,10 @@ export default function Page() {
             </p>
           )}
 
-        <button type="submit" disabled={isSubmitting || loginMutation.isPending}>
+        <button
+          type="submit"
+          disabled={isSubmitting || loginMutation.isPending}
+        >
           ログイン
         </button>
       </form>
