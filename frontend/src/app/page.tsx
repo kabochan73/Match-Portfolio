@@ -3,9 +3,11 @@ import Link from "next/link";
 import {
   Building2,
   ChevronRight,
+  ClipboardCheck,
   FileHeart,
   Handshake,
   Mail,
+  ThumbsUp,
   User,
   UserPlus,
 } from "lucide-react";
@@ -32,7 +34,7 @@ export default function Home() {
             <p className="mt-4 text-lg font-bold text-zinc-800">
               エンジニアと企業のミスマッチを防ぐ、
               <br />
-              新しい求人マッチングサービス
+              シンプルな求人マッチングサービス
             </p>
             <p className="mt-4 text-sm leading-relaxed text-zinc-700">
               求職者はプロフィールを細かく登録し、企業に応募！
@@ -46,6 +48,56 @@ export default function Home() {
               求人を探す
               <ChevronRight size={24} />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full bg-zinc-50 py-16">
+        <div className="mx-auto w-full max-w-4xl px-4 text-center">
+          <h2 className="text-2xl font-bold text-zinc-900">Tech Matchとは</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-zinc-600">
+            スキルや希望条件をしっかり登録し、お互いに気になった相手にだけ
+            「いいね」を送り合う、双方向のマッチングサービスです。
+            <br />
+            条件のすれ違いによるミスマッチを防ぎ、本当に合う相手とだけ出会えます。
+          </p>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            <div className="rounded-2xl bg-white p-6 shadow-sm">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-light">
+                <ClipboardCheck className="text-brand" size={24} />
+              </div>
+              <p className="mt-4 font-semibold text-zinc-900">
+                詳細なプロフィール
+              </p>
+              <p className="mt-2 text-sm text-zinc-600">
+                スキルや経歴、希望条件を細かく登録するから、条件のすれ違いが起きにくい。
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-white p-6 shadow-sm">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-light">
+                <ThumbsUp className="text-brand" size={24} />
+              </div>
+              <p className="mt-4 font-semibold text-zinc-900">
+                気になったらいいね
+              </p>
+              <p className="mt-2 text-sm text-zinc-600">
+                求職者は気になる求人に、企業は気になる人材にいいねを送信。
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-white p-6 shadow-sm">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-light">
+                <Handshake className="text-brand" size={24} />
+              </div>
+              <p className="mt-4 font-semibold text-zinc-900">
+                双方向のいいねでマッチ
+              </p>
+              <p className="mt-2 text-sm text-zinc-600">
+                お互いの意思が一致したときだけマッチし、やり取りが始まる。
+              </p>
+            </div>
           </div>
         </div>
       </section>
