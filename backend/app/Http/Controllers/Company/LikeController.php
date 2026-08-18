@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Enums\LikeStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Like;
+use App\Notifications\LikeMatched;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -63,6 +64,8 @@ class LikeController extends Controller
             'status' => LikeStatus::Matched->value,
             'company_responded_at' => now(),
         ]);
+
+        $model->user->notify(new LikeMatched($model));
 
         return response()->json($model);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Concerns;
 use App\Enums\LikeStatus;
 use App\Models\Like;
 use App\Models\Message;
+use App\Notifications\NewMessage;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
 /**
@@ -50,6 +51,9 @@ trait ManagesMessageThreads
         $thread->update([
             $senderType === 'user' ? 'company_hidden_at' : 'user_hidden_at' => null,
         ]);
+
+        $recipient = $senderType === 'user' ? $thread->jobPosting->company : $thread->user;
+        $recipient->notify(new NewMessage($message));
 
         return $message;
     }

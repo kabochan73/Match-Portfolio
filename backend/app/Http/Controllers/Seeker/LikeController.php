@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seeker;
 use App\Enums\LikeStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Like\LikeRequest;
+use App\Notifications\NewApplication;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,8 @@ class LikeController extends Controller
             // response_deadlineはapplied_atの7日後(DB_DESIGN.mdの方針)
             'response_deadline' => $appliedAt->copy()->addDays(7),
         ]);
+
+        $like->jobPosting->company->notify(new NewApplication($like));
 
         return response()->json($like, 201);
     }

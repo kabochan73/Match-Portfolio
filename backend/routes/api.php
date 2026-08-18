@@ -15,6 +15,7 @@ use App\Http\Controllers\Company\JobPostingController;
 use App\Http\Controllers\Company\LikeController as CompanyLikeController;
 use App\Http\Controllers\Company\MessageController as CompanyMessageController;
 use App\Http\Controllers\Company\MessageThreadController as CompanyMessageThreadController;
+use App\Http\Controllers\Company\NotificationController as CompanyNotificationController;
 use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
 use App\Http\Controllers\Public\CompanyController as PublicCompanyController;
 use App\Http\Controllers\Public\JobPostingController as PublicJobPostingController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Seeker\EducationController;
 use App\Http\Controllers\Seeker\LikeController;
 use App\Http\Controllers\Seeker\MessageController;
 use App\Http\Controllers\Seeker\MessageThreadController;
+use App\Http\Controllers\Seeker\NotificationController;
 use App\Http\Controllers\Seeker\ProfileController;
 use App\Http\Controllers\Seeker\WorkExperienceController;
 use App\Http\Controllers\StripeWebhookController;
@@ -119,6 +121,13 @@ Route::get('/message-threads/{like}/messages', [MessageController::class, 'index
     ->middleware('auth:web');
 
 Route::post('/message-threads/{like}/messages', [MessageController::class, 'store'])
+    ->middleware('auth:web');
+
+// 通知一覧(マッチ成立・新着メッセージ)・既読化
+Route::get('/notifications', [NotificationController::class, 'index'])
+    ->middleware('auth:web');
+
+Route::patch('/notifications/{notification}/read', [NotificationController::class, 'read'])
     ->middleware('auth:web');
 
 // StripeからのWebhook。認証済みユーザーからのリクエストではないためauth系ミドルウェアは付けず、
@@ -219,6 +228,13 @@ Route::prefix('company')->group(function () {
         ->middleware('auth:company');
 
     Route::post('/message-threads/{like}/messages', [CompanyMessageController::class, 'store'])
+        ->middleware('auth:company');
+
+    // 通知一覧(新しい応募・新着メッセージ)・既読化
+    Route::get('/notifications', [CompanyNotificationController::class, 'index'])
+        ->middleware('auth:company');
+
+    Route::patch('/notifications/{notification}/read', [CompanyNotificationController::class, 'read'])
         ->middleware('auth:company');
 
     // 課金ステータス(未契約/課金中/未払い)確認
