@@ -47,61 +47,150 @@ export default function Page() {
 
   return (
     <>
-      <h1>求職者会員登録</h1>
-      <form onSubmit={onSubmit} noValidate>
+      <h1 className="mt-6 text-center text-xl font-bold text-zinc-900">
+        求職者会員登録
+      </h1>
+      <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
         <div>
-          <label htmlFor="name">氏名</label>
-          <input id="name" type="text" {...register("name")} />
-          {errors.name && <p role="alert">{errors.name.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="email">メールアドレス</label>
-          <input id="email" type="email" {...register("email")} />
-          {errors.email && <p role="alert">{errors.email.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="password">パスワード</label>
-          <input id="password" type="password" {...register("password")} />
-          {errors.password && <p role="alert">{errors.password.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="passwordConfirmation">パスワード(確認用)</label>
+          <label htmlFor="name" className="text-sm font-medium text-zinc-700">
+            氏名
+          </label>
           <input
-            id="passwordConfirmation"
-            type="password"
-            {...register("passwordConfirmation")}
+            id="name"
+            type="text"
+            {...register("name")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
           />
-          {errors.passwordConfirmation && (
-            <p role="alert">{errors.passwordConfirmation.message}</p>
+          {errors.name && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.name.message}
+            </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="birthDate">生年月日</label>
-          <input id="birthDate" type="date" {...register("birthDate")} />
-          {errors.birthDate && <p role="alert">{errors.birthDate.message}</p>}
+          <label
+            htmlFor="email"
+            className="text-sm font-medium text-zinc-700"
+          >
+            メールアドレス
+          </label>
+          <input
+            id="email"
+            type="email"
+            {...register("email")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          />
+          {errors.email && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="comment">自己紹介コメント(任意)</label>
-          <textarea id="comment" {...register("comment")} />
-          {errors.comment && <p role="alert">{errors.comment.message}</p>}
+          <label
+            htmlFor="password"
+            className="text-sm font-medium text-zinc-700"
+          >
+            パスワード
+          </label>
+          <input
+            id="password"
+            type="password"
+            {...register("password")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          />
+          {errors.password && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="portfolioUrl">ポートフォリオURL(任意)</label>
-          <input id="portfolioUrl" type="text" {...register("portfolioUrl")} />
+          <label
+            htmlFor="passwordConfirmation"
+            className="text-sm font-medium text-zinc-700"
+          >
+            パスワード(確認用)
+          </label>
+          <input
+            id="passwordConfirmation"
+            type="password"
+            {...register("passwordConfirmation")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          />
+          {errors.passwordConfirmation && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.passwordConfirmation.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label
+            htmlFor="birthDate"
+            className="text-sm font-medium text-zinc-700"
+          >
+            生年月日
+          </label>
+          <input
+            id="birthDate"
+            type="date"
+            {...register("birthDate")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          />
+          {errors.birthDate && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.birthDate.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label
+            htmlFor="comment"
+            className="text-sm font-medium text-zinc-700"
+          >
+            自己紹介コメント(任意)
+          </label>
+          <textarea
+            id="comment"
+            {...register("comment")}
+            rows={3}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          />
+          {errors.comment && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.comment.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label
+            htmlFor="portfolioUrl"
+            className="text-sm font-medium text-zinc-700"
+          >
+            ポートフォリオURL(任意)
+          </label>
+          <input
+            id="portfolioUrl"
+            type="text"
+            {...register("portfolioUrl")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          />
           {errors.portfolioUrl && (
-            <p role="alert">{errors.portfolioUrl.message}</p>
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.portfolioUrl.message}
+            </p>
           )}
         </div>
 
         {registerMutation.isError &&
           !(registerMutation.error instanceof ApiValidationError) && (
-            <p role="alert">
+            <p role="alert" className="text-sm text-red-600">
               登録に失敗しました。時間をおいて再度お試しください。
             </p>
           )}
@@ -109,6 +198,7 @@ export default function Page() {
         <button
           type="submit"
           disabled={isSubmitting || registerMutation.isPending}
+          className="w-full rounded-full bg-brand px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           登録する
         </button>

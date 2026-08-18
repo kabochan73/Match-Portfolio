@@ -40,8 +40,10 @@ function ResetPasswordForm() {
   if (!token || !email) {
     return (
       <>
-        <h1>求職者パスワード再設定</h1>
-        <p>
+        <h1 className="text-center text-xl font-bold text-zinc-900">
+          求職者パスワード再設定
+        </h1>
+        <p className="mt-6 text-sm text-zinc-600">
           このリンクは無効です。パスワード再設定はメール内のリンクからやり直してください。
         </p>
       </>
@@ -66,29 +68,53 @@ function ResetPasswordForm() {
 
   return (
     <>
-      <h1>求職者パスワード再設定</h1>
-      <form onSubmit={onSubmit} noValidate>
+      <h1 className="text-center text-xl font-bold text-zinc-900">
+        求職者パスワード再設定
+      </h1>
+      <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
         <div>
-          <label htmlFor="password">新しいパスワード</label>
-          <input id="password" type="password" {...register("password")} />
-          {errors.password && <p role="alert">{errors.password.message}</p>}
+          <label
+            htmlFor="password"
+            className="text-sm font-medium text-zinc-700"
+          >
+            新しいパスワード
+          </label>
+          <input
+            id="password"
+            type="password"
+            {...register("password")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          />
+          {errors.password && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="passwordConfirmation">新しいパスワード(確認用)</label>
+          <label
+            htmlFor="passwordConfirmation"
+            className="text-sm font-medium text-zinc-700"
+          >
+            新しいパスワード(確認用)
+          </label>
           <input
             id="passwordConfirmation"
             type="password"
             {...register("passwordConfirmation")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
           />
           {errors.passwordConfirmation && (
-            <p role="alert">{errors.passwordConfirmation.message}</p>
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.passwordConfirmation.message}
+            </p>
           )}
         </div>
 
         {resetPasswordMutation.isError &&
           !(resetPasswordMutation.error instanceof ApiValidationError) && (
-            <p role="alert">
+            <p role="alert" className="text-sm text-red-600">
               再設定に失敗しました。時間をおいて再度お試しください。
             </p>
           )}
@@ -96,6 +122,7 @@ function ResetPasswordForm() {
         <button
           type="submit"
           disabled={isSubmitting || resetPasswordMutation.isPending}
+          className="w-full rounded-full bg-brand px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           パスワードを再設定する
         </button>
