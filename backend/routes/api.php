@@ -18,6 +18,7 @@ use App\Http\Controllers\Public\JobPostingController as PublicJobPostingControll
 use App\Http\Controllers\Seeker\AvatarController;
 use App\Http\Controllers\Seeker\CertificationController;
 use App\Http\Controllers\Seeker\EducationController;
+use App\Http\Controllers\Seeker\LikeController;
 use App\Http\Controllers\Seeker\ProfileController;
 use App\Http\Controllers\Seeker\WorkExperienceController;
 use App\Http\Controllers\StripeWebhookController;
@@ -92,6 +93,13 @@ Route::post('/profile/avatar', [AvatarController::class, 'update'])
     ->middleware('auth:web');
 
 Route::delete('/profile/avatar', [AvatarController::class, 'destroy'])
+    ->middleware('auth:web');
+
+// 求職者の応募状況一覧・求人への「いいね」(=応募)
+Route::get('/likes', [LikeController::class, 'index'])
+    ->middleware('auth:web');
+
+Route::post('/likes', [LikeController::class, 'store'])
     ->middleware('auth:web');
 
 // StripeからのWebhook。認証済みユーザーからのリクエストではないためauth系ミドルウェアは付けず、
