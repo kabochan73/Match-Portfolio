@@ -28,12 +28,18 @@ class LikeController extends Controller
     }
 
     /**
-     * 応募者のプロフィール詳細(職歴・学歴・資格・志望動機を含む)。自社の求人への応募のみ閲覧可能
+     * 応募者のプロフィール詳細(職歴・学歴・資格・志望動機を含む)。自社の求人への応募のみ閲覧可能。
+     * userはログインID(email)を含まない列に絞る(企業向けに公開してよいプロフィール項目のみ)
      */
     public function show(Request $request, int $like): JsonResponse
     {
         $model = $this->findOwn($request, $like)
-            ->load(['user.workExperiences', 'user.educations', 'user.certifications']);
+            ->load([
+                'user' => fn ($query) => $query->select('id', 'name', 'comment', 'portfolio_url', 'birth_date', 'avatar_path'),
+                'user.workExperiences',
+                'user.educations',
+                'user.certifications',
+            ]);
 
         return response()->json($model);
     }

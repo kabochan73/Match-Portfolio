@@ -42,7 +42,8 @@ it('shows an applicant\'s profile including work experience for the authenticate
 
     $response->assertOk();
     expect($response->json('motivation'))->toBe('志望動機です')
-        ->and($response->json('user.work_experiences.0.company_name'))->toBe('前職株式会社');
+        ->and($response->json('user.work_experiences.0.company_name'))->toBe('前職株式会社')
+        ->and($response->json('user'))->not->toHaveKey('email');
 });
 
 it('prevents viewing an applicant of another company\'s job posting', function () {
