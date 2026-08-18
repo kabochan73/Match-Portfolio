@@ -3,11 +3,9 @@ import Link from "next/link";
 import {
   Building2,
   ChevronRight,
-  ClipboardCheck,
   FileHeart,
   Handshake,
   Mail,
-  ThumbsUp,
   User,
   UserPlus,
 } from "lucide-react";
@@ -52,110 +50,85 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full bg-zinc-50 py-16">
-        <div className="mx-auto w-full max-w-4xl px-4 text-center">
-          <h2 className="text-2xl font-bold text-zinc-900">Tech Matchとは</h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-zinc-600">
-            スキルや希望条件をしっかり登録し、お互いに気になった相手にだけ
-            「いいね」を送り合う、双方向のマッチングサービスです。
-            <br />
-            条件のすれ違いによるミスマッチを防ぎ、本当に合う相手とだけ出会えます。
-          </p>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-3">
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-light">
-                <ClipboardCheck className="text-brand" size={24} />
-              </div>
-              <p className="mt-4 font-semibold text-zinc-900">
-                詳細なプロフィール
-              </p>
-              <p className="mt-2 text-sm text-zinc-600">
-                スキルや経歴、希望条件を細かく登録するから、条件のすれ違いが起きにくい。
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-light">
-                <ThumbsUp className="text-brand" size={24} />
-              </div>
-              <p className="mt-4 font-semibold text-zinc-900">
-                気になったらいいね
-              </p>
-              <p className="mt-2 text-sm text-zinc-600">
-                求職者は気になる求人に、企業は気になる人材にいいねを送信。
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-light">
-                <Handshake className="text-brand" size={24} />
-              </div>
-              <p className="mt-4 font-semibold text-zinc-900">
-                双方向のいいねでマッチ
-              </p>
-              <p className="mt-2 text-sm text-zinc-600">
-                お互いの意思が一致したときだけマッチし、やり取りが始まる。
-              </p>
-            </div>
+      <section className="w-full py-16">
+        <div className="mx-auto w-full max-w-5xl px-4 text-center">
+          <h2 className="text-4xl font-bold text-zinc-900">Tech Matchとは</h2>
+          <div className="text-left font-bold text-zinc-800">
+            <p className="mt-4 text-lg">
+              いいねを一次面接とすることで、企業と求職者のミスマッチを防ぐことを目的とした求人マッチングサービスです。
+              <br />
+              お互い、採用の可能性が低い相手に時間を割く必要がないので、効率的に採用活動・転職活動を行うことができます！
+            </p>
+            <p className="mt-4 text-xl">
+              さらに、いいね出来る回数を毎月１０回に制限することで、求職者が本当に興味のある相手にだけいいねを送るようになり、本気度の高いマッチングが可能になります！
+            </p>
+            <p className="mt-6 text-sm">
+              ※ いいねは毎月復活します。企業側のいいねは無制限です。
+              <br />
+              ※ 毎月１つだけの特別なスーパーいいねもあります。
+              <br />
+              ※ 企業側からのスカウトは一切ありません。いいねの購入もありません。
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid w-full mt-12 max-w-4xl px-4 gap-6 sm:grid-cols-2">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 text-center shadow-lg">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
-            <User className="text-brand" size={28} />
+      <section className="w-full bg-sky-50 py-8">
+        <div className="mx-auto grid w-full max-w-4xl px-4 gap-6 sm:grid-cols-2">
+          <div className="rounded-2xl border border-zinc-200 bg-white p-6 text-center shadow-lg">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
+              <User className="text-brand" size={28} />
+            </div>
+            <h2 className="mt-4 text-lg font-bold text-zinc-900">
+              求職者の方へ
+            </h2>
+            <p className="mt-2 text-sm text-zinc-600">
+              プロフィールを細かく登録し、
+              <br />
+              気になる企業に応募しましょう。
+            </p>
+            <div className="mt-4 flex justify-center gap-2">
+              <Link
+                href="/seeker/register"
+                className="inline-flex items-center gap-1 rounded-full border border-sky-600 px-6 py-2 text-sm font-semibold text-brand transition-colors hover:bg-sky-50"
+              >
+                求職者登録(無料)
+                <ChevronRight size={24} />
+              </Link>
+              <Link
+                href="/seeker/login"
+                className="rounded-full border border-zinc-600 px-6 py-2 text-sm text-zinc-800 font-bold transition-colors hover:bg-zinc-100"
+              >
+                ログイン
+              </Link>
+            </div>
           </div>
-          <h2 className="mt-4 text-lg font-bold text-zinc-900">
-            求職者の方へ
-          </h2>
-          <p className="mt-2 text-sm text-zinc-600">
-            プロフィールを細かく登録し、
-            <br />
-            気になる企業に応募しましょう。
-          </p>
-          <div className="mt-4 flex justify-center gap-2">
-            <Link
-              href="/seeker/register"
-              className="inline-flex items-center gap-1 rounded-full border border-sky-600 px-6 py-2 text-sm font-semibold text-brand transition-colors hover:bg-sky-50"
-            >
-              求職者登録(無料)
-              <ChevronRight size={24} />
-            </Link>
-            <Link
-              href="/seeker/login"
-              className="rounded-full border border-zinc-600 px-6 py-2 text-sm text-zinc-800 font-bold transition-colors hover:bg-zinc-100"
-            >
-              ログイン
-            </Link>
-          </div>
-        </div>
 
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 text-center shadow-lg">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50">
-            <Building2 className="text-emerald-600" size={28} />
-          </div>
-          <h2 className="mt-4 text-lg font-bold text-zinc-900">企業の方へ</h2>
-          <p className="mt-2 text-sm text-zinc-600">
-            求人を掲載して、
-            <br/>
-            自社に合った人材とマッチしましょう。
-          </p>
-          <div className="mt-4 flex justify-center gap-2">
-            <Link
-              href="/company/register"
-              className="inline-flex items-center gap-1 rounded-full border border-emerald-600 px-6 py-2 text-sm font-semibold text-emerald-600 transition-colors hover:bg-emerald-50"
-            >
-              企業登録はこちら
-              <ChevronRight size={24} />
-            </Link>
-            <Link
-              href="/company/login"
-              className="rounded-full border border-zinc-600 px-6 py-2 text-sm font-bold text-zinc-800 transition-colors hover:bg-zinc-100"
-            >
-              ログイン
-            </Link>
+          <div className="rounded-2xl border border-zinc-200 bg-white p-6 text-center shadow-lg">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50">
+              <Building2 className="text-emerald-600" size={28} />
+            </div>
+            <h2 className="mt-4 text-lg font-bold text-zinc-900">企業の方へ</h2>
+            <p className="mt-2 text-sm text-zinc-600">
+              求人を掲載して、
+              <br/>
+              自社に合った人材とマッチしましょう。
+            </p>
+            <div className="mt-4 flex justify-center gap-2">
+              <Link
+                href="/company/register"
+                className="inline-flex items-center gap-1 rounded-full border border-emerald-600 px-6 py-2 text-sm font-semibold text-emerald-600 transition-colors hover:bg-emerald-50"
+              >
+                企業登録はこちら
+                <ChevronRight size={24} />
+              </Link>
+              <Link
+                href="/company/login"
+                className="rounded-full border border-zinc-600 px-6 py-2 text-sm font-bold text-zinc-800 transition-colors hover:bg-zinc-100"
+              >
+                ログイン
+              </Link>
+            </div>
           </div>
         </div>
       </section>
