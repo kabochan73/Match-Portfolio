@@ -12,6 +12,7 @@ use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\BillingController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use App\Http\Controllers\Company\JobPostingController;
+use App\Http\Controllers\Company\LikeController as CompanyLikeController;
 use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
 use App\Http\Controllers\Public\CompanyController as PublicCompanyController;
 use App\Http\Controllers\Public\JobPostingController as PublicJobPostingController;
@@ -175,6 +176,17 @@ Route::prefix('company')->group(function () {
         ->middleware('auth:company');
 
     Route::patch('/job-postings/{jobPosting}/close', [JobPostingController::class, 'close'])
+        ->middleware('auth:company');
+
+    // 自社の求人への応募者一覧・プロフィール詳細閲覧
+    Route::get('/job-postings/{jobPosting}/likes', [CompanyLikeController::class, 'index'])
+        ->middleware('auth:company');
+
+    Route::get('/likes/{like}', [CompanyLikeController::class, 'show'])
+        ->middleware('auth:company');
+
+    // 応募者への「気になる」。7日以内に反応しないと自動的にマッチ不成立になる(likes:expireバッチ)
+    Route::patch('/likes/{like}/match', [CompanyLikeController::class, 'match'])
         ->middleware('auth:company');
 
     // 課金ステータス(未契約/課金中/未払い)確認
