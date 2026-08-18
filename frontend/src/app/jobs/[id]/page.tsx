@@ -2,8 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AvatarView } from "@/components/company-profile/AvatarView";
 import { employmentTypeLabels, getJobPosting } from "@/lib/jobPostings";
+import { ApplySection } from "./_components/ApplySection";
 
-// SC。ISR対象(revalidate 2h + オンデマンド再検証は未実装)。いいねボタンのみ後でCCアイランドとして追加する
+// SC。ISR対象(revalidate 2h + オンデマンド再検証は未実装)。いいねボタンのみCCアイランド(ApplySection)として埋め込む
 export async function generateStaticParams() {
   return [];
 }
@@ -44,6 +45,9 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
         </Link>
       </p>
       {jobPosting.company.prefecture && <p>{jobPosting.company.prefecture}</p>}
+
+      <h2>応募する</h2>
+      <ApplySection jobPostingId={jobPosting.id} />
     </>
   );
 }
