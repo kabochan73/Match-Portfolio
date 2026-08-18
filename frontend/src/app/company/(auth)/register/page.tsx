@@ -44,41 +44,90 @@ export default function Page() {
 
   return (
     <>
-      <h1>企業会員登録</h1>
-      <form onSubmit={onSubmit} noValidate>
+      <h1 className="text-center text-xl font-bold text-zinc-900">
+        企業会員登録
+      </h1>
+      <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
         <div>
-          <label htmlFor="name">会社名</label>
-          <input id="name" type="text" {...register("name")} />
-          {errors.name && <p role="alert">{errors.name.message}</p>}
+          <label htmlFor="name" className="text-sm font-medium text-zinc-700">
+            会社名
+          </label>
+          <input
+            id="name"
+            type="text"
+            {...register("name")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+          {errors.name && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="email">メールアドレス</label>
-          <input id="email" type="email" {...register("email")} />
-          {errors.email && <p role="alert">{errors.email.message}</p>}
+          <label
+            htmlFor="email"
+            className="text-sm font-medium text-zinc-700"
+          >
+            メールアドレス
+          </label>
+          <input
+            id="email"
+            type="email"
+            {...register("email")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+          {errors.email && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="password">パスワード</label>
-          <input id="password" type="password" {...register("password")} />
-          {errors.password && <p role="alert">{errors.password.message}</p>}
+          <label
+            htmlFor="password"
+            className="text-sm font-medium text-zinc-700"
+          >
+            パスワード
+          </label>
+          <input
+            id="password"
+            type="password"
+            {...register("password")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+          {errors.password && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="passwordConfirmation">パスワード(確認用)</label>
+          <label
+            htmlFor="passwordConfirmation"
+            className="text-sm font-medium text-zinc-700"
+          >
+            パスワード(確認用)
+          </label>
           <input
             id="passwordConfirmation"
             type="password"
             {...register("passwordConfirmation")}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
           />
           {errors.passwordConfirmation && (
-            <p role="alert">{errors.passwordConfirmation.message}</p>
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {errors.passwordConfirmation.message}
+            </p>
           )}
         </div>
 
         {registerMutation.isError &&
           !(registerMutation.error instanceof ApiValidationError) && (
-            <p role="alert">
+            <p role="alert" className="text-sm text-red-600">
               登録に失敗しました。時間をおいて再度お試しください。
             </p>
           )}
@@ -86,6 +135,7 @@ export default function Page() {
         <button
           type="submit"
           disabled={isSubmitting || registerMutation.isPending}
+          className="w-full rounded-full bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           登録する
         </button>
