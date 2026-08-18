@@ -59,7 +59,7 @@ export default function Home() {
               <br />
               お互い、採用の可能性が低い相手に時間を割く必要がないので、効率的に採用活動・転職活動を行うことができます！
             </p>
-            <p className="mt-4 text-xl">
+            <p className="mt-4 text-lg">
               さらに、いいね出来る回数を毎月１０回に制限することで、求職者が本当に興味のある相手にだけいいねを送るようになり、本気度の高いマッチングが可能になります！
             </p>
             <p className="mt-6 text-sm">
@@ -116,7 +116,7 @@ export default function Home() {
             </p>
             <div className="mt-4 flex justify-center gap-2">
               <Link
-                href="/company/register"
+                href="/company/explanation"
                 className="inline-flex items-center gap-1 rounded-full border border-emerald-600 px-6 py-2 text-sm font-semibold text-emerald-600 transition-colors hover:bg-emerald-50"
               >
                 企業登録はこちら

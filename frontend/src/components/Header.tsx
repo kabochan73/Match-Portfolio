@@ -11,7 +11,7 @@ export function Header() {
           Tech Match
         </Link>
 
-        <nav className="flex items-center gap-6 text-sm  text-zinc-600 font-bold">
+        <nav className="flex items-center gap-6 text-sm  text-zinc-700 font-bold">
           <Link
             href="/jobs"
             className="hidden items-center gap-1 hover:text-zinc-900 sm:flex"
@@ -30,12 +30,6 @@ export function Header() {
           </Link>
           <Link href="/company/login" className="hover:text-zinc-900">
             企業ログイン
-          </Link>
-          <Link
-            href="/company/register"
-            className="rounded-md bg-emerald-500 px-4 py-2 text-white transition-colors hover:bg-emerald-600"
-          >
-            企業新規登録
           </Link>
         </nav>
       </div>
