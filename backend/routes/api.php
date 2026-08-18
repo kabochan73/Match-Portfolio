@@ -13,6 +13,8 @@ use App\Http\Controllers\Company\BillingController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use App\Http\Controllers\Company\JobPostingController;
 use App\Http\Controllers\Company\LikeController as CompanyLikeController;
+use App\Http\Controllers\Company\MessageController as CompanyMessageController;
+use App\Http\Controllers\Company\MessageThreadController as CompanyMessageThreadController;
 use App\Http\Controllers\Company\ProfileController as CompanyProfileController;
 use App\Http\Controllers\Public\CompanyController as PublicCompanyController;
 use App\Http\Controllers\Public\JobPostingController as PublicJobPostingController;
@@ -20,6 +22,8 @@ use App\Http\Controllers\Seeker\AvatarController;
 use App\Http\Controllers\Seeker\CertificationController;
 use App\Http\Controllers\Seeker\EducationController;
 use App\Http\Controllers\Seeker\LikeController;
+use App\Http\Controllers\Seeker\MessageController;
+use App\Http\Controllers\Seeker\MessageThreadController;
 use App\Http\Controllers\Seeker\ProfileController;
 use App\Http\Controllers\Seeker\WorkExperienceController;
 use App\Http\Controllers\StripeWebhookController;
@@ -101,6 +105,20 @@ Route::get('/likes', [LikeController::class, 'index'])
     ->middleware('auth:web');
 
 Route::post('/likes', [LikeController::class, 'store'])
+    ->middleware('auth:web');
+
+// 求職者のメッセージスレッド(マッチ成立済みのlikes)一覧・非表示
+Route::get('/message-threads', [MessageThreadController::class, 'index'])
+    ->middleware('auth:web');
+
+Route::patch('/message-threads/{like}/hide', [MessageThreadController::class, 'hide'])
+    ->middleware('auth:web');
+
+// スレッド内のメッセージ一覧・送信
+Route::get('/message-threads/{like}/messages', [MessageController::class, 'index'])
+    ->middleware('auth:web');
+
+Route::post('/message-threads/{like}/messages', [MessageController::class, 'store'])
     ->middleware('auth:web');
 
 // StripeからのWebhook。認証済みユーザーからのリクエストではないためauth系ミドルウェアは付けず、
@@ -187,6 +205,20 @@ Route::prefix('company')->group(function () {
 
     // 応募者への「気になる」。7日以内に反応しないと自動的にマッチ不成立になる(likes:expireバッチ)
     Route::patch('/likes/{like}/match', [CompanyLikeController::class, 'match'])
+        ->middleware('auth:company');
+
+    // 企業のメッセージスレッド(マッチ成立済みのlikes)一覧・非表示
+    Route::get('/message-threads', [CompanyMessageThreadController::class, 'index'])
+        ->middleware('auth:company');
+
+    Route::patch('/message-threads/{like}/hide', [CompanyMessageThreadController::class, 'hide'])
+        ->middleware('auth:company');
+
+    // スレッド内のメッセージ一覧・送信
+    Route::get('/message-threads/{like}/messages', [CompanyMessageController::class, 'index'])
+        ->middleware('auth:company');
+
+    Route::post('/message-threads/{like}/messages', [CompanyMessageController::class, 'store'])
         ->middleware('auth:company');
 
     // 課金ステータス(未契約/課金中/未払い)確認
