@@ -4,11 +4,11 @@
 // asyncにできずReact 19のuse()で受け取る
 import Link from "next/link";
 import { use } from "react";
-import { AvatarView } from "@/components/seeker-profile/AvatarView";
-import { BasicProfileView } from "@/components/seeker-profile/BasicProfileView";
-import { CertificationListView } from "@/components/seeker-profile/CertificationListView";
-import { EducationListView } from "@/components/seeker-profile/EducationListView";
-import { WorkExperienceListView } from "@/components/seeker-profile/WorkExperienceListView";
+import { AvatarView } from "@/components/seeker/avatar/AvatarView";
+import { BasicProfileView } from "@/components/seeker/profile/BasicProfileView";
+import { CertificationListView } from "@/components/seeker/certification/CertificationListView";
+import { EducationListView } from "@/components/seeker/education/EducationListView";
+import { WorkExperienceListView } from "@/components/seeker/work-experience/WorkExperienceListView";
 import {
   likeStatusLabels,
   likeTypeLabels,

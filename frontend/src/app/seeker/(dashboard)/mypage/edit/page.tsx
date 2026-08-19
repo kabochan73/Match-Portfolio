@@ -10,10 +10,10 @@ import {
   updateProfileSchema,
   useUpdateProfile,
 } from "@/hooks/seeker/useUpdateProfile";
-import { AvatarSection } from "./_components/AvatarSection";
-import { CertificationSection } from "./_components/CertificationSection";
-import { EducationSection } from "./_components/EducationSection";
-import { WorkExperienceSection } from "./_components/WorkExperienceSection";
+import { AvatarSection } from "@/components/seeker/avatar/AvatarSection";
+import { CertificationSection } from "@/components/seeker/certification/CertificationSection";
+import { EducationSection } from "@/components/seeker/education/EducationSection";
+import { WorkExperienceSection } from "@/components/seeker/work-experience/WorkExperienceSection";
 
 // バックエンドのフィールド名(snake_case) → フォームのフィールド名(camelCase)
 const serverFieldMap: Record<string, keyof UpdateProfileValues> = {

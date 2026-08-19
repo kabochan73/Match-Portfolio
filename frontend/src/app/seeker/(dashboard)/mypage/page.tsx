@@ -1,18 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { AvatarView } from "@/components/seeker-profile/AvatarView";
-import { BasicProfileView } from "@/components/seeker-profile/BasicProfileView";
-import { CertificationListView } from "@/components/seeker-profile/CertificationListView";
-import { EducationListView } from "@/components/seeker-profile/EducationListView";
-import { WorkExperienceListView } from "@/components/seeker-profile/WorkExperienceListView";
+import { AvatarView } from "@/components/seeker/avatar/AvatarView";
+import { BasicProfileView } from "@/components/seeker/profile/BasicProfileView";
+import { CertificationListView } from "@/components/seeker/certification/CertificationListView";
+import { EducationListView } from "@/components/seeker/education/EducationListView";
+import { WorkExperienceListView } from "@/components/seeker/work-experience/WorkExperienceListView";
 import { useCertifications } from "@/hooks/seeker/useCertifications";
 import { useEducations } from "@/hooks/seeker/useEducations";
 import { useProfile } from "@/hooks/seeker/useProfile";
 import { useWorkExperiences } from "@/hooks/seeker/useWorkExperiences";
 
 // マイページの表示専用ページ。編集はすべて/seeker/mypage/editで行う。
-// ここで使う表示コンポーネント(src/components/seeker-profile/)は、企業側から
+// ここで使う表示コンポーネント(src/components/seeker/配下の*View)は、企業側から
 // 応募者を閲覧する画面(company/(dashboard)/applicants/[id]、未実装)でも
 // 同じものを使い回す想定のため、データ取得を持たない純粋な表示コンポーネントにしてある
 export default function Page() {

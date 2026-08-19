@@ -49,7 +49,7 @@ export type ApplicantSummary = Like & {
 };
 
 // 応募者詳細。Company\LikeController@showがログインID(email)を除いた列に絞った上で
-// 職歴・学歴・資格までloadして返す形と対応(型定義自体はsrc/components/seeker-profile/の
+// 職歴・学歴・資格までloadして返す形と対応(型定義自体はsrc/components/seeker/配下の
 // 表示コンポーネントにそのまま渡せるよう、対応するseeker側の型をtype-onlyでimportして使う)
 export type ApplicantDetail = Like & {
   user: {
