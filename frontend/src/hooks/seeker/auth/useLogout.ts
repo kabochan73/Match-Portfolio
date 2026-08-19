@@ -13,7 +13,7 @@ export function useLogout() {
     onSuccess: () => {
       // ログアウト後に前のユーザーのプロフィール等がキャッシュから見えてしまわないようにクリアする
       queryClient.clear();
-      router.push("/seeker/login");
+      router.push("/");
     },
   });
 }

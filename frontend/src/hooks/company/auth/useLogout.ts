@@ -13,7 +13,7 @@ export function useLogout() {
     onSuccess: () => {
       // ログアウト後に前の企業のプロフィール等がキャッシュから見えてしまわないようにクリアする
       queryClient.clear();
-      router.push("/company/login");
+      router.push("/");
     },
   });
 }
