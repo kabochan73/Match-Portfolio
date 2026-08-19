@@ -27,7 +27,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          {children}
+          {/*
+            ページ内容が短いとFooterがビューポート下端まで届かず、コンテンツ直後に
+            浮いて見えてしまう。ページ側で毎回flex-1を付け忘れないよう、ここで
+            ヘッダー+ページ内容全体を伸縮させてFooterを常に下端に固定する
+          */}
+          <div className="flex flex-1 flex-col">{children}</div>
           <Footer />
         </Providers>
       </body>
