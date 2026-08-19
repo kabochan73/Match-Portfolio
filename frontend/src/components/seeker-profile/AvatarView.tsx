@@ -15,9 +15,9 @@ export function AvatarView({ avatarUrl }: { avatarUrl: string | null }) {
     <img
       src={avatarUrl}
       alt="プロフィール画像"
-      width={64}
-      height={64}
-      className="size-16 shrink-0 rounded-full border border-zinc-200 object-cover"
+      width={80}  
+      height={80}
+      className="size-24 shrink-0 rounded-full border border-zinc-200 object-cover"
     />
   );
 }

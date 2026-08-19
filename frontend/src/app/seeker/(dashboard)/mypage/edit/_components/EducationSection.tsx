@@ -37,12 +37,12 @@ function EducationItem({ education }: { education: Education }) {
 
   return (
     <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-      <p className="text-sm text-zinc-900">{education.school_name}</p>
-      <div className="flex shrink-0 items-center gap-3 text-xs font-semibold">
+      <p className="text-xl text-zinc-900">{education.school_name}</p>
+      <div className="flex shrink-0 items-center gap-3 font-semibold">
         <button
           type="button"
           onClick={() => setIsEditing(true)}
-          className="text-brand hover:underline"
+          className="text-brand hover:underline text-sm font-semibold"
         >
           編集
         </button>
@@ -50,7 +50,7 @@ function EducationItem({ education }: { education: Education }) {
           type="button"
           disabled={deleteMutation.isPending}
           onClick={() => deleteMutation.mutate(education.id)}
-          className="text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+          className="text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50 text-sm font-semibold"
         >
           削除
         </button>
@@ -66,7 +66,7 @@ export function EducationSection() {
 
   return (
     <section>
-      <h2 className="mb-4 text-sm font-bold text-zinc-900">学歴</h2>
+      <h2 className="mb-4 text-xl font-bold text-zinc-900">学歴</h2>
 
       {isLoading && <p className="text-sm text-zinc-500">読み込み中...</p>}
       {isError && (
@@ -101,13 +101,15 @@ export function EducationSection() {
           />
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => setShowAddForm(true)}
-          className="mt-4 rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
-        >
-          学歴を追加する
-        </button>
+        <div className="mt-4 flex justify-end">
+          <button
+            type="button"
+            onClick={() => setShowAddForm(true)}
+            className="rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
+          >
+            学歴を追加する
+          </button>
+        </div>
       )}
     </section>
   );

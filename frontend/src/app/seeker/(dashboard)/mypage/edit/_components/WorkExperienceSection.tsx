@@ -49,7 +49,7 @@ function WorkExperienceItem({
     <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
       <div>
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-semibold text-zinc-900">
+          <p className="text-xl font-semibold text-zinc-900">
             {workExperience.company_name}
           </p>
           <span className="rounded-full bg-brand-light px-2 py-0.5 text-xs font-medium text-brand">
@@ -60,11 +60,11 @@ function WorkExperienceItem({
           {workExperience.started_on} 〜 {workExperience.ended_on ?? "在籍中"}
         </p>
       </div>
-      <div className="flex shrink-0 items-center gap-3 text-xs font-semibold">
+      <div className="flex shrink-0 items-center gap-3 font-semibold">
         <button
           type="button"
           onClick={() => setIsEditing(true)}
-          className="text-brand hover:underline"
+          className="text-brand hover:underline text-sm font-semibold"
         >
           編集
         </button>
@@ -72,7 +72,7 @@ function WorkExperienceItem({
           type="button"
           disabled={deleteMutation.isPending}
           onClick={() => deleteMutation.mutate(workExperience.id)}
-          className="text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+          className="text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50 text-sm font-semibold"
         >
           削除
         </button>
@@ -88,7 +88,7 @@ export function WorkExperienceSection() {
 
   return (
     <section>
-      <h2 className="mb-4 text-sm font-bold text-zinc-900">職歴</h2>
+      <h2 className="mb-4 text-xl font-bold text-zinc-900">職歴</h2>
 
       {isLoading && <p className="text-sm text-zinc-500">読み込み中...</p>}
       {isError && (
@@ -126,13 +126,15 @@ export function WorkExperienceSection() {
           />
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => setShowAddForm(true)}
-          className="mt-4 rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
-        >
-          職歴を追加する
-        </button>
+        <div className="mt-4 flex justify-end">
+          <button
+            type="button"
+            onClick={() => setShowAddForm(true)}
+            className="rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
+          >
+            職歴を追加する
+          </button>
+        </div>
       )}
     </section>
   );

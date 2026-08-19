@@ -8,7 +8,7 @@ export function CertificationListView({
   certifications: Certification[];
 }) {
   if (certifications.length === 0) {
-    return <p className="text-sm text-zinc-500">未登録です</p>;
+    return <p className="text-lg text-zinc-500">未登録です</p>;
   }
 
   return (
@@ -16,7 +16,7 @@ export function CertificationListView({
       {certifications.map((certification) => (
         <li
           key={certification.id}
-          className="py-3 text-sm text-zinc-900 first:pt-0 last:pb-0"
+          className="py-3 text-lg text-zinc-900 first:pt-0 last:pb-0"
         >
           {certification.name}
         </li>

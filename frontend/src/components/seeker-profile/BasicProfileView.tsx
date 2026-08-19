@@ -14,25 +14,20 @@ export function BasicProfileView({
   return (
     <dl className="space-y-4">
       <div>
-        <dt className="text-xs font-medium text-zinc-500">氏名</dt>
-        <dd className="mt-1 text-sm text-zinc-900">{profile.name}</dd>
+        <dt className="text-xl font-bold text-zinc-800">生年月日</dt>
+        <dd className="mt-1 text-lg text-zinc-900">{profile.birth_date}</dd>
       </div>
 
       <div>
-        <dt className="text-xs font-medium text-zinc-500">生年月日</dt>
-        <dd className="mt-1 text-sm text-zinc-900">{profile.birth_date}</dd>
-      </div>
-
-      <div>
-        <dt className="text-xs font-medium text-zinc-500">自己紹介コメント</dt>
-        <dd className="mt-1 whitespace-pre-wrap text-sm text-zinc-900">
+        <dt className="text-xl font-bold text-zinc-800">自己紹介コメント</dt>
+        <dd className="mt-1 whitespace-pre-wrap text-lg text-zinc-900">
           {profile.comment ?? "未設定"}
         </dd>
       </div>
 
       <div>
-        <dt className="text-xs font-medium text-zinc-500">ポートフォリオURL</dt>
-        <dd className="mt-1 text-sm text-zinc-900">
+        <dt className="text-xl font-bold text-zinc-800">ポートフォリオURL</dt>
+        <dd className="mt-1 text-lg text-zinc-900">
           {profile.portfolio_url ? (
             <a
               href={profile.portfolio_url}

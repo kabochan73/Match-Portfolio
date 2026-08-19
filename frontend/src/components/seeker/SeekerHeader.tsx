@@ -6,10 +6,10 @@ import { Bell, FileText, LogOut, MessageCircle, User } from "lucide-react";
 import { useLogout } from "@/hooks/seeker/auth/useLogout";
 
 const navItems = [
-  { href: "/seeker/mypage", label: "マイページ", icon: User },
   { href: "/seeker/applications", label: "応募一覧", icon: FileText },
   { href: "/seeker/messages", label: "メッセージ", icon: MessageCircle },
   { href: "/seeker/notifications", label: "通知", icon: Bell },
+  { href: "/seeker/mypage", label: "マイページ", icon: User },
 ] as const;
 
 // 求職者ダッシュボード((dashboard)ルートグループ)専用のヘッダー。
