@@ -1,5 +1,12 @@
-// SCシェル。Sanctumのcookie認証はServer Componentから読めないため、
-// ナビゲーション(usePathnameでのアクティブリンク表示・ログアウト)は後でCCの子コンポーネントとして追加する
+import { SeekerHeader } from "@/components/seeker/SeekerHeader";
+
+// SCシェル。ナビゲーション(アクティブリンク表示・ログアウト)はSanctumのcookie認証を
+// ブラウザ側でしか読めないため、CCのSeekerHeaderに持たせている
 export default function Layout(props: LayoutProps<"/seeker">) {
-  return <>{props.children}</>;
+  return (
+    <>
+      <SeekerHeader />
+      {props.children}
+    </>
+  );
 }
