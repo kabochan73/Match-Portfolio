@@ -1,13 +1,11 @@
-import { Header } from "@/components/Header";
+import { CompanyHeader } from "@/components/company/CompanyHeader";
 
-// SCシェル。Sanctumのcookie認証はServer Componentから読めないため、
-// ナビゲーション(usePathnameでのアクティブリンク表示・ログアウト)は後でCCの子コンポーネントとして追加する。
-// それまでの暫定として、全ページ共通のHeaderをここで持たせる
-// (seeker側は専用のSeekerHeaderに切り替え済み。company側も専用ヘッダーができ次第差し替える)
+// SCシェル。ナビゲーション(アクティブリンク表示・ログアウト)はSanctumのcookie認証を
+// ブラウザ側でしか読めないため、CCのCompanyHeaderに持たせている(seekerのSeekerHeaderと同じ方針)
 export default function Layout(props: LayoutProps<"/company">) {
   return (
     <>
-      <Header />
+      <CompanyHeader />
       {props.children}
     </>
   );
