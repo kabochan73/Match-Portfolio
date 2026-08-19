@@ -43,7 +43,9 @@ export default function Page() {
         <div className="flex items-center justify-between gap-4 p-8">
           <div className="flex items-center gap-4">
             <AvatarView avatarUrl={profile.avatar_url} />
-            <h1 className="text-xl font-bold text-zinc-900">マイページ</h1>
+            <h1 className="text-xl font-bold text-zinc-900">
+              {profile.name}
+            </h1>
           </div>
           <Link
             href="/seeker/mypage/edit"
