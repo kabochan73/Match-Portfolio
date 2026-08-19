@@ -86,11 +86,11 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <AvatarSection />
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <form onSubmit={onSubmit} noValidate className="space-y-4">
           <div>
             <label htmlFor="name" className="text-sm font-medium text-zinc-700">
@@ -192,15 +192,15 @@ export default function Page() {
         </form>
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <WorkExperienceSection />
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <EducationSection />
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <CertificationSection />
       </div>
     </div>

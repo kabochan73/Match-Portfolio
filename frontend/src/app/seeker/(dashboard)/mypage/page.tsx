@@ -52,21 +52,21 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <BasicProfileView profile={profile} />
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <h2 className="mb-4 text-xl font-bold text-zinc-900">職歴</h2>
         <WorkExperienceListView workExperiences={workExperiences ?? []} />
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <h2 className="mb-4 text-xl font-bold text-zinc-900">学歴</h2>
         <EducationListView educations={educations ?? []} />
       </div>
 
-      <div className="border-t border-zinc-100 py-8">
+      <div className="border-t border-zinc-400 py-8">
         <h2 className="mb-4 text-xl font-bold text-zinc-900">資格</h2>
         <CertificationListView certifications={certifications ?? []} />
       </div>
