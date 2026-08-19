@@ -54,21 +54,45 @@ export function CertificationForm({
   });
 
   return (
-    <form onSubmit={submit} noValidate>
+    <form onSubmit={submit} noValidate className="space-y-4">
       <div>
-        <label htmlFor={`${formId}-name`}>資格名</label>
-        <input id={`${formId}-name`} type="text" {...register("name")} />
-        {errors.name && <p role="alert">{errors.name.message}</p>}
+        <label
+          htmlFor={`${formId}-name`}
+          className="text-sm font-medium text-zinc-700"
+        >
+          資格名
+        </label>
+        <input
+          id={`${formId}-name`}
+          type="text"
+          {...register("name")}
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+        />
+        {errors.name && (
+          <p role="alert" className="mt-1 text-xs text-red-600">
+            {errors.name.message}
+          </p>
+        )}
       </div>
 
-      <button type="submit" disabled={isSubmitting || isPending}>
-        {submitLabel}
-      </button>
-      {onCancel && (
-        <button type="button" onClick={onCancel}>
-          キャンセル
+      <div className="flex items-center gap-3 pt-2">
+        <button
+          type="submit"
+          disabled={isSubmitting || isPending}
+          className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {submitLabel}
         </button>
-      )}
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-600 hover:bg-zinc-100"
+          >
+            キャンセル
+          </button>
+        )}
+      </div>
     </form>
   );
 }

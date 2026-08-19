@@ -64,56 +64,109 @@ export function WorkExperienceForm({
   });
 
   return (
-    <form onSubmit={submit} noValidate>
+    <form onSubmit={submit} noValidate className="space-y-4">
       <div>
-        <label htmlFor={`${formId}-companyName`}>会社名</label>
+        <label
+          htmlFor={`${formId}-companyName`}
+          className="text-sm font-medium text-zinc-700"
+        >
+          会社名
+        </label>
         <input
           id={`${formId}-companyName`}
           type="text"
           {...register("companyName")}
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
         />
-        {errors.companyName && <p role="alert">{errors.companyName.message}</p>}
+        {errors.companyName && (
+          <p role="alert" className="mt-1 text-xs text-red-600">
+            {errors.companyName.message}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor={`${formId}-employmentType`}>雇用形態</label>
-        <select id={`${formId}-employmentType`} {...register("employmentType")}>
+        <label
+          htmlFor={`${formId}-employmentType`}
+          className="text-sm font-medium text-zinc-700"
+        >
+          雇用形態
+        </label>
+        <select
+          id={`${formId}-employmentType`}
+          {...register("employmentType")}
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+        >
           <option value="">選択してください</option>
           <option value="full_time">正社員</option>
           <option value="contract">契約社員</option>
           <option value="part_time">アルバイト</option>
         </select>
         {errors.employmentType && (
-          <p role="alert">{errors.employmentType.message}</p>
+          <p role="alert" className="mt-1 text-xs text-red-600">
+            {errors.employmentType.message}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor={`${formId}-startedOn`}>在籍開始年月日</label>
+        <label
+          htmlFor={`${formId}-startedOn`}
+          className="text-sm font-medium text-zinc-700"
+        >
+          在籍開始年月日
+        </label>
         <input
           id={`${formId}-startedOn`}
           type="date"
           {...register("startedOn")}
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
         />
-        {errors.startedOn && <p role="alert">{errors.startedOn.message}</p>}
+        {errors.startedOn && (
+          <p role="alert" className="mt-1 text-xs text-red-600">
+            {errors.startedOn.message}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor={`${formId}-endedOn`}>
+        <label
+          htmlFor={`${formId}-endedOn`}
+          className="text-sm font-medium text-zinc-700"
+        >
           在籍終了年月日(在籍中は空欄)
         </label>
-        <input id={`${formId}-endedOn`} type="date" {...register("endedOn")} />
-        {errors.endedOn && <p role="alert">{errors.endedOn.message}</p>}
+        <input
+          id={`${formId}-endedOn`}
+          type="date"
+          {...register("endedOn")}
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+        />
+        {errors.endedOn && (
+          <p role="alert" className="mt-1 text-xs text-red-600">
+            {errors.endedOn.message}
+          </p>
+        )}
       </div>
 
-      <button type="submit" disabled={isSubmitting || isPending}>
-        {submitLabel}
-      </button>
-      {onCancel && (
-        <button type="button" onClick={onCancel}>
-          キャンセル
+      <div className="flex items-center gap-3 pt-2">
+        <button
+          type="submit"
+          disabled={isSubmitting || isPending}
+          className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {submitLabel}
         </button>
-      )}
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-600 hover:bg-zinc-100"
+          >
+            キャンセル
+          </button>
+        )}
+      </div>
     </form>
   );
 }

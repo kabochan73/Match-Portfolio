@@ -22,7 +22,7 @@ function CertificationItem({
 
   if (isEditing) {
     return (
-      <li>
+      <li className="py-3 first:pt-0 last:pb-0">
         <CertificationForm
           defaultValues={{ name: certification.name }}
           submitLabel="更新する"
@@ -40,18 +40,25 @@ function CertificationItem({
   }
 
   return (
-    <li>
-      <p>{certification.name}</p>
-      <button type="button" onClick={() => setIsEditing(true)}>
-        編集
-      </button>
-      <button
-        type="button"
-        disabled={deleteMutation.isPending}
-        onClick={() => deleteMutation.mutate(certification.id)}
-      >
-        削除
-      </button>
+    <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+      <p className="text-sm text-zinc-900">{certification.name}</p>
+      <div className="flex shrink-0 items-center gap-3 text-xs font-semibold">
+        <button
+          type="button"
+          onClick={() => setIsEditing(true)}
+          className="text-brand hover:underline"
+        >
+          編集
+        </button>
+        <button
+          type="button"
+          disabled={deleteMutation.isPending}
+          onClick={() => deleteMutation.mutate(certification.id)}
+          className="text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          削除
+        </button>
+      </div>
     </li>
   );
 }
@@ -63,36 +70,49 @@ export function CertificationSection() {
 
   return (
     <section>
-      <h2>資格</h2>
+      <h2 className="mb-4 text-sm font-bold text-zinc-900">資格</h2>
 
-      {isLoading && <p>読み込み中...</p>}
-      {isError && <p role="alert">資格の取得に失敗しました。</p>}
-
-      {certifications && (
-        <ul>
-          {certifications.map((certification) => (
-            <CertificationItem
-              key={certification.id}
-              certification={certification}
-            />
-          ))}
-        </ul>
+      {isLoading && <p className="text-sm text-zinc-500">読み込み中...</p>}
+      {isError && (
+        <p role="alert" className="text-sm text-red-600">
+          資格の取得に失敗しました。
+        </p>
       )}
 
+      {certifications &&
+        (certifications.length === 0 ? (
+          <p className="text-sm text-zinc-500">未登録です</p>
+        ) : (
+          <ul className="divide-y divide-zinc-100">
+            {certifications.map((certification) => (
+              <CertificationItem
+                key={certification.id}
+                certification={certification}
+              />
+            ))}
+          </ul>
+        ))}
+
       {showAddForm ? (
-        <CertificationForm
-          submitLabel="追加する"
-          isPending={createMutation.isPending}
-          onCancel={() => setShowAddForm(false)}
-          onSubmit={(values, onError) => {
-            createMutation.mutate(values, {
-              onSuccess: () => setShowAddForm(false),
-              onError,
-            });
-          }}
-        />
+        <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4">
+          <CertificationForm
+            submitLabel="追加する"
+            isPending={createMutation.isPending}
+            onCancel={() => setShowAddForm(false)}
+            onSubmit={(values, onError) => {
+              createMutation.mutate(values, {
+                onSuccess: () => setShowAddForm(false),
+                onError,
+              });
+            }}
+          />
+        </div>
       ) : (
-        <button type="button" onClick={() => setShowAddForm(true)}>
+        <button
+          type="button"
+          onClick={() => setShowAddForm(true)}
+          className="mt-4 rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
+        >
           資格を追加する
         </button>
       )}
