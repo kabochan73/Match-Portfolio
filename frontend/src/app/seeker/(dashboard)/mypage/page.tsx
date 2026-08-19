@@ -22,31 +22,56 @@ export default function Page() {
   const { data: certifications } = useCertifications();
 
   if (isLoading) {
-    return <p>読み込み中...</p>;
+    return (
+      <p className="px-4 py-12 text-center text-sm text-zinc-500">
+        読み込み中...
+      </p>
+    );
   }
 
   if (isError || !profile) {
-    return <p role="alert">プロフィールの取得に失敗しました。</p>;
+    return (
+      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
+        プロフィールの取得に失敗しました。
+      </p>
+    );
   }
 
   return (
-    <>
-      <h1>マイページ</h1>
-      <p>
-        <Link href="/seeker/mypage/edit">編集する</Link>
-      </p>
+    <div className="mx-auto w-full max-w-2xl px-4 py-12">
+      <div className="divide-y divide-zinc-200 rounded-2xl border border-zinc-200 bg-white shadow-lg">
+        <div className="flex items-center justify-between gap-4 p-8">
+          <div className="flex items-center gap-4">
+            <AvatarView avatarUrl={profile.avatar_url} />
+            <h1 className="text-xl font-bold text-zinc-900">マイページ</h1>
+          </div>
+          <Link
+            href="/seeker/mypage/edit"
+            className="shrink-0 rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
+          >
+            編集する
+          </Link>
+        </div>
 
-      <AvatarView avatarUrl={profile.avatar_url} />
-      <BasicProfileView profile={profile} />
+        <div className="p-8">
+          <BasicProfileView profile={profile} />
+        </div>
 
-      <h2>職歴</h2>
-      <WorkExperienceListView workExperiences={workExperiences ?? []} />
+        <div className="p-8">
+          <h2 className="mb-4 text-sm font-bold text-zinc-900">職歴</h2>
+          <WorkExperienceListView workExperiences={workExperiences ?? []} />
+        </div>
 
-      <h2>学歴</h2>
-      <EducationListView educations={educations ?? []} />
+        <div className="p-8">
+          <h2 className="mb-4 text-sm font-bold text-zinc-900">学歴</h2>
+          <EducationListView educations={educations ?? []} />
+        </div>
 
-      <h2>資格</h2>
-      <CertificationListView certifications={certifications ?? []} />
-    </>
+        <div className="p-8">
+          <h2 className="mb-4 text-sm font-bold text-zinc-900">資格</h2>
+          <CertificationListView certifications={certifications ?? []} />
+        </div>
+      </div>
+    </div>
   );
 }

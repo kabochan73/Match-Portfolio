@@ -11,18 +11,22 @@ export function WorkExperienceListView({
   workExperiences: WorkExperience[];
 }) {
   if (workExperiences.length === 0) {
-    return <p>未登録です</p>;
+    return <p className="text-sm text-zinc-500">未登録です</p>;
   }
 
   return (
-    <ul>
+    <ul className="divide-y divide-zinc-100">
       {workExperiences.map((workExperience) => (
-        <li key={workExperience.id}>
-          <p>
-            {workExperience.company_name}(
-            {employmentTypeLabels[workExperience.employment_type]})
-          </p>
-          <p>
+        <li key={workExperience.id} className="py-3 first:pt-0 last:pb-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold text-zinc-900">
+              {workExperience.company_name}
+            </p>
+            <span className="rounded-full bg-brand-light px-2 py-0.5 text-xs font-medium text-brand">
+              {employmentTypeLabels[workExperience.employment_type]}
+            </span>
+          </div>
+          <p className="mt-1 text-sm text-zinc-500">
             {workExperience.started_on} 〜 {workExperience.ended_on ?? "在籍中"}
           </p>
         </li>

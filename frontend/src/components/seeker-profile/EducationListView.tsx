@@ -4,13 +4,18 @@ import type { Education } from "@/hooks/seeker/useEducations";
 // 自分のマイページ表示と、将来の企業側からの応募者詳細閲覧の両方で使い回す想定
 export function EducationListView({ educations }: { educations: Education[] }) {
   if (educations.length === 0) {
-    return <p>未登録です</p>;
+    return <p className="text-sm text-zinc-500">未登録です</p>;
   }
 
   return (
-    <ul>
+    <ul className="divide-y divide-zinc-100">
       {educations.map((education) => (
-        <li key={education.id}>{education.school_name}</li>
+        <li
+          key={education.id}
+          className="py-3 text-sm text-zinc-900 first:pt-0 last:pb-0"
+        >
+          {education.school_name}
+        </li>
       ))}
     </ul>
   );

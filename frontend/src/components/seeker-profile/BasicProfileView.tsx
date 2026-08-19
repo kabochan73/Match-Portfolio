@@ -12,30 +12,41 @@ export function BasicProfileView({
   >;
 }) {
   return (
-    <dl>
-      <dt>氏名</dt>
-      <dd>{profile.name}</dd>
+    <dl className="space-y-4">
+      <div>
+        <dt className="text-xs font-medium text-zinc-500">氏名</dt>
+        <dd className="mt-1 text-sm text-zinc-900">{profile.name}</dd>
+      </div>
 
-      <dt>生年月日</dt>
-      <dd>{profile.birth_date}</dd>
+      <div>
+        <dt className="text-xs font-medium text-zinc-500">生年月日</dt>
+        <dd className="mt-1 text-sm text-zinc-900">{profile.birth_date}</dd>
+      </div>
 
-      <dt>自己紹介コメント</dt>
-      <dd>{profile.comment ?? "未設定"}</dd>
+      <div>
+        <dt className="text-xs font-medium text-zinc-500">自己紹介コメント</dt>
+        <dd className="mt-1 whitespace-pre-wrap text-sm text-zinc-900">
+          {profile.comment ?? "未設定"}
+        </dd>
+      </div>
 
-      <dt>ポートフォリオURL</dt>
-      <dd>
-        {profile.portfolio_url ? (
-          <a
-            href={profile.portfolio_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {profile.portfolio_url}
-          </a>
-        ) : (
-          "未設定"
-        )}
-      </dd>
+      <div>
+        <dt className="text-xs font-medium text-zinc-500">ポートフォリオURL</dt>
+        <dd className="mt-1 text-sm text-zinc-900">
+          {profile.portfolio_url ? (
+            <a
+              href={profile.portfolio_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="break-all text-brand hover:underline"
+            >
+              {profile.portfolio_url}
+            </a>
+          ) : (
+            "未設定"
+          )}
+        </dd>
+      </div>
     </dl>
   );
 }
