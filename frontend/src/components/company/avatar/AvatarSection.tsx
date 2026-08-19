@@ -11,7 +11,7 @@ import { useProfile } from "@/hooks/company/useProfile";
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE_BYTES = 5120 * 1024;
 
-export function AvatarUploadSection() {
+export function AvatarSection() {
   const { data: profile } = useProfile();
   const updateMutation = useUpdateAvatar();
   const deleteMutation = useDeleteAvatar();

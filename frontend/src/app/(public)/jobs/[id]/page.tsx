@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AvatarView } from "@/components/company-profile/AvatarView";
+import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { employmentTypeLabels, getJobPosting } from "@/lib/jobPostings";
 import { ApplySection } from "./_components/ApplySection";
 

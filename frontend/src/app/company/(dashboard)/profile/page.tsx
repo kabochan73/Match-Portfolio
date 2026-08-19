@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { AvatarView } from "@/components/company-profile/AvatarView";
-import { BasicProfileView } from "@/components/company-profile/BasicProfileView";
-import { CoverImageView } from "@/components/company-profile/CoverImageView";
+import { AvatarView } from "@/components/company/avatar/AvatarView";
+import { BasicProfileView } from "@/components/company/profile/BasicProfileView";
+import { CoverImageView } from "@/components/company/cover-image/CoverImageView";
 import { useProfile } from "@/hooks/company/useProfile";
 
 // 企業プロフィールの表示専用ページ。編集はすべて/company/profile/editで行う。
-// 表示コンポーネント(src/components/company-profile/)はデータ取得を持たないため、
-// 将来の公開企業ページ(/companies/[id]、未実装)でも同じものを使い回せる
+// 表示コンポーネント(src/components/company/配下の*View)はデータ取得を持たないため、
+// 公開企業ページ(/companies/[id])や求人詳細ページ(/jobs/[id])でも同じものを使い回している
 export default function Page() {
   const { data: profile, isLoading, isError } = useProfile();
 

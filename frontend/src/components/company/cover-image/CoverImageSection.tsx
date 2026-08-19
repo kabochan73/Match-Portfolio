@@ -8,11 +8,11 @@ import {
 } from "@/hooks/company/useCoverImage";
 import { useProfile } from "@/hooks/company/useProfile";
 
-// AvatarUploadSectionと同じ制約・同じ方針(jpeg/png/webp、5MB以内)
+// AvatarSectionと同じ制約・同じ方針(jpeg/png/webp、5MB以内)
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE_BYTES = 5120 * 1024;
 
-export function CoverImageUploadSection() {
+export function CoverImageSection() {
   const { data: profile } = useProfile();
   const updateMutation = useUpdateCoverImage();
   const deleteMutation = useDeleteCoverImage();

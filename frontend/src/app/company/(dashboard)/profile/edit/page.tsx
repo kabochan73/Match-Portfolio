@@ -14,8 +14,8 @@ import {
   updateProfileSchema,
   useUpdateProfile,
 } from "@/hooks/company/useUpdateProfile";
-import { AvatarUploadSection } from "./_components/AvatarUploadSection";
-import { CoverImageUploadSection } from "./_components/CoverImageUploadSection";
+import { AvatarSection } from "@/components/company/avatar/AvatarSection";
+import { CoverImageSection } from "@/components/company/cover-image/CoverImageSection";
 
 // バックエンドのフィールド名(snake_case) → フォームのフィールド名(camelCase)
 const serverFieldMap: Record<string, keyof UpdateProfileValues> = {
@@ -99,11 +99,11 @@ export default function Page() {
       </div>
 
       <div className="py-8">
-        <AvatarUploadSection />
+        <AvatarSection />
       </div>
 
       <div className="py-8">
-        <CoverImageUploadSection />
+        <CoverImageSection />
       </div>
 
       <div className="py-8">

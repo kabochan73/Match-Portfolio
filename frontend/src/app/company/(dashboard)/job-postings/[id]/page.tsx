@@ -12,7 +12,7 @@ import {
   useUnpublishJobPosting,
   useUpdateJobPosting,
 } from "@/hooks/company/useJobPostings";
-import { JobPostingForm } from "../_components/JobPostingForm";
+import { JobPostingForm } from "@/components/company/job-posting/JobPostingForm";
 
 // ApiValidationErrorのフィールド名がstatus/billingのどちらでも表示できるよう、
 // 最初に見つかったエラーメッセージを拾う(公開・非公開・募集終了の各エンドポイントは

@@ -37,7 +37,7 @@ export type PublicJobPostingListItem = {
   company: PublicCompanySummary;
 };
 
-// 求人詳細ではcompanyの基本プロフィール一式(company-profile/BasicProfileView等が
+// 求人詳細ではcompanyの基本プロフィール一式(components/company/profile/BasicProfileView等が
 // 期待する形)をそのまま含む
 export type PublicJobPostingDetail = {
   id: number;

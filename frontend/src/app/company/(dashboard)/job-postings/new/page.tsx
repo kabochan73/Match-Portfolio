@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCreateJobPosting } from "@/hooks/company/useJobPostings";
-import { JobPostingForm } from "../_components/JobPostingForm";
+import { JobPostingForm } from "@/components/company/job-posting/JobPostingForm";
 
 // 作成直後は必ずdraft(下書き)なので、一覧に戻って公開操作は
 // job-postings/[id]側で行う想定
