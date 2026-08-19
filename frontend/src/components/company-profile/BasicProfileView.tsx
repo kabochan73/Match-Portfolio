@@ -19,47 +19,62 @@ export function BasicProfileView({
   >;
 }) {
   return (
-    <dl>
-      <dt>会社名</dt>
-      <dd>{profile.name}</dd>
+    <dl className="space-y-4">
+      <div>
+        <dt className="text-xl font-bold text-zinc-800">会社概要</dt>
+        <dd className="mt-1 whitespace-pre-wrap text-lg text-zinc-900">
+          {profile.description ?? "未設定"}
+        </dd>
+      </div>
 
-      <dt>会社概要</dt>
-      <dd>{profile.description ?? "未設定"}</dd>
+      <div>
+        <dt className="text-xl font-bold text-zinc-800">WebサイトURL</dt>
+        <dd className="mt-1 text-lg text-zinc-900">
+          {profile.website_url ? (
+            <a
+              href={profile.website_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="break-all text-emerald-600 hover:underline"
+            >
+              {profile.website_url}
+            </a>
+          ) : (
+            "未設定"
+          )}
+        </dd>
+      </div>
 
-      <dt>電話番号</dt>
-      <dd>{profile.phone_number ?? "未設定"}</dd>
+      <div>
+        <dt className="text-xl font-bold text-zinc-800">設立年</dt>
+        <dd className="mt-1 text-lg text-zinc-900">
+          {profile.founded_year ?? "未設定"}
+        </dd>
+      </div>
 
-      <dt>所在地</dt>
-      <dd>
-        {profile.prefecture
-          ? `${profile.prefecture}${profile.address_line ?? ""}`
-          : "未設定"}
-      </dd>
+      <div>
+        <dt className="text-xl font-bold text-zinc-800">メンバー数</dt>
+        <dd className="mt-1 text-lg text-zinc-900">
+          {profile.member_count_range
+            ? memberCountRangeLabels[profile.member_count_range]
+            : "未設定"}
+        </dd>
+      </div>
 
-      <dt>設立年</dt>
-      <dd>{profile.founded_year ?? "未設定"}</dd>
-
-      <dt>メンバー数</dt>
-      <dd>
-        {profile.member_count_range
-          ? memberCountRangeLabels[profile.member_count_range]
-          : "未設定"}
-      </dd>
-
-      <dt>WebサイトURL</dt>
-      <dd>
-        {profile.website_url ? (
-          <a
-            href={profile.website_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {profile.website_url}
-          </a>
-        ) : (
-          "未設定"
-        )}
-      </dd>
+      <div>
+        <dt className="text-xl font-bold text-zinc-800">電話番号</dt>
+        <dd className="mt-1 text-lg text-zinc-900">
+          {profile.phone_number ?? "未設定"}
+        </dd>
+      </div>
+      <div>
+        <dt className="text-xl font-bold text-zinc-800">所在地</dt>
+        <dd className="mt-1 text-lg text-zinc-900">
+          {profile.prefecture
+            ? `${profile.prefecture}${profile.address_line ?? ""}`
+            : "未設定"}
+        </dd>
+      </div>
     </dl>
   );
 }

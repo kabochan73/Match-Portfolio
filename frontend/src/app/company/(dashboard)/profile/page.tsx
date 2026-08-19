@@ -13,23 +13,43 @@ export default function Page() {
   const { data: profile, isLoading, isError } = useProfile();
 
   if (isLoading) {
-    return <p>読み込み中...</p>;
+    return (
+      <p className="px-4 py-12 text-center text-sm text-zinc-500">
+        読み込み中...
+      </p>
+    );
   }
 
   if (isError || !profile) {
-    return <p role="alert">プロフィールの取得に失敗しました。</p>;
+    return (
+      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
+        プロフィールの取得に失敗しました。
+      </p>
+    );
   }
 
   return (
-    <>
-      <h1>企業プロフィール</h1>
-      <p>
-        <Link href="/company/profile/edit">編集する</Link>
-      </p>
+    <div className="mx-auto w-full max-w-4xl px-4 py-12">
+      <div className="flex items-center justify-between gap-4 pb-8">
+        <div className="flex items-center gap-4">
+          <AvatarView avatarUrl={profile.avatar_url} />
+          <h1 className="text-4xl font-bold text-zinc-900">{profile.name}</h1>
+        </div>
+        <Link
+          href="/company/profile/edit"
+          className="shrink-0 rounded-full border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50"
+        >
+          編集する
+        </Link>
+      </div>
 
-      <CoverImageView coverImageUrl={profile.cover_image_url} />
-      <AvatarView avatarUrl={profile.avatar_url} />
-      <BasicProfileView profile={profile} />
-    </>
+      <div className="pb-8">
+        <CoverImageView coverImageUrl={profile.cover_image_url} />
+      </div>
+
+      <div className="py-8">
+        <BasicProfileView profile={profile} />
+      </div>
+    </div>
   );
 }

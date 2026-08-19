@@ -6,9 +6,19 @@ export function CoverImageView({
   coverImageUrl: string | null;
 }) {
   if (!coverImageUrl) {
-    return <p>未設定です</p>;
+    return (
+      <div className="flex aspect-[3/1] w-full items-center justify-center bg-zinc-100 text-sm text-zinc-400">
+        未設定
+      </div>
+    );
   }
 
   // eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外
-  return <img src={coverImageUrl} alt="カバー画像" width={480} />;
+  return (
+    <img
+      src={coverImageUrl}
+      alt="カバー画像"
+      className="aspect-[3/1] w-full  object-cover justify-center"
+    />
+  );
 }
