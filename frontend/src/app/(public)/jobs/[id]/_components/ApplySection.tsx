@@ -10,12 +10,27 @@ import { ApiValidationError } from "@/lib/api/client";
 import {
   type ApplyValues,
   applySchema,
+  type LikesRemaining,
   useCreateLike,
+  useLikesRemaining,
 } from "@/hooks/seeker/useLikes";
 import { useProfile } from "@/hooks/seeker/useProfile";
 
+// 今月の残りいいね数(通常・スーパー別枠)を1行で表示する
+function RemainingLikesNote({ remaining }: { remaining: LikesRemaining }) {
+  return (
+    <p className="text-xs text-zinc-700">
+      今月の残り いいね {remaining.standard.remaining}/
+      {remaining.standard.limit} ・ スーパーいいね {remaining.super.remaining}
+      /{remaining.super.limit}
+    </p>
+  );
+}
+
 export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
   const { data: profile, isLoading, isError } = useProfile();
+  // ログイン前(profile未取得)はリクエストしない
+  const { data: remaining } = useLikesRemaining({ enabled: !!profile });
   const [isFormOpen, setIsFormOpen] = useState(false);
   const {
     register,
@@ -90,13 +105,16 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
 
   if (!isFormOpen) {
     return (
-      <button
-        type="button"
-        onClick={() => setIsFormOpen(true)}
-        className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
-      >
-        この求人に応募する👍
-      </button>
+      <div className="flex flex-col items-end gap-2">
+        {remaining && <RemainingLikesNote remaining={remaining} />}
+        <button
+          type="button"
+          onClick={() => setIsFormOpen(true)}
+          className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
+        >
+          この求人に応募する👍
+        </button>
+      </div>
     );
   }
 
@@ -109,7 +127,12 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
       )}
 
       <div>
-        <span className="text-sm font-medium text-zinc-700">いいねの種類</span>
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-zinc-700">
+            いいねの種類
+          </span>
+          {remaining && <RemainingLikesNote remaining={remaining} />}
+        </div>
         <div className="mt-1 flex gap-4">
           <label className="flex items-center gap-1.5 text-sm text-zinc-700">
             <input type="radio" value="standard" {...register("likeType")} />

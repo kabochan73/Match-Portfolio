@@ -64,6 +64,25 @@ export function useLikes() {
   });
 }
 
+// 種別ごとの今月の残りいいね数(バックエンドのLikeController@remainingと対応)
+export type RemainingLikeCount = {
+  limit: number;
+  used: number;
+  remaining: number;
+};
+
+export type LikesRemaining = Record<LikeType, RemainingLikeCount>;
+
+export const likesRemainingQueryKey = ["seeker", "likes", "remaining"] as const;
+
+export function useLikesRemaining(options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: likesRemainingQueryKey,
+    queryFn: () => apiFetch<LikesRemaining>("/api/likes/remaining"),
+    enabled: options?.enabled,
+  });
+}
+
 export function useCreateLike(jobPostingId: number) {
   const queryClient = useQueryClient();
 
@@ -79,6 +98,7 @@ export function useCreateLike(jobPostingId: number) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: likesQueryKey });
+      queryClient.invalidateQueries({ queryKey: likesRemainingQueryKey });
     },
   });
 }

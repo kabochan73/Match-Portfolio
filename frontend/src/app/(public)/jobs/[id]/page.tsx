@@ -45,14 +45,14 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
 
       <div className="py-8">
         <h2 className="text-xl font-bold text-zinc-900">職務内容</h2>
-        <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-700">
+        <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-800">
           {jobPosting.description}
         </p>
       </div>
 
       <div className="border-t border-zinc-200 py-8">
         <h2 className="text-xl font-bold text-zinc-900">求める人材像</h2>
-        <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-700">
+        <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-800">
           {jobPosting.desired_candidate}
         </p>
       </div>
