@@ -10,11 +10,19 @@ import { CertificationListView } from "@/components/seeker/certification/Certifi
 import { EducationListView } from "@/components/seeker/education/EducationListView";
 import { WorkExperienceListView } from "@/components/seeker/work-experience/WorkExperienceListView";
 import {
+  type LikeStatus,
   likeStatusLabels,
   likeTypeLabels,
   useApplicant,
   useMatchApplicant,
 } from "@/hooks/company/useLikes";
+
+// applicants一覧と同じ配色方針
+const statusBadgeClasses: Record<LikeStatus, string> = {
+  applied: "bg-amber-100 text-amber-700",
+  matched: "bg-emerald-100 text-emerald-700",
+  expired: "bg-zinc-100 text-zinc-500",
+};
 
 export default function Page(props: PageProps<"/company/applicants/[id]">) {
   const { id } = use(props.params);
@@ -23,11 +31,19 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
   const matchMutation = useMatchApplicant();
 
   if (isLoading) {
-    return <p>読み込み中...</p>;
+    return (
+      <p className="px-4 py-12 text-center text-sm text-zinc-500">
+        読み込み中...
+      </p>
+    );
   }
 
   if (isError || !applicant) {
-    return <p role="alert">応募者情報の取得に失敗しました。</p>;
+    return (
+      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
+        応募者情報の取得に失敗しました。
+      </p>
+    );
   }
 
   const canMatch =
@@ -35,55 +51,89 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
     new Date(applicant.response_deadline) > new Date();
 
   return (
-    <>
-      <h1>応募者詳細</h1>
-      <p>
-        <Link href="/company/applicants">応募者一覧に戻る</Link>
-      </p>
-
-      <p>
-        {likeTypeLabels[applicant.like_type]} /{" "}
-        {likeStatusLabels[applicant.status]}
-      </p>
-
-      {canMatch && (
-        <button
-          type="button"
-          onClick={() => matchMutation.mutate(likeId)}
-          disabled={matchMutation.isPending}
+    <div className="mx-auto w-full max-w-4xl px-4 py-12">
+      <div className="flex items-center justify-between gap-4 pb-2">
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${statusBadgeClasses[applicant.status]}`}
         >
-          気になる
-        </button>
-      )}
-      {matchMutation.isError && (
-        <p role="alert">{matchMutation.error.message}</p>
-      )}
+          {likeStatusLabels[applicant.status]}
+        </span>
+        <Link
+          href="/company/applicants"
+          className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
+        >
+          一覧に戻る
+        </Link>
+      </div>
 
-      {applicant.status === "matched" && (
-        <p>
-          <Link href={`/company/messages/${applicant.id}`}>
-            メッセージを見る
-          </Link>
+      <div className="flex items-center justify-between gap-4 py-8">
+        <div className="flex items-center gap-4 p-4">
+          <AvatarView avatarUrl={applicant.user.avatar_url} />
+          <h1 className="text-4xl font-bold text-zinc-900">
+            {applicant.user.name}
+          </h1>
+        </div>
+
+        <div className="flex shrink-0 flex-col items-end gap-2">
+          <span className="rounded-full bg-emerald-50 p-2 px-4 text-sm font-semibold border border-emerald-500 text-emerald-700">
+            {likeTypeLabels[applicant.like_type]}👍されました
+          </span>
+
+          {canMatch && (
+            <button
+              type="button"
+              onClick={() => matchMutation.mutate(likeId)}
+              disabled={matchMutation.isPending}
+              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-emerald-600 transition border border-emerald-500 hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              マッチする
+            </button>
+          )}
+
+          {applicant.status === "matched" && (
+            <Link
+              href={`/company/messages/${applicant.id}`}
+              className="text-sm font-semibold text-emerald-600 hover:underline"
+            >
+              メッセージを見る →
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {matchMutation.isError && (
+        <p role="alert" className="pb-4 text-sm text-red-600">
+          {matchMutation.error.message}
         </p>
       )}
 
-      <h2>志望動機</h2>
-      <p>{applicant.motivation}</p>
+      <div className="border-t border-zinc-400 py-8">
+        <BasicProfileView profile={applicant.user} />
+      </div>
 
-      <h2>プロフィール</h2>
-      <AvatarView avatarUrl={applicant.user.avatar_url} />
-      <BasicProfileView profile={applicant.user} />
+      <div className="border-t border-zinc-400 py-8">
+        <h2 className="mb-4 text-xl font-bold text-zinc-900">志望動機</h2>
+        <p className="whitespace-pre-wrap text-lg text-zinc-900">
+          {applicant.motivation}
+        </p>
+      </div>
 
-      <h2>職歴</h2>
-      <WorkExperienceListView
-        workExperiences={applicant.user.work_experiences}
-      />
+      <div className="border-t border-zinc-400 py-8">
+        <h2 className="mb-4 text-xl font-bold text-zinc-900">職歴</h2>
+        <WorkExperienceListView
+          workExperiences={applicant.user.work_experiences}
+        />
+      </div>
 
-      <h2>学歴</h2>
-      <EducationListView educations={applicant.user.educations} />
+      <div className="border-t border-zinc-400 py-8">
+        <h2 className="mb-4 text-xl font-bold text-zinc-900">学歴</h2>
+        <EducationListView educations={applicant.user.educations} />
+      </div>
 
-      <h2>資格</h2>
-      <CertificationListView certifications={applicant.user.certifications} />
-    </>
+      <div className="border-t border-zinc-400 py-8">
+        <h2 className="mb-4 text-xl font-bold text-zinc-900">資格</h2>
+        <CertificationListView certifications={applicant.user.certifications} />
+      </div>
+    </div>
   );
 }
