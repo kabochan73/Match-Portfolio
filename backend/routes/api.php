@@ -12,6 +12,7 @@ use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\BillingController;
 use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
 use App\Http\Controllers\Company\JobPostingController;
+use App\Http\Controllers\Company\JobPostingImageController;
 use App\Http\Controllers\Company\LikeController as CompanyLikeController;
 use App\Http\Controllers\Company\MessageController as CompanyMessageController;
 use App\Http\Controllers\Company\MessageThreadController as CompanyMessageThreadController;
@@ -203,6 +204,13 @@ Route::prefix('company')->group(function () {
         ->middleware('auth:company');
 
     Route::patch('/job-postings/{jobPosting}/close', [JobPostingController::class, 'close'])
+        ->middleware('auth:company');
+
+    // 求人画像(最大5枚)の登録・削除。POSTを使う理由は他の画像アップロードと同じ(上記コメント参照)
+    Route::post('/job-postings/{jobPosting}/images', [JobPostingImageController::class, 'store'])
+        ->middleware('auth:company');
+
+    Route::delete('/job-postings/{jobPosting}/images/{image}', [JobPostingImageController::class, 'destroy'])
         ->middleware('auth:company');
 
     // 自社の求人への応募者一覧・プロフィール詳細閲覧

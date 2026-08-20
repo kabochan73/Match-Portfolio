@@ -39,7 +39,7 @@ class JobPostingController extends Controller
 
     public function show(Request $request, int $jobPosting): JsonResponse
     {
-        $model = $this->findOwn($request, $jobPosting)->loadCount('likes');
+        $model = $this->findOwn($request, $jobPosting)->loadCount('likes')->load('jobPostingImages');
 
         return response()->json($model);
     }

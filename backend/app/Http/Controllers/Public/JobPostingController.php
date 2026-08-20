@@ -50,6 +50,7 @@ class JobPostingController extends Controller
             ->where('status', JobPostingStatus::Published)
             // emailを含む全カラムをそのまま公開しないよう、Company::publicColumns()に絞る
             ->with(['company' => fn ($query) => $query->select(Company::publicColumns())])
+            ->with('jobPostingImages')
             ->withCount('likes')
             ->findOrFail($jobPosting);
 
