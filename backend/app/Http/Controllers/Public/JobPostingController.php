@@ -34,6 +34,7 @@ class JobPostingController extends Controller
             // select対象にはavatar_pathを指定する。avatar_urlはCompanyモデルのAppends指定により
             // JSONシリアライズ時に自動で付与される
             ->with('company:id,name,avatar_path,prefecture')
+            ->with('jobPostingImages')
             ->withCount('likes')
             ->latest('published_at')
             ->get();

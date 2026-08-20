@@ -25,23 +25,41 @@ export default async function Page(props: PageProps<"/jobs">) {
   });
 
   return (
-    <>
-      <h1>求人検索・一覧</h1>
-
-      <form method="get">
-        <div>
-          <label htmlFor="keyword">キーワード</label>
+    <div className="mx-auto w-full max-w-5xl px-4 py-4">
+      <form
+        method="get"
+        className="mt-6 flex flex-wrap items-end gap-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+      >
+        <div className="min-w-40 flex-1">
+          <label
+            htmlFor="keyword"
+            className="text-sm font-medium text-zinc-700"
+          >
+            キーワード
+          </label>
           <input
             id="keyword"
             name="keyword"
             type="text"
             defaultValue={keyword}
+            placeholder="職種・言語など"
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
           />
         </div>
 
-        <div>
-          <label htmlFor="prefecture">勤務地</label>
-          <select id="prefecture" name="prefecture" defaultValue={prefecture}>
+        <div className="w-40">
+          <label
+            htmlFor="prefecture"
+            className="text-sm font-medium text-zinc-700"
+          >
+            勤務地
+          </label>
+          <select
+            id="prefecture"
+            name="prefecture"
+            defaultValue={prefecture}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          >
             <option value="">指定なし</option>
             {JOB_POSTING_PREFECTURES.map((p) => (
               <option key={p} value={p}>
@@ -51,12 +69,18 @@ export default async function Page(props: PageProps<"/jobs">) {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="employment_type">雇用形態</label>
+        <div className="w-40">
+          <label
+            htmlFor="employment_type"
+            className="text-sm font-medium text-zinc-700"
+          >
+            雇用形態
+          </label>
           <select
             id="employment_type"
             name="employment_type"
             defaultValue={employmentType}
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
           >
             <option value="">指定なし</option>
             {Object.entries(employmentTypeLabels).map(([value, label]) => (
@@ -67,32 +91,68 @@ export default async function Page(props: PageProps<"/jobs">) {
           </select>
         </div>
 
-        <button type="submit">検索する</button>
+        <button
+          type="submit"
+          className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
+        >
+          検索する
+        </button>
       </form>
 
-      {jobPostings === null || jobPostings.length === 0 ? (
-        <p>該当する求人が見つかりませんでした。</p>
-      ) : (
-        <ul>
-          {jobPostings.map((jobPosting) => (
-            <li key={jobPosting.id}>
-              <p>
-                <Link href={`/jobs/${jobPosting.id}`}>{jobPosting.title}</Link>
-              </p>
-              <p>{jobPosting.company.name}</p>
-              <p>
-                {employmentTypeLabels[jobPosting.employment_type]} /{" "}
-                {jobPosting.prefecture}
-              </p>
-              <p>
-                月給 {jobPosting.salary_min.toLocaleString()}円 〜{" "}
-                {jobPosting.salary_max.toLocaleString()}円
-              </p>
-              <p>応募数(いいね数): {jobPosting.likes_count}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-    </>
+      <div className="mt-8">
+        {jobPostings === null || jobPostings.length === 0 ? (
+          <p className="px-4 py-12 text-center text-sm text-zinc-500">
+            該当する求人が見つかりませんでした。
+          </p>
+        ) : (
+          <ul className="space-y-4">
+            {jobPostings.map((jobPosting) => (
+              <li key={jobPosting.id}>
+                <Link
+                  href={`/jobs/${jobPosting.id}`}
+                  className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-sky-300 hover:shadow-sm"
+                >
+                  {jobPosting.job_posting_images[0] ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外
+                    <img
+                      src={jobPosting.job_posting_images[0].url}
+                      alt=""
+                      width={192}
+                      height={128}
+                      className="h-32 w-48 shrink-0 border border-zinc-200 bg-zinc-50 object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-32 w-48 shrink-0 items-center justify-center border border-zinc-200 bg-zinc-50 text-xs text-zinc-400">
+                      No image
+                    </div>
+                  )}
+
+                  <div className="min-w-0">
+                    <p className="text-lg font-bold text-zinc-900">
+                      {jobPosting.title}
+                    </p>
+                    <p className="mt-1 truncate text-sm text-zinc-600">
+                      {jobPosting.company.name}
+                    </p>
+                    <p className="mt-1 text-sm text-zinc-600">
+                      {employmentTypeLabels[jobPosting.employment_type]} /{" "}
+                      {jobPosting.prefecture}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-zinc-800">
+                      月給 {jobPosting.salary_min.toLocaleString()}円 〜{" "}
+                      {jobPosting.salary_max.toLocaleString()}円
+                    </p>
+                  </div>
+
+                  <span className="absolute right-5 bottom-4 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-brand">
+                    ♡ {jobPosting.likes_count}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }

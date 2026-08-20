@@ -2,6 +2,7 @@
 
 use App\Models\Company;
 use App\Models\JobPosting;
+use App\Models\JobPostingImage;
 
 it('lists only published job postings', function () {
     JobPosting::factory()->create(['status' => 'published', 'published_at' => now()]);
@@ -51,6 +52,15 @@ it('includes likes_count and company summary in the listing', function () {
 
     $response->assertOk()->assertJsonPath('0.likes_count', 0)
         ->assertJsonPath('0.company.id', $jobPosting->company_id);
+});
+
+it('includes job_posting_images in the listing', function () {
+    $jobPosting = JobPosting::factory()->create(['status' => 'published', 'published_at' => now()]);
+    JobPostingImage::factory()->for($jobPosting)->create();
+
+    $response = $this->getJson('/api/job-postings');
+
+    $response->assertOk()->assertJsonCount(1, '0.job_posting_images');
 });
 
 it('shows a published job posting', function () {

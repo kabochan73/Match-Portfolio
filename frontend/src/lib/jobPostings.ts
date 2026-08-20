@@ -35,6 +35,7 @@ export type PublicJobPostingListItem = {
   salary_max: number;
   likes_count: number;
   company: PublicCompanySummary;
+  job_posting_images: { id: number; url: string; position: number }[];
 };
 
 // 求人詳細ではcompanyの基本プロフィール一式(components/company/profile/BasicProfileView等が
