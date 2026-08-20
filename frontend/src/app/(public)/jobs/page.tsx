@@ -17,12 +17,28 @@ export default async function Page(props: PageProps<"/jobs">) {
     typeof searchParams.employment_type === "string"
       ? searchParams.employment_type
       : "";
+  const pageParam =
+    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
+  const page = Number.isInteger(pageParam) && pageParam > 0 ? pageParam : 1;
 
-  const jobPostings = await searchJobPostings({
+  const result = await searchJobPostings({
     keyword,
     prefecture,
     employment_type: employmentType,
+    page,
   });
+
+  // ページネーションリンクで検索条件を維持するためのクエリ文字列を組み立てる
+  function buildPageHref(targetPage: number) {
+    const query = new URLSearchParams();
+    if (keyword) query.set("keyword", keyword);
+    if (prefecture) query.set("prefecture", prefecture);
+    if (employmentType) query.set("employment_type", employmentType);
+    if (targetPage > 1) query.set("page", String(targetPage));
+
+    const queryString = query.toString();
+    return `/jobs${queryString ? `?${queryString}` : ""}`;
+  }
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-4">
@@ -100,13 +116,13 @@ export default async function Page(props: PageProps<"/jobs">) {
       </form>
 
       <div className="mt-8">
-        {jobPostings === null || jobPostings.length === 0 ? (
+        {result === null || result.data.length === 0 ? (
           <p className="px-4 py-12 text-center text-sm text-zinc-500">
             該当する求人が見つかりませんでした。
           </p>
         ) : (
           <ul className="space-y-4">
-            {jobPostings.map((jobPosting) => (
+            {result.data.map((jobPosting) => (
               <li key={jobPosting.id}>
                 <Link
                   href={`/jobs/${jobPosting.id}`}
@@ -153,6 +169,40 @@ export default async function Page(props: PageProps<"/jobs">) {
           </ul>
         )}
       </div>
+
+      {result && result.last_page > 1 && (
+        <div className="mt-8 flex items-center justify-center gap-6">
+          {page > 1 ? (
+            <Link
+              href={buildPageHref(page - 1)}
+              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+            >
+              前へ
+            </Link>
+          ) : (
+            <span className="rounded-full border border-zinc-200 px-4 py-2 text-sm font-semibold text-zinc-300">
+              前へ
+            </span>
+          )}
+
+          <span className="text-sm text-zinc-600">
+            {result.current_page} / {result.last_page} ページ
+          </span>
+
+          {page < result.last_page ? (
+            <Link
+              href={buildPageHref(page + 1)}
+              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+            >
+              次へ
+            </Link>
+          ) : (
+            <span className="rounded-full border border-zinc-200 px-4 py-2 text-sm font-semibold text-zinc-300">
+              次へ
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

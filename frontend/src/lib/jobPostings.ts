@@ -72,6 +72,16 @@ export type JobPostingSearchParams = {
   keyword?: string;
   prefecture?: string;
   employment_type?: string;
+  page?: number;
+};
+
+// バックエンドのpaginate(30)と対応する、一覧のページネーション結果
+// (Laravelのデフォルトのページネーション形式のうち、フロントで使う項目だけを抜粋)
+export type PaginatedJobPostings = {
+  data: PublicJobPostingListItem[];
+  current_page: number;
+  last_page: number;
+  total: number;
 };
 
 // /jobsはsearchParamsで絞り込むため常に動的レンダリング(キャッシュしない)
@@ -81,9 +91,10 @@ export function searchJobPostings(params: JobPostingSearchParams) {
   if (params.prefecture) query.set("prefecture", params.prefecture);
   if (params.employment_type)
     query.set("employment_type", params.employment_type);
+  if (params.page && params.page > 1) query.set("page", String(params.page));
 
   const queryString = query.toString();
-  return publicFetch<PublicJobPostingListItem[]>(
+  return publicFetch<PaginatedJobPostings>(
     `/api/job-postings${queryString ? `?${queryString}` : ""}`,
     { cache: "no-store" },
   );
