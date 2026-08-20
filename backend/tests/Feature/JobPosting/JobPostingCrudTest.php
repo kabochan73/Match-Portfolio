@@ -2,6 +2,7 @@
 
 use App\Models\Company;
 use App\Models\JobPosting;
+use App\Models\JobPostingImage;
 use App\Models\Like;
 
 function validJobPostingPayload(array $overrides = []): array
@@ -30,6 +31,16 @@ it('lists only the authenticated company\'s own job postings with a like count',
     expect($response->json())->toHaveCount(1)
         ->and($response->json('0.title'))->toBe('自社の求人')
         ->and($response->json('0.likes_count'))->toBe(1);
+});
+
+it('includes job posting images in the listing', function () {
+    $company = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($company)->create();
+    JobPostingImage::factory()->for($jobPosting)->create();
+
+    $response = $this->actingAs($company, 'company')->getJson('/api/company/job-postings');
+
+    $response->assertOk()->assertJsonCount(1, '0.job_posting_images');
 });
 
 it('creates a job posting as draft for the authenticated company', function () {

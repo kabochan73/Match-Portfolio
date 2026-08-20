@@ -15,11 +15,16 @@ use Illuminate\Validation\ValidationException;
 class JobPostingController extends Controller
 {
     /**
-     * 認証中の企業自身の求人一覧。各求人にいいね数(=応募数)を付与する
+     * 認証中の企業自身の求人一覧。各求人にいいね数(=応募数)を付与し、
+     * 一覧カードのサムネイル表示用に求人画像も含める
      */
     public function index(Request $request): JsonResponse
     {
-        $jobPostings = $request->user('company')->jobPostings()->withCount('likes')->latest()->get();
+        $jobPostings = $request->user('company')->jobPostings()
+            ->withCount('likes')
+            ->with('jobPostingImages')
+            ->latest()
+            ->get();
 
         return response()->json($jobPostings);
     }
