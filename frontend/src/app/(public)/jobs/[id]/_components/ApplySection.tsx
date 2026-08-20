@@ -21,12 +21,18 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<ApplyValues>({
     resolver: zodResolver(applySchema),
     defaultValues: { likeType: "standard", motivation: "" },
   });
   const createLikeMutation = useCreateLike(jobPostingId);
+
+  const handleCancel = () => {
+    reset();
+    setIsFormOpen(false);
+  };
 
   const onSubmit = handleSubmit((values) => {
     createLikeMutation.mutate(values, {
@@ -89,13 +95,13 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
         onClick={() => setIsFormOpen(true)}
         className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
       >
-        この求人に応募する(いいね)
+        この求人に応募する👍
       </button>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="max-w-md space-y-4">
+    <form onSubmit={onSubmit} noValidate className="w-full space-y-4">
       {generalError && (
         <p role="alert" className="text-sm text-red-600">
           {generalError}
@@ -141,13 +147,23 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
         )}
       </div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        応募する
-      </button>
+      <div className="flex gap-3">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          応募する
+        </button>
+        <button
+          type="button"
+          onClick={handleCancel}
+          disabled={isSubmitting}
+          className="rounded-full border border-zinc-300 px-6 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          キャンセル
+        </button>
+      </div>
     </form>
   );
 }

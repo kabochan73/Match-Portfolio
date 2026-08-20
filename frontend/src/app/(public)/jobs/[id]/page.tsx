@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { employmentTypeLabels, getJobPosting } from "@/lib/jobPostings";
+import { memberCountRangeLabels } from "@/lib/memberCountRanges";
 import { ApplySection } from "./_components/ApplySection";
+import { ImageGallery } from "./_components/ImageGallery";
 
-// SC。ISR対象(revalidate 2h + オンデマンド再検証は未実装)。いいねボタンのみCCアイランド(ApplySection)として埋め込む
+// SC。ISR対象(revalidate 2h + オンデマンド再検証は未実装)。状態を持つ部分だけCCアイランド(ImageGallery・ApplySection)として埋め込む
 export async function generateStaticParams() {
   return [];
 }
@@ -20,9 +22,6 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
       <div className="pb-6">
-        <p className="text-sm font-semibold text-brand">
-          {jobPosting.company.name}
-        </p>
         <h1 className="mt-1 text-3xl font-bold text-zinc-900">
           {jobPosting.title}
         </h1>
@@ -42,23 +41,9 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
         </div>
       </div>
 
-      {jobPosting.job_posting_images.length > 0 && (
-        <div className="flex gap-3 overflow-x-auto pb-6">
-          {jobPosting.job_posting_images.map((image) => (
-            // eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外
-            <img
-              key={image.id}
-              src={image.url}
-              alt=""
-              width={320}
-              height={224}
-              className="h-56 w-80 shrink-0 rounded-lg border border-zinc-200 bg-zinc-50 object-cover"
-            />
-          ))}
-        </div>
-      )}
+      <ImageGallery images={jobPosting.job_posting_images} />
 
-      <div className="border-t border-zinc-200 py-8">
+      <div className="py-8">
         <h2 className="text-xl font-bold text-zinc-900">職務内容</h2>
         <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-700">
           {jobPosting.description}
@@ -73,7 +58,6 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
       </div>
 
       <div className="border-t border-zinc-200 py-8">
-        <h2 className="text-xl font-bold text-zinc-900">企業情報</h2>
         <div className="mt-4 flex items-center gap-4">
           <AvatarView avatarUrl={jobPosting.company.avatar_url} />
           <div>
@@ -88,13 +72,22 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
                 {jobPosting.company.prefecture}
               </p>
             )}
+            <div className="mt-1 flex flex-wrap gap-x-3 text-sm text-zinc-600">
+              {jobPosting.company.founded_year && (
+                <span>設立{jobPosting.company.founded_year}年</span>
+              )}
+              {jobPosting.company.member_count_range && (
+                <span>
+                  {memberCountRangeLabels[jobPosting.company.member_count_range]}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="border-t border-zinc-200 py-8">
-        <h2 className="text-xl font-bold text-zinc-900">応募する</h2>
-        <div className="mt-4">
+        <div className="mt-4 flex justify-end">
           <ApplySection jobPostingId={jobPosting.id} />
         </div>
       </div>

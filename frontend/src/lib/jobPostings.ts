@@ -1,4 +1,5 @@
 import { publicFetch } from "@/lib/api/publicFetch";
+import type { MemberCountRange } from "@/lib/memberCountRanges";
 import { PREFECTURES, type Prefecture } from "@/lib/prefectures";
 
 // company側のuseJobPostings.tsと同じ定義だが、actor(company認証)をまたいだ
@@ -60,7 +61,7 @@ export type PublicJobPostingDetail = {
     prefecture: Prefecture | null;
     address_line: string | null;
     founded_year: number | null;
-    member_count_range: string | null;
+    member_count_range: MemberCountRange | null;
     website_url: string | null;
     avatar_url: string | null;
     cover_image_url: string | null;
