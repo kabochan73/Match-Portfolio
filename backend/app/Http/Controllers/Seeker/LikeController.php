@@ -18,7 +18,11 @@ class LikeController extends Controller
     public function index(Request $request): JsonResponse
     {
         $likes = $request->user('web')->likes()
-            ->with('jobPosting:id,company_id,title,employment_type,prefecture,status')
+            ->with([
+                'jobPosting:id,company_id,title,employment_type,prefecture,salary_min,salary_max,status',
+                'jobPosting.company:id,name',
+                'jobPosting.jobPostingImages',
+            ])
             ->latest('applied_at')
             ->get();
 

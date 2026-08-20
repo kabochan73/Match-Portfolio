@@ -2,6 +2,7 @@
 
 use App\Enums\JobPostingStatus;
 use App\Models\JobPosting;
+use App\Models\JobPostingImage;
 use App\Models\Like;
 use App\Models\User;
 
@@ -154,6 +155,21 @@ it('lists only the authenticated user\'s own likes, newest first', function () {
 
 it('rejects unauthenticated requests to list likes', function () {
     $this->getJson('/api/likes')->assertUnauthorized();
+});
+
+it('includes the job posting\'s company, salary range, and images in the listing', function () {
+    $user = User::factory()->create();
+    $jobPosting = JobPosting::factory()->create(['salary_min' => 4000000, 'salary_max' => 6000000]);
+    JobPostingImage::factory()->for($jobPosting)->create();
+    Like::factory()->for($user)->for($jobPosting)->create();
+
+    $response = $this->actingAs($user, 'web')->getJson('/api/likes');
+
+    $response->assertOk()
+        ->assertJsonPath('0.job_posting.company.id', $jobPosting->company_id)
+        ->assertJsonPath('0.job_posting.salary_min', 4000000)
+        ->assertJsonPath('0.job_posting.salary_max', 6000000)
+        ->assertJsonCount(1, '0.job_posting.job_posting_images');
 });
 
 it('returns the remaining monthly like counts for the authenticated user', function () {
