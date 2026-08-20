@@ -44,8 +44,8 @@ export type JobPostingImage = {
 };
 
 // バックエンドのJobPostingモデルのJSON表現。likes_countはindex/showで
-// withCount('likes')されている場合のみ、job_posting_imagesはshowでload('jobPostingImages')
-// されている場合のみ含まれる(応募数=いいね数)
+// withCount('likes')されている場合のみ含まれる(応募数=いいね数)。
+// job_posting_imagesはindex/showどちらもload('jobPostingImages')済みで常に含まれる
 export type JobPosting = {
   id: number;
   title: string;
@@ -58,7 +58,7 @@ export type JobPosting = {
   status: JobPostingStatus;
   published_at: string | null;
   likes_count?: number;
-  job_posting_images?: JobPostingImage[];
+  job_posting_images: JobPostingImage[];
 };
 
 // 作成・更新の両方で使うフォームのスキーマ(バックエンドのJobPostingRequestが

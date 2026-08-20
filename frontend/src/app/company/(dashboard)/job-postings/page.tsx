@@ -56,25 +56,46 @@ export default function Page() {
             <li key={jobPosting.id}>
               <Link
                 href={`/company/job-postings/${jobPosting.id}`}
-                className="block rounded-xl border border-zinc-200 p-5 transition hover:border-emerald-300 hover:shadow-sm"
+                className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-emerald-300 hover:shadow-sm"
               >
-                <div className="flex items-start justify-between gap-4">
+                {jobPosting.job_posting_images[0] ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外
+                  <img
+                    src={jobPosting.job_posting_images[0].url}
+                    alt=""
+                    width={192}
+                    height={128}
+                    className="h-32 w-48 shrink-0 border border-zinc-200 bg-zinc-50 object-cover"
+                  />
+                ) : (
+                  <div className="flex h-32 w-48 shrink-0 items-center justify-center border border-zinc-200 bg-zinc-50 text-xs text-zinc-400">
+                    No image
+                  </div>
+                )}
+
+                <div className="min-w-0">
                   <p className="text-lg font-bold text-zinc-900">
                     {jobPosting.title}
                   </p>
-                  <span
-                    className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${statusBadgeClasses[jobPosting.status]}`}
-                  >
-                    {jobPostingStatusLabels[jobPosting.status]}
-                  </span>
+                  <p className="mt-1 text-sm text-zinc-600">
+                    {employmentTypeLabels[jobPosting.employment_type]} /{" "}
+                    {jobPosting.prefecture}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-zinc-800">
+                    月給 {jobPosting.salary_min.toLocaleString()}円 〜{" "}
+                    {jobPosting.salary_max.toLocaleString()}円
+                  </p>
                 </div>
-                <p className="mt-2 text-sm text-zinc-600">
-                  {employmentTypeLabels[jobPosting.employment_type]} /{" "}
-                  {jobPosting.prefecture}
-                </p>
-                <p className="mt-1 text-sm text-zinc-500">
-                  応募数(いいね数): {jobPosting.likes_count ?? 0}
-                </p>
+
+                <span
+                  className={`absolute top-5 right-5 rounded-full px-3 py-1 text-xs font-semibold ${statusBadgeClasses[jobPosting.status]}`}
+                >
+                  {jobPostingStatusLabels[jobPosting.status]}
+                </span>
+
+                <span className="absolute right-5 bottom-4 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  ♡ {jobPosting.likes_count ?? 0}
+                </span>
               </Link>
             </li>
           ))}
