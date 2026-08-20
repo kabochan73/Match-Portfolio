@@ -15,8 +15,12 @@ use Illuminate\Http\JsonResponse;
  */
 class JobPostingController extends Controller
 {
+    // 一覧の1ページあたりの件数
+    private const int PER_PAGE = 30;
+
     /**
-     * 求人検索・一覧。キーワード(タイトル・職務内容)・勤務地・雇用形態で絞り込む(すべて任意)
+     * 求人検索・一覧。キーワード(タイトル・職務内容)・勤務地・雇用形態で絞り込む(すべて任意)。
+     * PER_PAGE件ごとにページネーションし、?pageで対象ページを指定する(未指定時は1ページ目)
      */
     public function index(SearchJobPostingsRequest $request): JsonResponse
     {
@@ -37,7 +41,7 @@ class JobPostingController extends Controller
             ->with('jobPostingImages')
             ->withCount('likes')
             ->latest('published_at')
-            ->get();
+            ->paginate(self::PER_PAGE);
 
         return response()->json($jobPostings);
     }

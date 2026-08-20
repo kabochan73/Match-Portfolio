@@ -12,7 +12,7 @@ it('lists only published job postings', function () {
 
     $response = $this->getJson('/api/job-postings');
 
-    $response->assertOk()->assertJsonCount(1);
+    $response->assertOk()->assertJsonCount(1, 'data');
 });
 
 it('filters by keyword matching title or description', function () {
@@ -27,7 +27,7 @@ it('filters by keyword matching title or description', function () {
 
     $response = $this->getJson('/api/job-postings?keyword=Laravel');
 
-    $response->assertOk()->assertJsonCount(1)->assertJsonFragment(['title' => 'バックエンドエンジニア']);
+    $response->assertOk()->assertJsonCount(1, 'data')->assertJsonFragment(['title' => 'バックエンドエンジニア']);
 });
 
 it('filters by prefecture and employment_type', function () {
@@ -42,7 +42,7 @@ it('filters by prefecture and employment_type', function () {
 
     $response = $this->getJson('/api/job-postings?prefecture=リモート&employment_type=contract');
 
-    $response->assertOk()->assertJsonCount(1)->assertJsonFragment(['prefecture' => 'リモート']);
+    $response->assertOk()->assertJsonCount(1, 'data')->assertJsonFragment(['prefecture' => 'リモート']);
 });
 
 it('includes likes_count and company summary in the listing', function () {
@@ -50,8 +50,8 @@ it('includes likes_count and company summary in the listing', function () {
 
     $response = $this->getJson('/api/job-postings');
 
-    $response->assertOk()->assertJsonPath('0.likes_count', 0)
-        ->assertJsonPath('0.company.id', $jobPosting->company_id);
+    $response->assertOk()->assertJsonPath('data.0.likes_count', 0)
+        ->assertJsonPath('data.0.company.id', $jobPosting->company_id);
 });
 
 it('includes job_posting_images in the listing', function () {
@@ -60,7 +60,27 @@ it('includes job_posting_images in the listing', function () {
 
     $response = $this->getJson('/api/job-postings');
 
-    $response->assertOk()->assertJsonCount(1, '0.job_posting_images');
+    $response->assertOk()->assertJsonCount(1, 'data.0.job_posting_images');
+});
+
+it('paginates the listing at 30 job postings per page', function () {
+    JobPosting::factory()->count(35)->create(['status' => 'published', 'published_at' => now()]);
+
+    $response = $this->getJson('/api/job-postings');
+
+    $response->assertOk()->assertJsonCount(30, 'data')
+        ->assertJsonPath('current_page', 1)
+        ->assertJsonPath('last_page', 2)
+        ->assertJsonPath('total', 35);
+});
+
+it('returns the requested page of the listing', function () {
+    JobPosting::factory()->count(35)->create(['status' => 'published', 'published_at' => now()]);
+
+    $response = $this->getJson('/api/job-postings?page=2');
+
+    $response->assertOk()->assertJsonCount(5, 'data')
+        ->assertJsonPath('current_page', 2);
 });
 
 it('shows a published job posting', function () {
