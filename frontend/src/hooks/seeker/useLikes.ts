@@ -23,14 +23,19 @@ export const likeStatusLabels: Record<LikeStatus, string> = {
 };
 
 // 応募状況一覧で表示する、応募先求人の情報を絞ったサマリー
-// (バックエンドのLikeController@indexがwith('jobPosting:id,company_id,title,employment_type,prefecture,status')で返す形と対応)
+// (バックエンドのLikeController@indexが返す形と対応。/jobsの一覧カードと同じ見た目にするため
+// 会社名・給与・画像も含む)
 export type LikeJobPostingSummary = {
   id: number;
   company_id: number;
   title: string;
   employment_type: EmploymentType;
   prefecture: JobPostingPrefecture;
+  salary_min: number;
+  salary_max: number;
   status: "draft" | "published" | "unpublished" | "closed";
+  company: { id: number; name: string };
+  job_posting_images: { id: number; url: string; position: number }[];
 };
 
 // バックエンドのLikeモデルのJSON表現
