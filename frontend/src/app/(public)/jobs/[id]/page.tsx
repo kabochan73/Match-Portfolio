@@ -31,6 +31,22 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
       </p>
       <p>応募数(いいね数): {jobPosting.likes_count}</p>
 
+      {jobPosting.job_posting_images.length > 0 && (
+        <>
+          <h2>求人画像</h2>
+          {jobPosting.job_posting_images.map((image) => (
+            // eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外
+            <img
+              key={image.id}
+              src={image.url}
+              alt=""
+              width={240}
+              height={240}
+            />
+          ))}
+        </>
+      )}
+
       <h2>職務内容</h2>
       <p>{jobPosting.description}</p>
 

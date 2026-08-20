@@ -50,6 +50,7 @@ export type PublicJobPostingDetail = {
   salary_max: number;
   likes_count: number;
   published_at: string | null;
+  job_posting_images: { id: number; url: string; position: number }[];
   company: {
     id: number;
     name: string;

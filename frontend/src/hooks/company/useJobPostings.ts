@@ -35,8 +35,17 @@ export const jobPostingStatusLabels: Record<JobPostingStatus, string> = {
   closed: "募集終了",
 };
 
+// バックエンドのJobPostingImageモデルのJSON表現。pathは非表示化されており、
+// 代わりに完全URLのurlが含まれる(Companyのavatar_url等と同じ方針)
+export type JobPostingImage = {
+  id: number;
+  url: string;
+  position: number;
+};
+
 // バックエンドのJobPostingモデルのJSON表現。likes_countはindex/showで
-// withCount('likes')されている場合のみ含まれる(応募数=いいね数)
+// withCount('likes')されている場合のみ、job_posting_imagesはshowでload('jobPostingImages')
+// されている場合のみ含まれる(応募数=いいね数)
 export type JobPosting = {
   id: number;
   title: string;
@@ -49,6 +58,7 @@ export type JobPosting = {
   status: JobPostingStatus;
   published_at: string | null;
   likes_count?: number;
+  job_posting_images?: JobPostingImage[];
 };
 
 // 作成・更新の両方で使うフォームのスキーマ(バックエンドのJobPostingRequestが
@@ -72,7 +82,7 @@ export type JobPostingValues = z.infer<typeof jobPostingSchema>;
 // 一覧・個別取得・作成・更新・削除・公開状態変更の全フックで共有するクエリキー
 export const jobPostingsQueryKey = ["company", "jobPostings"] as const;
 
-function jobPostingQueryKey(id: number) {
+export function jobPostingQueryKey(id: number) {
   return ["company", "jobPostings", id] as const;
 }
 

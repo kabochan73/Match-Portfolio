@@ -14,6 +14,7 @@ import {
   useUpdateJobPosting,
 } from "@/hooks/company/useJobPostings";
 import { JobPostingForm } from "@/components/company/job-posting/JobPostingForm";
+import { JobPostingImagesSection } from "@/components/company/job-posting/JobPostingImagesSection";
 
 // ApiValidationErrorのフィールド名がstatus/billingのどちらでも表示できるよう、
 // 最初に見つかったエラーメッセージを拾う(公開・非公開・募集終了の各エンドポイントは
@@ -138,6 +139,13 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
         >
           削除する
         </button>
+      </div>
+
+      <div className="pb-8">
+        <JobPostingImagesSection
+          jobPostingId={jobPostingId}
+          images={jobPosting.job_posting_images ?? []}
+        />
       </div>
 
       <JobPostingForm
