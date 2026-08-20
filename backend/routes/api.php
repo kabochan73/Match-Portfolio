@@ -110,6 +110,12 @@ Route::get('/likes', [LikeController::class, 'index'])
 Route::post('/likes', [LikeController::class, 'store'])
     ->middleware('auth:web');
 
+// 今月の残りいいね数(通常・スーパー別枠)。/likes/{like}という動的パスと衝突しないよう、
+// 静的パスは先に定義する必要はないが(求職者側に/likes/{like}ルートは存在しない)、将来追加する際の
+// 事故を避けるため慣習的にここへ置く
+Route::get('/likes/remaining', [LikeController::class, 'remaining'])
+    ->middleware('auth:web');
+
 // 求職者のメッセージスレッド(マッチ成立済みのlikes)一覧・非表示
 Route::get('/message-threads', [MessageThreadController::class, 'index'])
     ->middleware('auth:web');

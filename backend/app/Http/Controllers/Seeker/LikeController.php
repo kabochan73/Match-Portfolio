@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seeker;
 
 use App\Enums\LikeStatus;
+use App\Enums\LikeType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Like\LikeRequest;
 use App\Notifications\NewApplication;
@@ -42,5 +43,31 @@ class LikeController extends Controller
         $like->jobPosting->company->notify(new NewApplication($like));
 
         return response()->json($like, 201);
+    }
+
+    /**
+     * 認証中の求職者の今月の残りいいね数(通常・スーパー別枠)。
+     * 上限・集計ロジックはLikeRequestの応募時バリデーションと同じ基準に揃える
+     */
+    public function remaining(Request $request): JsonResponse
+    {
+        $user = $request->user('web');
+
+        $remaining = collect(LikeType::cases())->mapWithKeys(function (LikeType $likeType) use ($user) {
+            $limit = $likeType->monthlyLimit();
+
+            $used = $user->likes()
+                ->where('like_type', $likeType->value)
+                ->whereBetween('applied_at', [now()->startOfMonth(), now()->endOfMonth()])
+                ->count();
+
+            return [$likeType->value => [
+                'limit' => $limit,
+                'used' => $used,
+                'remaining' => max($limit - $used, 0),
+            ]];
+        });
+
+        return response()->json($remaining);
     }
 }

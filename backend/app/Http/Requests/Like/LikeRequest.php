@@ -14,12 +14,6 @@ use Illuminate\Validation\Validator;
  */
 class LikeRequest extends FormRequest
 {
-    // 通常いいねの月間上限(REQUIREMENTS.md 4.2)
-    private const int STANDARD_MONTHLY_LIMIT = 10;
-
-    // スーパーいいねの月間上限。通常の上限とは別枠で管理する
-    private const int SUPER_MONTHLY_LIMIT = 1;
-
     public function authorize(): bool
     {
         return true;
@@ -79,7 +73,7 @@ class LikeRequest extends FormRequest
             }
 
             $likeType = LikeType::from($this->input('like_type'));
-            $limit = $likeType === LikeType::Super ? self::SUPER_MONTHLY_LIMIT : self::STANDARD_MONTHLY_LIMIT;
+            $limit = $likeType->monthlyLimit();
 
             $usedThisMonth = $user->likes()
                 ->where('like_type', $likeType->value)

@@ -155,3 +155,40 @@ it('lists only the authenticated user\'s own likes, newest first', function () {
 it('rejects unauthenticated requests to list likes', function () {
     $this->getJson('/api/likes')->assertUnauthorized();
 });
+
+it('returns the remaining monthly like counts for the authenticated user', function () {
+    $user = User::factory()->create();
+    Like::factory()->count(3)->for($user)->create(['like_type' => 'standard', 'applied_at' => now()]);
+    Like::factory()->for($user)->create(['like_type' => 'super', 'applied_at' => now()]);
+
+    $response = $this->actingAs($user, 'web')->getJson('/api/likes/remaining');
+
+    $response->assertOk();
+    expect($response->json('standard'))->toBe(['limit' => 10, 'used' => 3, 'remaining' => 7])
+        ->and($response->json('super'))->toBe(['limit' => 1, 'used' => 1, 'remaining' => 0]);
+});
+
+it('does not count last month\'s likes toward the remaining count', function () {
+    $user = User::factory()->create();
+    Like::factory()->count(5)->for($user)->create(['like_type' => 'standard', 'applied_at' => now()->subMonth()]);
+
+    $response = $this->actingAs($user, 'web')->getJson('/api/likes/remaining');
+
+    $response->assertOk();
+    expect($response->json('standard'))->toBe(['limit' => 10, 'used' => 0, 'remaining' => 10]);
+});
+
+it('does not count another user\'s likes toward the remaining count', function () {
+    $user = User::factory()->create();
+    $other = User::factory()->create();
+    Like::factory()->count(5)->for($other)->create(['like_type' => 'standard', 'applied_at' => now()]);
+
+    $response = $this->actingAs($user, 'web')->getJson('/api/likes/remaining');
+
+    $response->assertOk();
+    expect($response->json('standard'))->toBe(['limit' => 10, 'used' => 0, 'remaining' => 10]);
+});
+
+it('rejects unauthenticated requests to fetch the remaining like counts', function () {
+    $this->getJson('/api/likes/remaining')->assertUnauthorized();
+});
