@@ -30,5 +30,8 @@ export function useProfile() {
   return useQuery({
     queryKey: ["company", "profile"],
     queryFn: () => apiFetch<CompanyProfile>("/api/company/profile"),
+    // 未ログイン時の401は「ログインしていないだけ」の正常系であり、リトライしても結果は
+    // 変わらない。Header.tsxの同じクエリキーへの問い合わせと挙動を揃える意味でも明示しておく
+    retry: false,
   });
 }
