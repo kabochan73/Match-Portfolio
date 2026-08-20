@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ApiValidationError } from "@/lib/api/client";
 import {
@@ -39,11 +40,19 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
   const closeMutation = useCloseJobPosting();
 
   if (isLoading) {
-    return <p>読み込み中...</p>;
+    return (
+      <p className="px-4 py-12 text-center text-sm text-zinc-500">
+        読み込み中...
+      </p>
+    );
   }
 
   if (isError || !jobPosting) {
-    return <p role="alert">求人の取得に失敗しました。</p>;
+    return (
+      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
+        求人の取得に失敗しました。
+      </p>
+    );
   }
 
   const statusActionError =
@@ -52,54 +61,84 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
     firstErrorMessage(closeMutation.error);
 
   return (
-    <>
-      <h1>求人編集(ID: {id})</h1>
-      <p>現在の状態: {jobPostingStatusLabels[jobPosting.status]}</p>
-
-      {statusActionError && <p role="alert">{statusActionError}</p>}
-
-      {(jobPosting.status === "draft" ||
-        jobPosting.status === "unpublished") && (
-        <button
-          type="button"
-          disabled={publishMutation.isPending}
-          onClick={() => publishMutation.mutate(jobPostingId)}
+    <div className="mx-auto w-full max-w-4xl px-4 py-12">
+      <div className="flex items-center justify-between gap-4 pb-2">
+        <p className="mt-1 text-xl font-bold text-zinc-800">
+          現在の状態: {jobPostingStatusLabels[jobPosting.status]}
+        </p>
+        <Link
+          href="/company/job-postings"
+          className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
         >
-          公開する
-        </button>
+          一覧に戻る
+        </Link>
+      </div>
+
+      {statusActionError && (
+        <p role="alert" className="mt-2 text-sm text-red-600">
+          {statusActionError}
+        </p>
       )}
 
-      {jobPosting.status === "published" && (
+      <div className="flex flex-wrap gap-3 py-6">
+        {(jobPosting.status === "draft" ||
+          jobPosting.status === "unpublished") && (
+          <button
+            type="button"
+            disabled={publishMutation.isPending}
+            onClick={() => publishMutation.mutate(jobPostingId)}
+            className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            公開する
+          </button>
+        )}
+
+        {jobPosting.status === "closed" && (
+          <button
+            type="button"
+            disabled={publishMutation.isPending}
+            onClick={() => publishMutation.mutate(jobPostingId)}
+            className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            再公開する
+          </button>
+        )}
+
+        {jobPosting.status === "published" && (
+          <button
+            type="button"
+            disabled={unpublishMutation.isPending}
+            onClick={() => unpublishMutation.mutate(jobPostingId)}
+            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            非公開にする
+          </button>
+        )}
+
+        {jobPosting.status !== "closed" && (
+          <button
+            type="button"
+            disabled={closeMutation.isPending}
+            onClick={() => closeMutation.mutate(jobPostingId)}
+            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            募集終了する
+          </button>
+        )}
+
         <button
           type="button"
-          disabled={unpublishMutation.isPending}
-          onClick={() => unpublishMutation.mutate(jobPostingId)}
+          disabled={deleteMutation.isPending}
+          onClick={() => {
+            deleteMutation.mutate(jobPostingId, {
+              onSuccess: () => router.push("/company/job-postings"),
+            });
+          }}
+          className="rounded-full border border-red-300 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          非公開にする
+          削除する
         </button>
-      )}
-
-      {jobPosting.status !== "closed" && (
-        <button
-          type="button"
-          disabled={closeMutation.isPending}
-          onClick={() => closeMutation.mutate(jobPostingId)}
-        >
-          募集終了する
-        </button>
-      )}
-
-      <button
-        type="button"
-        disabled={deleteMutation.isPending}
-        onClick={() => {
-          deleteMutation.mutate(jobPostingId, {
-            onSuccess: () => router.push("/company/job-postings"),
-          });
-        }}
-      >
-        削除する
-      </button>
+      </div>
 
       <JobPostingForm
         submitLabel="更新する"
@@ -117,6 +156,12 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
           updateMutation.mutate(values, { onError });
         }}
       />
-    </>
+
+      {updateMutation.isSuccess && (
+        <p className="mt-4 text-right text-sm text-emerald-600">
+          更新しました。
+        </p>
+      )}
+    </div>
   );
 }

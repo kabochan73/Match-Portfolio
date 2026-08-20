@@ -31,6 +31,20 @@ it('republishes a job posting that was auto-unpublished for non-payment', functi
     expect($jobPosting->fresh()->status)->toBe(JobPostingStatus::Published);
 });
 
+it('republishes a job posting that was closed', function () {
+    $company = Company::factory()->create();
+    createSubscriptionFor($company, 'active');
+    $jobPosting = JobPosting::factory()->for($company)->create([
+        'status' => 'closed',
+        'published_at' => now()->subDays(10),
+    ]);
+
+    $response = $this->actingAs($company, 'company')->patchJson("/api/company/job-postings/{$jobPosting->id}/publish");
+
+    $response->assertOk();
+    expect($jobPosting->fresh()->status)->toBe(JobPostingStatus::Published);
+});
+
 it('rejects publishing when the company has no active subscription', function () {
     $company = Company::factory()->create();
     $jobPosting = JobPosting::factory()->for($company)->create(['status' => 'draft']);

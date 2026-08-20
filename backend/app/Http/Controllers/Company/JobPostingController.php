@@ -61,20 +61,20 @@ class JobPostingController extends Controller
     }
 
     /**
-     * 求人を公開する。下書き(初回公開)、または課金失敗で自動非公開になった求人
-     * (支払い方法更新後の再公開)のいずれかからのみ遷移できる。
+     * 求人を公開する。下書き(初回公開)、課金失敗で自動非公開になった求人
+     * (支払い方法更新後の再公開)、募集終了した求人(再募集)のいずれかからのみ遷移できる。
      * 「決済が有効な間は求人を何件でも掲載できる」(REQUIREMENTS.md 4.4)という要件のため、
      * 課金ステータスが課金中でない場合はここで拒否する(未契約のまま/未払いのままでは公開できない)。
-     * published_atは初回公開日時のため、再公開(公開→非公開→再公開)では上書きしない
+     * published_atは初回公開日時のため、再公開(公開→非公開/終了→再公開)では上書きしない
      */
     public function publish(Request $request, int $jobPosting): JsonResponse
     {
         $company = $request->user('company');
         $model = $this->findOwn($request, $jobPosting);
 
-        if (! in_array($model->status, [JobPostingStatus::Draft, JobPostingStatus::Unpublished], true)) {
+        if (! in_array($model->status, [JobPostingStatus::Draft, JobPostingStatus::Unpublished, JobPostingStatus::Closed], true)) {
             throw ValidationException::withMessages([
-                'status' => ['下書き、または非公開状態の求人のみ公開できます。'],
+                'status' => ['下書き、非公開、または募集終了状態の求人のみ公開できます。'],
             ]);
         }
 
@@ -111,7 +111,7 @@ class JobPostingController extends Controller
     }
 
     /**
-     * 募集を終了する(恒久的に非表示。再度公開することはできない)
+     * 募集を終了する。closed状態でも企業がpublishエンドポイントを叩けば再募集できる
      */
     public function close(Request $request, int $jobPosting): JsonResponse
     {
