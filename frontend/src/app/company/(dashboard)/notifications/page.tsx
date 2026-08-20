@@ -38,44 +38,66 @@ export default function Page() {
   const { data: notifications, isLoading, isError } = useNotifications();
   const markReadMutation = useMarkNotificationRead();
 
-  if (isLoading) {
-    return <p>読み込み中...</p>;
-  }
-
-  if (isError || !notifications) {
-    return <p role="alert">通知の取得に失敗しました。</p>;
-  }
-
   return (
-    <>
-      <h1>通知</h1>
+    <div className="mx-auto w-full max-w-3xl px-4 py-12">
+      <h1 className="pb-8 text-2xl font-bold text-zinc-900">通知</h1>
 
-      {notifications.length === 0 ? (
-        <p>通知はまだありません。</p>
-      ) : (
-        <ul>
+      {isLoading && (
+        <p className="px-4 py-12 text-center text-sm text-zinc-500">
+          読み込み中...
+        </p>
+      )}
+
+      {isError && (
+        <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
+          通知の取得に失敗しました。
+        </p>
+      )}
+
+      {notifications && notifications.length === 0 && (
+        <p className="px-4 py-12 text-center text-sm text-zinc-500">
+          通知はまだありません。
+        </p>
+      )}
+
+      {notifications && notifications.length > 0 && (
+        <ul className="space-y-3">
           {notifications.map((notification) => {
             const { text, href } = describe(notification);
+            const isUnread = notification.read_at === null;
 
             return (
               <li key={notification.id}>
-                {notification.read_at === null && <strong>未読 </strong>}
                 <Link
                   href={href}
                   onClick={() => {
-                    if (notification.read_at === null) {
+                    if (isUnread) {
                       markReadMutation.mutate(notification.id);
                     }
                   }}
+                  className={`flex items-start gap-3 border p-4 transition hover:border-emerald-300 hover:shadow-sm ${
+                    isUnread ? "border-emerald-200 bg-emerald-50" : "border-zinc-200"
+                  }`}
                 >
-                  {text}
+                  <span
+                    className={`mt-1.5 size-2 shrink-0 rounded-full ${isUnread ? "bg-emerald-600" : "bg-transparent"}`}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={`text-sm ${isUnread ? "font-semibold text-zinc-900" : "text-zinc-600"}`}
+                    >
+                      {text}
+                    </p>
+                    <p className="mt-1 text-xs text-zinc-400">
+                      {notification.created_at.slice(0, 16).replace("T", " ")}
+                    </p>
+                  </div>
                 </Link>
-                <p>{notification.created_at.slice(0, 16).replace("T", " ")}</p>
               </li>
             );
           })}
         </ul>
       )}
-    </>
+    </div>
   );
 }
