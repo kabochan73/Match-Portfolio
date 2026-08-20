@@ -62,48 +62,90 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
 
   if (isError || !profile) {
     return (
-      <p>
-        <Link href="/seeker/login">ログイン</Link>すると応募できます。
+      <p className="text-sm text-zinc-600">
+        <Link
+          href="/seeker/login"
+          className="font-semibold text-brand hover:underline"
+        >
+          ログイン
+        </Link>
+        すると応募できます。
       </p>
     );
   }
 
   if (createLikeMutation.isSuccess) {
-    return <p>応募しました。企業からの返答をお待ちください。</p>;
+    return (
+      <p className="text-sm font-semibold text-brand">
+        応募しました。企業からの返答をお待ちください。
+      </p>
+    );
   }
 
   if (!isFormOpen) {
     return (
-      <button type="button" onClick={() => setIsFormOpen(true)}>
+      <button
+        type="button"
+        onClick={() => setIsFormOpen(true)}
+        className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
+      >
         この求人に応募する(いいね)
       </button>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate>
-      {generalError && <p role="alert">{generalError}</p>}
+    <form onSubmit={onSubmit} noValidate className="max-w-md space-y-4">
+      {generalError && (
+        <p role="alert" className="text-sm text-red-600">
+          {generalError}
+        </p>
+      )}
 
       <div>
-        <span>いいねの種類</span>
-        <label>
-          <input type="radio" value="standard" {...register("likeType")} />
-          いいね
-        </label>
-        <label>
-          <input type="radio" value="super" {...register("likeType")} />
-          スーパーいいね
-        </label>
-        {errors.likeType && <p role="alert">{errors.likeType.message}</p>}
+        <span className="text-sm font-medium text-zinc-700">いいねの種類</span>
+        <div className="mt-1 flex gap-4">
+          <label className="flex items-center gap-1.5 text-sm text-zinc-700">
+            <input type="radio" value="standard" {...register("likeType")} />
+            いいね
+          </label>
+          <label className="flex items-center gap-1.5 text-sm text-zinc-700">
+            <input type="radio" value="super" {...register("likeType")} />
+            スーパーいいね
+          </label>
+        </div>
+        {errors.likeType && (
+          <p role="alert" className="mt-1 text-xs text-red-600">
+            {errors.likeType.message}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="motivation">志望動機</label>
-        <textarea id="motivation" {...register("motivation")} />
-        {errors.motivation && <p role="alert">{errors.motivation.message}</p>}
+        <label
+          htmlFor="motivation"
+          className="text-sm font-medium text-zinc-700"
+        >
+          志望動機
+        </label>
+        <textarea
+          id="motivation"
+          {...register("motivation")}
+          rows={5}
+          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+        />
+        {errors.motivation && (
+          <p role="alert" className="mt-1 text-xs text-red-600">
+            {errors.motivation.message}
+          </p>
+        )}
       </div>
 
-      <button type="submit" disabled={isSubmitting}>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+      >
         応募する
       </button>
     </form>
