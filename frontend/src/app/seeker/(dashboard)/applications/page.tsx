@@ -46,12 +46,13 @@ export default function Page() {
 
       {likes && likes.length > 0 && (
         <ul className="space-y-4">
-          {likes.map((like) => (
-            <li key={like.id}>
-              <Link
-                href={`/jobs/${like.job_posting_id}`}
-                className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-sky-300 hover:shadow-sm"
-              >
+          {likes.map((like) => {
+            // 求人が非公開/募集終了になった後は、公開求人詳細ページ(/jobs/[id])が
+            // 404を返すため、公開中の求人だけをリンクにする(それ以外はクリックできないカードにする)
+            const isJobPostingAvailable = like.job_posting.status === "published";
+
+            const cardContent = (
+              <>
                 {like.job_posting.job_posting_images[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外
                   <img
@@ -88,6 +89,11 @@ export default function Page() {
                     </span>
                     応募日 {like.applied_at.slice(0, 10)}
                   </p>
+                  {!isJobPostingAvailable && (
+                    <p className="mt-1 text-xs text-zinc-400">
+                      この求人は現在公開されていません
+                    </p>
+                  )}
                 </div>
 
                 <span
@@ -95,9 +101,26 @@ export default function Page() {
                 >
                   {likeStatusLabels[like.status]}
                 </span>
-              </Link>
-            </li>
-          ))}
+              </>
+            );
+
+            return (
+              <li key={like.id}>
+                {isJobPostingAvailable ? (
+                  <Link
+                    href={`/jobs/${like.job_posting_id}`}
+                    className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-sky-300 hover:shadow-sm"
+                  >
+                    {cardContent}
+                  </Link>
+                ) : (
+                  <div className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 opacity-60">
+                    {cardContent}
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
