@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,6 +10,13 @@ import {
   User,
   UserPlus,
 } from "lucide-react";
+
+const steps = [
+  { icon: UserPlus, title: "会員登録", description: "プロフィールを登録！" },
+  { icon: FileHeart, title: "求人に応募", description: "気になる求人にいいね！" },
+  { icon: Handshake, title: "マッチ", description: "企業からいいねでマッチ！" },
+  { icon: Mail, title: "企業とやり取り", description: "後は自由にメッセージ！" },
+] as const;
 
 // トップページ。求人一覧・検索は/jobsに完結させ、
 // ここではサービス説明とログイン・新規登録の導線のみを置く
@@ -142,64 +150,30 @@ export default function Home() {
         </div>
 
         <div className="mt-12 flex flex-col items-center gap-10 sm:flex-row sm:items-start sm:justify-center sm:gap-6">
-          <div className="w-44 text-center">
-            <p className="text-sm font-bold text-brand">01</p>
-            <div className="mx-auto mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
-              <UserPlus className="text-brand" size={26} />
-            </div>
-            <p className="mt-3 font-semibold text-zinc-900">会員登録</p>
-            <p className="mt-1 text-sm text-zinc-600">
-              プロフィールを登録！
-            </p>
-          </div>
-
-          <ChevronRight
-            className="hidden shrink-0 text-zinc-300 sm:mt-9 sm:block"
-            size={24}
-          />
-
-          <div className="w-44 text-center">
-            <p className="text-sm font-bold text-brand">02</p>
-            <div className="mx-auto mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
-              <FileHeart className="text-brand" size={26} />
-            </div>
-            <p className="mt-3 font-semibold text-zinc-900">求人に応募</p>
-            <p className="mt-1 text-sm text-zinc-600">
-              気になる求人にいいね！
-            </p>
-          </div>
-
-          <ChevronRight
-            className="hidden shrink-0 text-zinc-300 sm:mt-9 sm:block"
-            size={24}
-          />
-
-          <div className="w-44 text-center">
-            <p className="text-sm font-bold text-brand">03</p>
-            <div className="mx-auto mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
-              <Handshake className="text-brand" size={26} />
-            </div>
-            <p className="mt-3 font-semibold text-zinc-900">マッチ</p>
-            <p className="mt-1 text-sm text-zinc-600">
-              企業からいいねでマッチ！
-            </p>
-          </div>
-
-          <ChevronRight
-            className="hidden shrink-0 text-zinc-300 sm:mt-9 sm:block"
-            size={24}
-          />
-
-          <div className="w-44 text-center">
-            <p className="text-sm font-bold text-brand">04</p>
-            <div className="mx-auto mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
-              <Mail className="text-brand" size={26} />
-            </div>
-            <p className="mt-3 font-semibold text-zinc-900">企業とやり取り</p>
-            <p className="mt-1 text-sm text-zinc-600">
-              後は自由にメッセージ！
-            </p>
-          </div>
+          {steps.map((step, index) => (
+            <Fragment key={step.title}>
+              {index > 0 && (
+                <ChevronRight
+                  className="hidden shrink-0 text-zinc-300 sm:mt-9 sm:block"
+                  size={24}
+                />
+              )}
+              <div className="w-44 text-center">
+                <p className="text-sm font-bold text-brand">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <div className="mx-auto mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
+                  <step.icon className="text-brand" size={26} />
+                </div>
+                <p className="mt-3 font-semibold text-zinc-900">
+                  {step.title}
+                </p>
+                <p className="mt-1 text-sm text-zinc-600">
+                  {step.description}
+                </p>
+              </div>
+            </Fragment>
+          ))}
         </div>
       </section>
     </div>
