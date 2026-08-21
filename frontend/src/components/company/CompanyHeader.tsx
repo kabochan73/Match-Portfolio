@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   Bell,
   Briefcase,
+  CreditCard,
   LogOut,
   MessageCircle,
   Search,
@@ -19,13 +20,14 @@ const navItems = [
   { href: "/company/applicants", label: "応募者一覧", icon: Users },
   { href: "/company/messages", label: "メッセージ", icon: MessageCircle },
   { href: "/company/notifications", label: "通知", icon: Bell },
+  { href: "/company/billing", label: "課金", icon: CreditCard },
   { href: "/company/profile", label: "マイページ", icon: User },
 ] as const;
 
 // 企業ダッシュボード((dashboard)ルートグループ)専用のヘッダー。
 // ログイン中であることが前提のセクションなので、全ページ共通のHeaderとは分けて
-// 求人検索・求人管理・応募者・メッセージ・通知・マイページへの導線とログアウトを持たせる
-// (seekerのSeekerHeaderと同じ方針)。billingは未実装のスタブページのためnavItemsには含めない
+// 求人検索・求人管理・応募者・メッセージ・通知・課金・マイページへの導線とログアウトを持たせる
+// (seekerのSeekerHeaderと同じ方針)
 export function CompanyHeader() {
   const pathname = usePathname();
   const logoutMutation = useLogout();
