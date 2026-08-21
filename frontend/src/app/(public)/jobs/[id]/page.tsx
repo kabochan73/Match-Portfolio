@@ -75,7 +75,7 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
           <div>
             <Link
               href={`/companies/${jobPosting.company.id}`}
-              className="text-lg font-semibold text-zinc-900 hover:underline"
+              className="text-lg font-semibold text-zinc-900 hover:text-brand"
             >
               {jobPosting.company.name}
             </Link>
