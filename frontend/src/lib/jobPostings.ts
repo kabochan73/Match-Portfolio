@@ -103,6 +103,8 @@ export function searchJobPostings(params: JobPostingSearchParams) {
 // /jobs/[id]はISR対象。2時間を上限に再検証する(オンデマンド再検証は未実装、将来追加予定)
 export function getJobPosting(id: string) {
   return publicFetch<PublicJobPostingDetail>(`/api/job-postings/${id}`, {
-    next: { revalidate: 7200 },
+    // タグはバックエンドの求人更新エンドポイントが/api/revalidateを叩く際の
+    // オンデマンド再検証と対応させる(revalidate: 7200は失敗時のフォールバックの上限)
+    next: { revalidate: 7200, tags: [`job-posting-${id}`] },
   });
 }

@@ -21,6 +21,8 @@ export type PublicCompanyProfile = {
 // /companies/[id]はISR対象。/jobs/[id]と同じ理由で2時間を上限に再検証する
 export function getCompany(id: string) {
   return publicFetch<PublicCompanyProfile>(`/api/companies/${id}`, {
-    next: { revalidate: 7200 },
+    // タグはバックエンドの企業プロフィール更新エンドポイントが/api/revalidateを叩く際の
+    // オンデマンド再検証と対応させる(revalidate: 7200は失敗時のフォールバックの上限)
+    next: { revalidate: 7200, tags: [`company-${id}`] },
   });
 }

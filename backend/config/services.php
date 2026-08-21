@@ -40,4 +40,11 @@ return [
         'job_posting_price_id' => env('STRIPE_JOB_POSTING_PRICE_ID'),
     ],
 
+    'nextjs' => [
+        // /api/revalidate(ISRのオンデマンド再検証)へのURL。コンテナ間通信のためFRONTEND_URL
+        // (ブラウザ向け、localhost指定)とは別に持つ
+        'internal_url' => env('NEXTJS_INTERNAL_URL', 'http://localhost:3000'),
+        'revalidate_secret' => env('REVALIDATE_SECRET'),
+    ],
+
 ];

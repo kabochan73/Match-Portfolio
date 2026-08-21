@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateCompanyProfileRequest;
+use App\Services\NextjsRevalidationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -22,11 +23,13 @@ class ProfileController extends Controller
      * 企業の基本プロフィール(会社名・会社概要・電話番号・所在地・設立年・メンバー数・WebサイトURL)を更新する。
      * 画像(ロゴ・カバー画像)はAvatarController/CoverImageControllerで別管理
      */
-    public function update(UpdateCompanyProfileRequest $request): JsonResponse
+    public function update(UpdateCompanyProfileRequest $request, NextjsRevalidationService $revalidator): JsonResponse
     {
         $company = $request->user('company');
 
         $company->update($request->validated());
+
+        $revalidator->revalidate("company-{$company->id}");
 
         return response()->json($company);
     }

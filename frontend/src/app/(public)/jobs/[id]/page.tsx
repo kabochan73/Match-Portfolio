@@ -6,7 +6,8 @@ import { memberCountRangeLabels } from "@/lib/memberCountRanges";
 import { ApplySection } from "./_components/ApplySection";
 import { ImageGallery } from "./_components/ImageGallery";
 
-// SC。ISR対象(revalidate 2h + オンデマンド再検証は未実装)。状態を持つ部分だけCCアイランド(ImageGallery・ApplySection)として埋め込む
+// SC。ISR対象(revalidate 2h + バックエンドからの/api/revalidate経由のオンデマンド再検証)。
+// 状態を持つ部分だけCCアイランド(ImageGallery・ApplySection)として埋め込む
 export async function generateStaticParams() {
   return [];
 }

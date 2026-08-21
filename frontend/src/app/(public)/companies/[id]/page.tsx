@@ -4,7 +4,7 @@ import { BasicProfileView } from "@/components/company/profile/BasicProfileView"
 import { CoverImageView } from "@/components/company/cover-image/CoverImageView";
 import { getCompany } from "@/lib/companies";
 
-// SC。ISR対象(revalidate 2h + オンデマンド再検証は未実装)。
+// SC。ISR対象(revalidate 2h + バックエンドからの/api/revalidate経由のオンデマンド再検証)。
 // 表示部分はcompany/(dashboard)/profileと同じsrc/components/company/配下を使い回す
 export async function generateStaticParams() {
   return [];

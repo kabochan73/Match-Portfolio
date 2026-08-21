@@ -7,6 +7,7 @@ use App\Enums\JobPostingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPosting\JobPostingRequest;
 use App\Models\JobPosting;
+use App\Services\NextjsRevalidationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -49,18 +50,22 @@ class JobPostingController extends Controller
         return response()->json($model);
     }
 
-    public function update(JobPostingRequest $request, int $jobPosting): JsonResponse
+    public function update(JobPostingRequest $request, int $jobPosting, NextjsRevalidationService $revalidator): JsonResponse
     {
         $model = $this->findOwn($request, $jobPosting);
 
         $model->update($request->validated());
 
+        $revalidator->revalidate("job-posting-{$model->id}");
+
         return response()->json($model);
     }
 
-    public function destroy(Request $request, int $jobPosting): Response
+    public function destroy(Request $request, int $jobPosting, NextjsRevalidationService $revalidator): Response
     {
         $this->findOwn($request, $jobPosting)->delete();
+
+        $revalidator->revalidate("job-posting-{$jobPosting}");
 
         return response()->noContent();
     }
@@ -72,7 +77,7 @@ class JobPostingController extends Controller
      * 課金ステータスが課金中でない場合はここで拒否する(未契約のまま/未払いのままでは公開できない)。
      * published_atは初回公開日時のため、再公開(公開→非公開/終了→再公開)では上書きしない
      */
-    public function publish(Request $request, int $jobPosting): JsonResponse
+    public function publish(Request $request, int $jobPosting, NextjsRevalidationService $revalidator): JsonResponse
     {
         $company = $request->user('company');
         $model = $this->findOwn($request, $jobPosting);
@@ -94,13 +99,15 @@ class JobPostingController extends Controller
             'published_at' => $model->published_at ?? now(),
         ]);
 
+        $revalidator->revalidate("job-posting-{$model->id}");
+
         return response()->json($model);
     }
 
     /**
      * 公開中の求人を下書きに戻す(編集のための一時的な非公開)
      */
-    public function unpublish(Request $request, int $jobPosting): JsonResponse
+    public function unpublish(Request $request, int $jobPosting, NextjsRevalidationService $revalidator): JsonResponse
     {
         $model = $this->findOwn($request, $jobPosting);
 
@@ -112,13 +119,15 @@ class JobPostingController extends Controller
 
         $model->update(['status' => JobPostingStatus::Draft]);
 
+        $revalidator->revalidate("job-posting-{$model->id}");
+
         return response()->json($model);
     }
 
     /**
      * 募集を終了する。closed状態でも企業がpublishエンドポイントを叩けば再募集できる
      */
-    public function close(Request $request, int $jobPosting): JsonResponse
+    public function close(Request $request, int $jobPosting, NextjsRevalidationService $revalidator): JsonResponse
     {
         $model = $this->findOwn($request, $jobPosting);
 
@@ -129,6 +138,8 @@ class JobPostingController extends Controller
         }
 
         $model->update(['status' => JobPostingStatus::Closed]);
+
+        $revalidator->revalidate("job-posting-{$model->id}");
 
         return response()->json($model);
     }
