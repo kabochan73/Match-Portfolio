@@ -264,6 +264,11 @@ Route::prefix('company')->group(function () {
     Route::post('/billing/checkout', [BillingController::class, 'checkout'])
         ->middleware('auth:company');
 
+    // Stripeカスタマーポータル(支払い方法の更新・請求履歴確認)へのURLを発行する。
+    // 未払い状態からの復旧はこのポータル経由でカードを更新してもらう想定
+    Route::post('/billing/portal', [BillingController::class, 'portal'])
+        ->middleware('auth:company');
+
     // 請求履歴(Stripe Webhookで同期されたpaymentsテーブルの一覧)
     Route::get('/billing/payments', [BillingController::class, 'payments'])
         ->middleware('auth:company');

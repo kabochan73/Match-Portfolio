@@ -55,4 +55,24 @@ class BillingController extends Controller
             $request->user('company')->payments()->latest('created_at')->get()
         );
     }
+
+    /**
+     * Stripeのホスト型カスタマーポータルへのURLを発行する。支払い方法の更新・請求履歴の確認は
+     * このアプリ側でカード情報を扱わずStripe側に任せる(checkoutと同じ方針)。
+     * 未払い(unpaid)状態からの復旧手段はこのポータルのみで、独自の「支払い方法更新」画面は作らない
+     */
+    public function portal(Request $request): JsonResponse
+    {
+        $company = $request->user('company');
+
+        if (! $company->hasStripeId()) {
+            throw ValidationException::withMessages([
+                'billing' => ['お支払い方法の登録がまだ行われていません。'],
+            ]);
+        }
+
+        $portalUrl = $company->billingPortalUrl(config('app.frontend_url').'/company/billing');
+
+        return response()->json(['portal_url' => $portalUrl]);
+    }
 }

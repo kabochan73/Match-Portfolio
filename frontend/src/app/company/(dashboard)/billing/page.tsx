@@ -12,6 +12,7 @@ import {
   billingStatusLabels,
   paymentStatusLabels,
   useBillingPayments,
+  useBillingPortal,
   useBillingStatus,
   useStartCheckout,
 } from "@/hooks/company/useBilling";
@@ -53,11 +54,20 @@ function BillingPage() {
     isError: isPaymentsError,
   } = useBillingPayments();
   const checkoutMutation = useStartCheckout();
+  const portalMutation = useBillingPortal();
 
   const onStartCheckout = () => {
     checkoutMutation.mutate(undefined, {
       onSuccess: ({ checkout_url }) => {
         window.location.href = checkout_url;
+      },
+    });
+  };
+
+  const onOpenPortal = () => {
+    portalMutation.mutate(undefined, {
+      onSuccess: ({ portal_url }) => {
+        window.location.href = portal_url;
       },
     });
   };
@@ -112,17 +122,34 @@ function BillingPage() {
                   お支払い方法を登録する(月額1,000円)
                 </button>
               )}
+
+              {billingStatus.status === "unpaid" && (
+                <button
+                  type="button"
+                  onClick={onOpenPortal}
+                  disabled={portalMutation.isPending}
+                  className="shrink-0 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  お支払い方法を更新する
+                </button>
+              )}
             </div>
 
             {billingStatus.status === "unpaid" && (
               <p className="mt-3 text-sm text-red-600">
-                お支払いに失敗したため、公開中だった求人がすべて非公開になっています。お支払い方法の更新後、求人管理から再公開できます。
+                お支払いに失敗したため、公開中だった求人がすべて非公開になっています。上の「お支払い方法を更新する」からカード情報を更新すると、求人管理から再公開できます。
               </p>
             )}
 
             {checkoutMutation.isError && (
               <p role="alert" className="mt-3 text-sm text-red-600">
                 お支払い手続きの開始に失敗しました。
+              </p>
+            )}
+
+            {portalMutation.isError && (
+              <p role="alert" className="mt-3 text-sm text-red-600">
+                お支払い方法の更新ページを開けませんでした。
               </p>
             )}
           </>

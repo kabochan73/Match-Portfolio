@@ -59,3 +59,14 @@ export function useStartCheckout() {
       }),
   });
 }
+
+// Stripeカスタマーポータル(支払い方法の更新・請求履歴確認)へのURLを取得する。
+// 未払い状態からの復旧はこのポータル経由でカードを更新してもらう想定
+export function useBillingPortal() {
+  return useMutation({
+    mutationFn: () =>
+      apiFetch<{ portal_url: string }>("/api/company/billing/portal", {
+        method: "POST",
+      }),
+  });
+}

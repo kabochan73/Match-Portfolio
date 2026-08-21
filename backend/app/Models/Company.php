@@ -117,7 +117,10 @@ class Company extends Authenticatable
     /**
      * 課金ステータス(未契約/課金中/未払い)。Cashierのsubscription('default')の状態から都度導出する。
      * Subscription::active()はCashierのデフォルト設定でpast_due/unpaidの場合にfalseを返すため、
-     * 「未契約でもなくactiveでもない」場合はまとめて未払い扱いとする
+     * 「未契約でもなくactiveでもない」場合はまとめて未払い扱いとする。ただしSubscription::ended()
+     * (解約済みかつ猶予期間も終了)な場合は例外で、これは「もう有効な契約が存在しない」状態であり
+     * 未払いではなく未契約として扱う(そうしないとBillingController::checkout()が
+     * 「既に契約されています」を返し続け、解約後に再契約する手段がなくなってしまう)
      */
     public function billingStatus(): BillingStatus
     {
@@ -125,6 +128,7 @@ class Company extends Authenticatable
 
         return match (true) {
             $subscription === null => BillingStatus::Uncontracted,
+            $subscription->ended() => BillingStatus::Uncontracted,
             $subscription->active() => BillingStatus::Active,
             default => BillingStatus::Unpaid,
         };
