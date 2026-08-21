@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Seeker;
 
+use App\Enums\JobPostingStatus;
 use App\Enums\LikeStatus;
 use App\Enums\LikeType;
 use App\Http\Controllers\Controller;
@@ -10,17 +11,20 @@ use App\Models\User;
 use App\Notifications\NewApplication;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class LikeController extends Controller
 {
     /**
-     * 認証中の求職者自身の応募状況一覧。新しい応募が先頭に来るようapplied_atの降順で返す
+     * 認証中の求職者自身の応募状況一覧。新しい応募が先頭に来るようapplied_atの降順で返す。
+     * 自分が一覧から非表示にした応募(hide参照)は除く
      */
     public function index(Request $request): JsonResponse
     {
         $likes = $request->user('web')->likes()
+            ->whereNull('user_hidden_at')
             ->with([
                 'jobPosting:id,company_id,title,employment_type,prefecture,salary_min,salary_max,status',
                 'jobPosting.company:id,name',
@@ -94,5 +98,26 @@ class LikeController extends Controller
         });
 
         return response()->json($remaining);
+    }
+
+    /**
+     * 応募を自分の応募状況一覧から非表示にする。求人が非公開/募集終了になった応募のみ対象とし、
+     * 公開中の求人への応募は(選考中・マッチ成立に関わらず)削除できない。
+     * message-threadsのhideと同じuser_hidden_at列を使い回すため、マッチ成立済みでメッセージ
+     * スレッドが存在する場合はそちらも同時に一覧から消える(新着メッセージが来れば自動的に再表示される)
+     */
+    public function hide(Request $request, int $like): Response
+    {
+        $like = $request->user('web')->likes()->with('jobPosting')->findOrFail($like);
+
+        if ($like->jobPosting->status === JobPostingStatus::Published) {
+            throw ValidationException::withMessages([
+                'job_posting' => ['公開中の求人への応募は一覧から削除できません。'],
+            ]);
+        }
+
+        $like->update(['user_hidden_at' => now()]);
+
+        return response()->noContent();
     }
 }

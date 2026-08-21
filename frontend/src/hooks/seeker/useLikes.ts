@@ -88,6 +88,22 @@ export function useLikesRemaining(options?: { enabled?: boolean }) {
   });
 }
 
+// 応募状況一覧からの非表示。求人が非公開/募集終了になった応募のみ対象(バックエンド側で
+// 公開中の求人への応募は422で拒否する)
+export function useHideLike() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (likeId: number) =>
+      apiFetch<void>(`/api/likes/${likeId}/hide`, {
+        method: "PATCH",
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: likesQueryKey });
+    },
+  });
+}
+
 export function useCreateLike(jobPostingId: number) {
   const queryClient = useQueryClient();
 

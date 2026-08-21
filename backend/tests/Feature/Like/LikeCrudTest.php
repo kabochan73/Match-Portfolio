@@ -208,3 +208,56 @@ it('does not count another user\'s likes toward the remaining count', function (
 it('rejects unauthenticated requests to fetch the remaining like counts', function () {
     $this->getJson('/api/likes/remaining')->assertUnauthorized();
 });
+
+it('hides an application whose job posting is no longer published', function () {
+    $user = User::factory()->create();
+    $jobPosting = JobPosting::factory()->create(['status' => JobPostingStatus::Unpublished]);
+    $like = Like::factory()->for($user)->for($jobPosting)->create();
+
+    $response = $this->actingAs($user, 'web')->patchJson("/api/likes/{$like->id}/hide");
+
+    $response->assertNoContent();
+    expect($like->fresh()->user_hidden_at)->not->toBeNull();
+
+    $index = $this->actingAs($user, 'web')->getJson('/api/likes');
+    $index->assertOk()->assertJsonCount(0);
+});
+
+it('hides an application whose job posting has closed', function () {
+    $user = User::factory()->create();
+    $jobPosting = JobPosting::factory()->create(['status' => JobPostingStatus::Closed]);
+    $like = Like::factory()->for($user)->for($jobPosting)->create();
+
+    $response = $this->actingAs($user, 'web')->patchJson("/api/likes/{$like->id}/hide");
+
+    $response->assertNoContent();
+});
+
+it('rejects hiding an application while the job posting is still published', function () {
+    $user = User::factory()->create();
+    $jobPosting = JobPosting::factory()->create(['status' => JobPostingStatus::Published]);
+    $like = Like::factory()->for($user)->for($jobPosting)->create();
+
+    $response = $this->actingAs($user, 'web')->patchJson("/api/likes/{$like->id}/hide");
+
+    $response->assertUnprocessable()->assertJsonValidationErrors('job_posting');
+    expect($like->fresh()->user_hidden_at)->toBeNull();
+});
+
+it('prevents hiding another user\'s application', function () {
+    $user = User::factory()->create();
+    $other = User::factory()->create();
+    $jobPosting = JobPosting::factory()->create(['status' => JobPostingStatus::Closed]);
+    $like = Like::factory()->for($other)->for($jobPosting)->create();
+
+    $response = $this->actingAs($user, 'web')->patchJson("/api/likes/{$like->id}/hide");
+
+    $response->assertNotFound();
+});
+
+it('rejects unauthenticated requests to hide an application', function () {
+    $jobPosting = JobPosting::factory()->create(['status' => JobPostingStatus::Closed]);
+    $like = Like::factory()->for($jobPosting)->create();
+
+    $this->patchJson("/api/likes/{$like->id}/hide")->assertUnauthorized();
+});

@@ -8,6 +8,7 @@ import {
   type LikeStatus,
   likeStatusLabels,
   likeTypeLabels,
+  useHideLike,
   useLikes,
 } from "@/hooks/seeker/useLikes";
 
@@ -21,6 +22,7 @@ const statusBadgeClasses: Record<LikeStatus, string> = {
 
 export default function Page() {
   const { data: likes, isLoading, isError } = useLikes();
+  const hideLikeMutation = useHideLike();
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
@@ -114,9 +116,21 @@ export default function Page() {
                     {cardContent}
                   </Link>
                 ) : (
-                  <div className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 opacity-60">
-                    {cardContent}
-                  </div>
+                  <>
+                    <div className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 opacity-60">
+                      {cardContent}
+                    </div>
+                    <div className="mt-2 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => hideLikeMutation.mutate(like.id)}
+                        disabled={hideLikeMutation.isPending}
+                        className="rounded-full border border-zinc-300 px-4 py-1.5 text-xs font-semibold text-zinc-600 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        この応募を一覧から削除
+                      </button>
+                    </div>
+                  </>
                 )}
               </li>
             );

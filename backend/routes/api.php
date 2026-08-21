@@ -116,6 +116,11 @@ Route::post('/likes', [LikeController::class, 'store'])
 Route::get('/likes/remaining', [LikeController::class, 'remaining'])
     ->middleware('auth:web');
 
+// 応募状況一覧からの非表示。求人が非公開/募集終了になった応募のみ対象(公開中の求人への
+// 応募は削除できない)。message-threadsのhideと同じuser_hidden_at列を使い回す
+Route::patch('/likes/{like}/hide', [LikeController::class, 'hide'])
+    ->middleware('auth:web');
+
 // 求職者のメッセージスレッド(マッチ成立済みのlikes)一覧・非表示
 Route::get('/message-threads', [MessageThreadController::class, 'index'])
     ->middleware('auth:web');
