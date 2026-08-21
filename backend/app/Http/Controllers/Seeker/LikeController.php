@@ -37,19 +37,33 @@ class LikeController extends Controller
     }
 
     /**
-     * 求人への「いいね」(=応募)。重複応募チェック(DBのpartial unique indexで担保)・
-     * 月間上限チェック(LikeRequestで即時フィードバック)を経た上で、月間上限は
-     * ここでもユーザー行をロックした上で再検証する。LikeRequestのチェックはロックなしのため、
-     * 同時リクエスト(ダブルクリック・複数タブ)が両方ともチェックを通過した後に
-     * 両方ともinsertされてしまう競合状態を防ぐのが目的
+     * 求人への「いいね」(=応募)。重複応募チェック・月間上限チェックはLikeRequestで
+     * 即時フィードバックしているが、どちらもロックなしのチェックのため、同時リクエスト
+     * (ダブルクリック・複数タブ)が両方ともチェックを通過した後に両方ともinsertされてしまう
+     * 競合状態を防ぐため、ここでもユーザー行をロックした上で両方とも再検証する。
+     * 重複応募については最終的にDBのpartial unique indexも担保になっているが、
+     * ここで再検証せずcreate()させるとQueryExceptionが素通りしてしまうため、
+     * 事前にチェックしてValidationExceptionへ変換する
      */
     public function store(LikeRequest $request): JsonResponse
     {
         $likeType = LikeType::from($request->validated('like_type'));
+        $jobPostingId = $request->validated('job_posting_id');
 
-        $like = DB::transaction(function () use ($request, $likeType) {
+        $like = DB::transaction(function () use ($request, $likeType, $jobPostingId) {
             // 同一ユーザーの行をロックすることで、このユーザーからの同時リクエストを直列化する
             $user = User::whereKey($request->user('web')->id)->lockForUpdate()->first();
+
+            $hasActiveLike = $user->likes()
+                ->where('job_posting_id', $jobPostingId)
+                ->where('status', '!=', LikeStatus::Expired->value)
+                ->exists();
+
+            if ($hasActiveLike) {
+                throw ValidationException::withMessages([
+                    'job_posting_id' => ['この求人にはすでに応募済みです。'],
+                ]);
+            }
 
             $limit = $likeType->monthlyLimit();
             $usedThisMonth = $user->likesUsedThisMonth($likeType);
