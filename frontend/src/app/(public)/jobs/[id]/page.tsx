@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { employmentTypeLabels, getJobPosting } from "@/lib/jobPostings";
 import { memberCountRangeLabels } from "@/lib/memberCountRanges";
-import { ApplySection } from "./_components/ApplySection";
-import { ImageGallery } from "./_components/ImageGallery";
+import { ApplySection } from "../../_components/ApplySection";
+import { ImageGallery } from "../../_components/ImageGallery";
 
 // SC。ISR対象(revalidate 2h + バックエンドからの/api/revalidate経由のオンデマンド再検証)。
 // 状態を持つ部分だけCCアイランド(ImageGallery・ApplySection)として埋め込む
