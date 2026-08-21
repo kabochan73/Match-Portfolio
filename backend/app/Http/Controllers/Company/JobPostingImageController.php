@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\HandlesProfileImageUploads;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateImageRequest;
 use App\Models\JobPosting;
+use App\Services\NextjsRevalidationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,7 +23,7 @@ class JobPostingImageController extends Controller
 
     private const MAX_IMAGES = 5;
 
-    public function store(UpdateImageRequest $request, int $jobPosting): JsonResponse
+    public function store(UpdateImageRequest $request, int $jobPosting, NextjsRevalidationService $revalidator): JsonResponse
     {
         $model = $this->findOwn($request, $jobPosting);
 
@@ -41,16 +42,22 @@ class JobPostingImageController extends Controller
             'position' => $nextPosition,
         ]);
 
+        // 求人画像は公開求人詳細・一覧のカードにも表示されるため、
+        // Company\JobPostingController(update等)と同様にISRのオンデマンド再検証を行う
+        $revalidator->revalidate("job-posting-{$model->id}");
+
         return response()->json($image, 201);
     }
 
-    public function destroy(Request $request, int $jobPosting, int $image): Response
+    public function destroy(Request $request, int $jobPosting, int $image, NextjsRevalidationService $revalidator): Response
     {
         $model = $this->findOwn($request, $jobPosting);
         $jobPostingImage = $model->jobPostingImages()->findOrFail($image);
 
         $this->deleteProfileImage($jobPostingImage->path);
         $jobPostingImage->delete();
+
+        $revalidator->revalidate("job-posting-{$model->id}");
 
         return response()->noContent();
     }
