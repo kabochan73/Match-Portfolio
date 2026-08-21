@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ChevronLeft } from "lucide-react";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { employmentTypeLabels, getJobPosting } from "@/lib/jobPostings";
 import { memberCountRangeLabels } from "@/lib/memberCountRanges";
@@ -21,9 +22,19 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12">
+    <div className="mx-auto w-full max-w-4xl px-4 py-8">
+      <div className="flex justify-end">
+        <Link
+          href="/jobs"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-zinc-600 hover:text-brand"
+        >
+          <ChevronLeft size={18} />
+          求人一覧へ戻る
+        </Link>
+      </div>
+
       <div className="pb-6">
-        <h1 className="mt-1 text-3xl font-bold text-zinc-900">
+        <h1 className="mt-4 text-3xl font-bold text-zinc-900">
           {jobPosting.title}
         </h1>
 
