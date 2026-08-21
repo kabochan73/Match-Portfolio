@@ -41,15 +41,15 @@ export default async function Page(props: PageProps<"/jobs">) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-4">
+    <div className="mx-auto w-full max-w-5xl px-4 py-4 hover:border-sky-400">
       <form
         method="get"
-        className="mt-6 flex flex-wrap items-end gap-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+        className="mt-6 flex flex-wrap items-end gap-4 rounded-2xl border border-zinc-400 hover:border-sky-400 bg-white p-4 shadow-sm"
       >
         <div className="min-w-40 flex-1">
           <label
             htmlFor="keyword"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-zinc-800"
           >
             キーワード
           </label>
@@ -66,7 +66,7 @@ export default async function Page(props: PageProps<"/jobs">) {
         <div className="w-40">
           <label
             htmlFor="prefecture"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-zinc-800"
           >
             勤務地
           </label>
@@ -88,7 +88,7 @@ export default async function Page(props: PageProps<"/jobs">) {
         <div className="w-40">
           <label
             htmlFor="employment_type"
-            className="text-sm font-medium text-zinc-700"
+            className="text-sm font-medium text-zinc-800"
           >
             雇用形態
           </label>
@@ -126,7 +126,7 @@ export default async function Page(props: PageProps<"/jobs">) {
               <li key={jobPosting.id}>
                 <Link
                   href={`/jobs/${jobPosting.id}`}
-                  className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-sky-300 hover:shadow-sm"
+                  className="relative flex items-center gap-5 border border-zinc-400 p-5 pb-4 transition hover:border-sky-400 hover:shadow-sm"
                 >
                   {jobPosting.job_posting_images[0] ? (
                     // eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外
