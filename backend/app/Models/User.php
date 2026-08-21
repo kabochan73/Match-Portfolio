@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\LikeType;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -94,5 +95,18 @@ class User extends Authenticatable
     public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
+    }
+
+    /**
+     * 今月すでに使った$likeType種別のいいね数(月初リセット、DB_DESIGN.md「月間上限の数え方」参照)。
+     * LikeRequestの応募時バリデーション、LikeController@remaining(残り件数表示)、
+     * LikeController@store(トランザクション内での再検証)の3箇所から参照する、唯一の集計ロジック
+     */
+    public function likesUsedThisMonth(LikeType $likeType): int
+    {
+        return $this->likes()
+            ->where('like_type', $likeType->value)
+            ->whereBetween('applied_at', [now()->startOfMonth(), now()->endOfMonth()])
+            ->count();
     }
 }

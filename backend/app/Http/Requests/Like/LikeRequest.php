@@ -48,7 +48,10 @@ class LikeRequest extends FormRequest
     }
 
     /**
-     * 単純なルールだけでは表現できない業務ルール(重複応募・月間上限)をここで検証する
+     * 単純なルールだけでは表現できない業務ルール(重複応募・月間上限)をここで検証する。
+     * ここでのチェックはロックを取らないため、同時リクエストによるレースコンディションでは
+     * すり抜ける可能性がある(通常操作での即時フィードバック用)。最終的な担保は
+     * Seeker\LikeController::store()がトランザクション+行ロック内で行う再検証
      */
     public function withValidator(Validator $validator): void
     {
@@ -74,11 +77,7 @@ class LikeRequest extends FormRequest
 
             $likeType = LikeType::from($this->input('like_type'));
             $limit = $likeType->monthlyLimit();
-
-            $usedThisMonth = $user->likes()
-                ->where('like_type', $likeType->value)
-                ->whereBetween('applied_at', [now()->startOfMonth(), now()->endOfMonth()])
-                ->count();
+            $usedThisMonth = $user->likesUsedThisMonth($likeType);
 
             if ($usedThisMonth >= $limit) {
                 $label = $likeType === LikeType::Super ? 'スーパーいいね' : '通常のいいね';
