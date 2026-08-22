@@ -113,7 +113,7 @@ export default function Page() {
                 {isJobPostingAvailable ? (
                   <Link
                     href={`/jobs/${like.job_posting_id}`}
-                    className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-sky-300 hover:shadow-sm"
+                    className="relative flex items-center gap-5 border border-zinc-400 p-5 pb-4 transition hover:border-sky-400 hover:shadow-sm"
                   >
                     {cardContent}
                   </Link>
