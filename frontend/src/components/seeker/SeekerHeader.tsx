@@ -11,6 +11,7 @@ import {
   User,
 } from "lucide-react";
 import { useLogout } from "@/hooks/seeker/auth/useLogout";
+import { useNotifications } from "@/hooks/seeker/useNotifications";
 
 const navItems = [
   { href: "/jobs", label: "求人を探す", icon: Search },
@@ -26,6 +27,12 @@ const navItems = [
 export function SeekerHeader() {
   const pathname = usePathname();
   const logoutMutation = useLogout();
+  // ヘッダーは全ページ共通で常時マウントされるため、通知バッジの未読件数もここで取得する。
+  // 通知一覧ページと同じクエリキーなのでTanStack Query側でリクエストが共有される
+  const { data: notifications } = useNotifications();
+  const unreadCount =
+    notifications?.filter((notification) => notification.read_at === null)
+      .length ?? 0;
 
   return (
     <header className="border-b border-zinc-200 bg-white">
@@ -41,12 +48,17 @@ export function SeekerHeader() {
               <Link
                 key={href}
                 href={href}
-                className={`hidden items-center gap-1 sm:flex ${
+                className={`relative hidden items-center gap-1 sm:flex ${
                   isActive ? "text-brand" : "hover:text-zinc-900"
                 }`}
               >
                 <Icon size={20} />
                 {label}
+                {href === "/seeker/notifications" && unreadCount > 0 && (
+                  <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
               </Link>
             );
           })}
