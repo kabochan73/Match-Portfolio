@@ -95,7 +95,7 @@ export default function Page(props: PageProps<"/seeker/messages/[id]">) {
       <form
         onSubmit={onSubmit}
         noValidate
-        className="sticky bottom-0 mt-8 border-t border-zinc-200 bg-white pt-4"
+        className="sticky bottom-0 mt-8 bg-white pt-4"
       >
         <label htmlFor="body" className="sr-only">
           メッセージ
@@ -104,7 +104,7 @@ export default function Page(props: PageProps<"/seeker/messages/[id]">) {
           id="body"
           rows={3}
           {...register("body")}
-          className="w-full resize-none border border-zinc-300 p-3 text-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          className="w-full resize-none border border-zinc-400 p-3 text-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-400"
         />
         {errors.body && (
           <p role="alert" className="mt-1 text-sm text-red-600">
@@ -115,7 +115,7 @@ export default function Page(props: PageProps<"/seeker/messages/[id]">) {
           <button
             type="submit"
             disabled={isSubmitting || sendMessageMutation.isPending}
-            className="rounded-full bg-brand px-6 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-full bg-white px-6 py-2 text-sm font-semibold text-brand border border-sky-400 hover:bg-sky-50 transition"
           >
             送信
           </button>
