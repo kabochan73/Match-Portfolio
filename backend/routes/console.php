@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 // 反応期限(7日)を過ぎたlikesをexpiredに更新する。DB_DESIGN.md「マッチ失効バッチ」
 Schedule::command('likes:expire')->hourly();
+
+// 作成から1ヶ月経過した通知を削除し、notificationsテーブルの肥大化を防ぐ
+Schedule::command('notifications:prune')->daily();
