@@ -4,13 +4,11 @@
 // asyncにできずReact 19のuse()で受け取る
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { use } from "react";
 import { useForm } from "react-hook-form";
 import {
   type SendMessageValues,
   sendMessageSchema,
-  useHideThread,
   useSendMessage,
   useThreadMessages,
 } from "@/hooks/seeker/useMessageThreads";
@@ -18,10 +16,8 @@ import {
 export default function Page(props: PageProps<"/seeker/messages/[id]">) {
   const { id } = use(props.params);
   const likeId = Number(id);
-  const router = useRouter();
   const { data: messages, isLoading, isError } = useThreadMessages(likeId);
   const sendMessageMutation = useSendMessage(likeId);
-  const hideThreadMutation = useHideThread();
   const {
     register,
     handleSubmit,
@@ -53,27 +49,15 @@ export default function Page(props: PageProps<"/seeker/messages/[id]">) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col px-4 py-12">
+    <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-12">
       <h1 className="sr-only">メッセージ詳細</h1>
-      <div className="flex items-center justify-between gap-4 pb-8">
+      <div className="pb-8 flex justify-end">
         <Link
           href="/seeker/messages"
           className="text-sm font-semibold text-brand hover:underline"
         >
           ← メッセージ一覧に戻る
         </Link>
-        <button
-          type="button"
-          onClick={() =>
-            hideThreadMutation.mutate(likeId, {
-              onSuccess: () => router.push("/seeker/messages"),
-            })
-          }
-          disabled={hideThreadMutation.isPending}
-          className="shrink-0 rounded-full border border-zinc-300 px-4 py-1.5 text-xs font-semibold text-zinc-600 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          このスレッドを一覧から削除
-        </button>
       </div>
 
       {messages.length === 0 ? (

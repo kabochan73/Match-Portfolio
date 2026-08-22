@@ -4,10 +4,11 @@
 // 再利用の予定もなくpage.tsx自体をCCにする
 import Link from "next/link";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
-import { useMessageThreads } from "@/hooks/seeker/useMessageThreads";
+import { useHideThread, useMessageThreads } from "@/hooks/seeker/useMessageThreads";
 
 export default function Page() {
   const { data: threads, isLoading, isError } = useMessageThreads();
+  const hideThreadMutation = useHideThread();
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
@@ -33,7 +34,7 @@ export default function Page() {
       {threads && threads.length > 0 && (
         <ul className="space-y-4">
           {threads.map((thread) => (
-            <li key={thread.id}>
+            <li key={thread.id} className="relative">
               <Link
                 href={`/seeker/messages/${thread.id}`}
                 className="relative flex items-center gap-5 border border-zinc-400 p-5 pb-4 transition hover:border-sky-400 hover:shadow-sm"
@@ -58,6 +59,21 @@ export default function Page() {
                   </span>
                 )}
               </Link>
+
+              {/* Linkの兄弟要素として右上に重ねる(aの中にbuttonを入れるとネストしたクリック要素になり
+                  カード全体のリンクと競合するため) */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm("このマッチを削除しますか？")) {
+                    hideThreadMutation.mutate(thread.id);
+                  }
+                }}
+                disabled={hideThreadMutation.isPending}
+                className="absolute right-5 top-4 rounded-full border border-red-400 bg-white px-3 py-1 text-xs font-bold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                削除
+              </button>
             </li>
           ))}
         </ul>
