@@ -7,7 +7,7 @@ export function CoverImageView({
 }) {
   if (!coverImageUrl) {
     return (
-      <div className="flex aspect-[3/1] w-full items-center justify-center bg-zinc-100 text-sm text-zinc-400">
+      <div className="flex aspect-[2/1] w-full items-center justify-center bg-zinc-100 text-sm text-zinc-400">
         未設定
       </div>
     );
@@ -18,7 +18,7 @@ export function CoverImageView({
     <img
       src={coverImageUrl}
       alt="カバー画像"
-      className="aspect-[3/1] w-full  object-cover justify-center"
+      className="aspect-[2/1] w-full  object-cover justify-center"
     />
   );
 }
