@@ -85,7 +85,7 @@ export function AvatarSection() {
               onClick={() => deleteMutation.mutate()}
               className="ml-3 text-xs font-semibold text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
             >
-              削除する
+              削除
             </button>
           )}
         </div>

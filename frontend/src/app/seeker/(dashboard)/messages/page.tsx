@@ -10,8 +10,7 @@ export default function Page() {
   const { data: threads, isLoading, isError } = useMessageThreads();
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12">
-      <h1 className="pb-8 text-2xl font-bold text-zinc-900">メッセージ一覧</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-12">
 
       {isLoading && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">
@@ -37,7 +36,7 @@ export default function Page() {
             <li key={thread.id}>
               <Link
                 href={`/seeker/messages/${thread.id}`}
-                className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-sky-300 hover:shadow-sm"
+                className="relative flex items-center gap-5 border border-zinc-400 p-5 pb-4 transition hover:border-sky-400 hover:shadow-sm"
               >
                 <AvatarView avatarUrl={thread.job_posting.company.avatar_url} />
 

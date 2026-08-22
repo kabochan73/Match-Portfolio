@@ -39,9 +39,7 @@ export default function Page() {
   const markReadMutation = useMarkNotificationRead();
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-12">
-      <h1 className="pb-8 text-2xl font-bold text-zinc-900">通知</h1>
-
+    <div className="mx-auto w-full max-w-5xl px-4 py-12">
       {isLoading && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">
           読み込み中...
@@ -75,7 +73,7 @@ export default function Page() {
                       markReadMutation.mutate(notification.id);
                     }
                   }}
-                  className={`flex items-start gap-3 border p-4 transition hover:border-sky-300 hover:shadow-sm ${
+                  className={`flex items-start border border-zinc-400 gap-3 p-4 transition hover:border-sky-400 hover:shadow-sm ${
                     isUnread ? "border-sky-200 bg-sky-50" : "border-zinc-200"
                   }`}
                 >

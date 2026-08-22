@@ -26,7 +26,6 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
-      <h1 className="pb-8 text-2xl font-bold text-zinc-900">応募状況一覧</h1>
 
       {isLoading && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">
