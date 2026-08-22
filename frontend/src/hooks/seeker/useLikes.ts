@@ -85,6 +85,9 @@ export function useLikesRemaining(options?: { enabled?: boolean }) {
     queryKey: likesRemainingQueryKey,
     queryFn: () => apiFetch<LikesRemaining>("/api/likes/remaining"),
     enabled: options?.enabled,
+    // 自分がいいねを送った時(useCreateLike)しか変わらず、その際はinvalidateQueriesで
+    // 追従済みのため、マウントの度の再取得は不要
+    staleTime: 5 * 60 * 1000,
   });
 }
 

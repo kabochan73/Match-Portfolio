@@ -130,7 +130,7 @@ export default function Page(props: PageProps<"/seeker/messages/[id]">) {
         <div className="flex justify-end pt-2">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || sendMessageMutation.isPending}
             className="rounded-full bg-brand px-6 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             送信

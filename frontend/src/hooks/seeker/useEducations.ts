@@ -26,6 +26,9 @@ export function useEducations() {
   return useQuery({
     queryKey: educationsQueryKey,
     queryFn: () => apiFetch<Education[]>("/api/profile/educations"),
+    // 自分の操作(作成・更新・削除)でしか変わらず、その際はinvalidateQueriesで
+    // 追従済みのため、マウントの度の再取得は不要
+    staleTime: 5 * 60 * 1000,
   });
 }
 

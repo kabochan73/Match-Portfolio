@@ -4,7 +4,7 @@
 export function AvatarView({ avatarUrl }: { avatarUrl: string | null }) {
   if (!avatarUrl) {
     return (
-      <div className="flex size-16 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs text-zinc-400">
+      <div className="flex size-24 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs text-zinc-400">
         未設定
       </div>
     );
@@ -15,8 +15,8 @@ export function AvatarView({ avatarUrl }: { avatarUrl: string | null }) {
     <img
       src={avatarUrl}
       alt="プロフィール画像"
-      width={80}  
-      height={80}
+      width={96}
+      height={96}
       className="size-24 shrink-0 rounded-full border border-zinc-200 object-cover"
     />
   );
