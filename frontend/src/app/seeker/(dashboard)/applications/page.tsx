@@ -89,6 +89,9 @@ export default function Page() {
                       {likeTypeLabels[like.like_type]}
                     </span>
                     応募日 {like.applied_at.slice(0, 10)}
+                    {like.status === "applied" && (
+                      <>・返答締切 {like.response_deadline.slice(0, 10)}</>
+                    )}
                   </p>
                   {!isJobPostingAvailable && (
                     <p className="mt-1 text-xs text-zinc-400">
