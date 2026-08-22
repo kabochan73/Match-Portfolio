@@ -45,6 +45,16 @@ it('filters by prefecture and employment_type', function () {
     $response->assertOk()->assertJsonCount(1, 'data')->assertJsonFragment(['prefecture' => 'リモート']);
 });
 
+it('filters by company_id', function () {
+    $company = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($company)->create(['status' => 'published', 'published_at' => now()]);
+    JobPosting::factory()->create(['status' => 'published', 'published_at' => now()]);
+
+    $response = $this->getJson("/api/job-postings?company_id={$company->id}");
+
+    $response->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $jobPosting->id);
+});
+
 it('includes likes_count and company summary in the listing', function () {
     $jobPosting = JobPosting::factory()->create(['status' => 'published', 'published_at' => now()]);
 

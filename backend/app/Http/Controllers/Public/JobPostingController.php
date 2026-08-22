@@ -34,6 +34,7 @@ class JobPostingController extends Controller
             })
             ->when($request->validated('prefecture'), fn ($query, $prefecture) => $query->where('prefecture', $prefecture))
             ->when($request->validated('employment_type'), fn ($query, $employmentType) => $query->where('employment_type', $employmentType))
+            ->when($request->validated('company_id'), fn ($query, $companyId) => $query->where('company_id', $companyId))
             // avatar_urlはavatar_pathから計算されるアクセサ(実カラムではない)なので、
             // select対象にはavatar_pathを指定する。avatar_urlはCompanyモデルのAppends指定により
             // JSONシリアライズ時に自動で付与される

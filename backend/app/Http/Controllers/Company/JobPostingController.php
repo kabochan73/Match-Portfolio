@@ -57,15 +57,20 @@ class JobPostingController extends Controller
         $model->update($request->validated());
 
         $revalidator->revalidate("job-posting-{$model->id}");
+        // /companies/[id]の掲載求人一覧(company-{id}タグ)にも、タイトル・給与等の変更を即時反映する
+        $revalidator->revalidate("company-{$model->company_id}");
 
         return response()->json($model);
     }
 
     public function destroy(Request $request, int $jobPosting, NextjsRevalidationService $revalidator): Response
     {
-        $this->findOwn($request, $jobPosting)->delete();
+        $model = $this->findOwn($request, $jobPosting);
+        $companyId = $model->company_id;
+        $model->delete();
 
         $revalidator->revalidate("job-posting-{$jobPosting}");
+        $revalidator->revalidate("company-{$companyId}");
 
         return response()->noContent();
     }
@@ -100,6 +105,8 @@ class JobPostingController extends Controller
         ]);
 
         $revalidator->revalidate("job-posting-{$model->id}");
+        // 公開されたことで/companies/[id]の掲載求人一覧に新しく出てくるため、こちらも即時反映する
+        $revalidator->revalidate("company-{$model->company_id}");
 
         return response()->json($model);
     }
@@ -120,6 +127,8 @@ class JobPostingController extends Controller
         $model->update(['status' => JobPostingStatus::Draft]);
 
         $revalidator->revalidate("job-posting-{$model->id}");
+        // 非公開になったことで/companies/[id]の掲載求人一覧から消えるため、こちらも即時反映する
+        $revalidator->revalidate("company-{$model->company_id}");
 
         return response()->json($model);
     }
@@ -140,6 +149,8 @@ class JobPostingController extends Controller
         $model->update(['status' => JobPostingStatus::Closed]);
 
         $revalidator->revalidate("job-posting-{$model->id}");
+        // 募集終了になったことで/companies/[id]の掲載求人一覧から消えるため、こちらも即時反映する
+        $revalidator->revalidate("company-{$model->company_id}");
 
         return response()->json($model);
     }

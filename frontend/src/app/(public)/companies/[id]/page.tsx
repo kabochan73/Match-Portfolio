@@ -3,7 +3,9 @@ import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { BasicProfileView } from "@/components/company/profile/BasicProfileView";
 import { CoverImageView } from "@/components/company/cover-image/CoverImageView";
 import { BackButton } from "@/components/public/BackButton";
+import { JobPostingCard } from "@/components/public/JobPostingCard";
 import { getCompany } from "@/lib/companies";
+import { getCompanyJobPostings } from "@/lib/jobPostings";
 
 // SC。ISR対象(revalidate 2h + バックエンドからの/api/revalidate経由のオンデマンド再検証)。
 // 表示部分はcompany/(dashboard)/profileと同じsrc/components/company/配下を使い回す。
@@ -15,14 +17,19 @@ export async function generateStaticParams() {
 
 export default async function Page(props: PageProps<"/companies/[id]">) {
   const { id } = await props.params;
-  const company = await getCompany(id);
+  const [company, jobPostingsResult] = await Promise.all([
+    getCompany(id),
+    getCompanyJobPostings(id),
+  ]);
 
   if (!company) {
     notFound();
   }
 
+  const jobPostings = jobPostingsResult?.data ?? [];
+
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-8">
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
       <div className="flex justify-end">
         <BackButton label="求人詳細へ戻る" />
       </div>
@@ -39,6 +46,21 @@ export default async function Page(props: PageProps<"/companies/[id]">) {
       <div className="py-8">
         <BasicProfileView profile={company} />
       </div>
+
+      {jobPostings.length > 0 && (
+        <div className="border-t border-zinc-200 py-8">
+          <h2 className="mb-4 text-xl font-bold text-zinc-900">
+            掲載中の求人
+          </h2>
+          <ul className="space-y-4">
+            {jobPostings.map((jobPosting) => (
+              <li key={jobPosting.id}>
+                <JobPostingCard jobPosting={jobPosting} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

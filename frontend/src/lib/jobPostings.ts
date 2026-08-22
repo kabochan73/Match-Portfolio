@@ -100,6 +100,16 @@ export function searchJobPostings(params: JobPostingSearchParams) {
   );
 }
 
+// /companies/[id]の「掲載中の求人」欄向け。/jobsの検索(no-store)と違いISR対象のページから
+// 呼ぶため、company-${id}タグで会社ページ本体(getCompany)と同じ再検証と対応させる
+// (企業側の求人の公開・非公開・削除時にバックエンドがこのタグをrevalidateする)
+export function getCompanyJobPostings(companyId: string) {
+  return publicFetch<PaginatedJobPostings>(
+    `/api/job-postings?company_id=${companyId}`,
+    { next: { revalidate: 7200, tags: [`company-${companyId}`] } },
+  );
+}
+
 // /jobs/[id]はISR対象。2時間を上限に再検証する(オンデマンド再検証は未実装、将来追加予定)
 export function getJobPosting(id: string) {
   return publicFetch<PublicJobPostingDetail>(`/api/job-postings/${id}`, {
