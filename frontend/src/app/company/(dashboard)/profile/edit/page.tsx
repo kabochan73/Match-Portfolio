@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   PREFECTURES,
   memberCountRangeLabels,
@@ -105,94 +106,63 @@ export default function Page() {
 
       <div className="py-8">
         <form onSubmit={onSubmit} noValidate className="space-y-4">
-          <div>
-            <label htmlFor="name" className="text-sm font-medium text-zinc-700">
-              会社名
-            </label>
+          <FormField htmlFor="name" label="会社名" error={errors.name?.message}>
             <input
               id="name"
               type="text"
               {...register("name")}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             />
-            {errors.name && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
-          <div>
-            <label
-              htmlFor="description"
-              className="text-sm font-medium text-zinc-700"
-            >
-              会社概要(任意)
-            </label>
+          <FormField
+            htmlFor="description"
+            label="会社概要(任意)"
+            error={errors.description?.message}
+          >
             <textarea
               id="description"
               {...register("description")}
               rows={3}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             />
-            {errors.description && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
-          <div>
-            <label
-              htmlFor="websiteUrl"
-              className="text-sm font-medium text-zinc-700"
-            >
-              WebサイトURL(任意)
-            </label>
+          <FormField
+            htmlFor="websiteUrl"
+            label="WebサイトURL(任意)"
+            error={errors.websiteUrl?.message}
+          >
             <input
               id="websiteUrl"
               type="text"
               {...register("websiteUrl")}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             />
-            {errors.websiteUrl && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.websiteUrl.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
-          <div>
-            <label
-              htmlFor="foundedYear"
-              className="text-sm font-medium text-zinc-700"
-            >
-              設立年(任意)
-            </label>
+          <FormField
+            htmlFor="foundedYear"
+            label="設立年(任意)"
+            error={errors.foundedYear?.message}
+          >
             <input
               id="foundedYear"
               type="number"
               {...register("foundedYear")}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             />
-            {errors.foundedYear && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.foundedYear.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
-          <div>
-            <label
-              htmlFor="memberCountRange"
-              className="text-sm font-medium text-zinc-700"
-            >
-              メンバー数(任意)
-            </label>
+          <FormField
+            htmlFor="memberCountRange"
+            label="メンバー数(任意)"
+            error={errors.memberCountRange?.message}
+          >
             <select
               id="memberCountRange"
               {...register("memberCountRange")}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             >
               <option value="">選択してください</option>
               {Object.entries(memberCountRangeLabels).map(([value, label]) => (
@@ -201,44 +171,30 @@ export default function Page() {
                 </option>
               ))}
             </select>
-            {errors.memberCountRange && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.memberCountRange.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
-          <div>
-            <label
-              htmlFor="phoneNumber"
-              className="text-sm font-medium text-zinc-700"
-            >
-              電話番号(任意)
-            </label>
+          <FormField
+            htmlFor="phoneNumber"
+            label="電話番号(任意)"
+            error={errors.phoneNumber?.message}
+          >
             <input
               id="phoneNumber"
               type="text"
               {...register("phoneNumber")}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             />
-            {errors.phoneNumber && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.phoneNumber.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
-          <div>
-            <label
-              htmlFor="prefecture"
-              className="text-sm font-medium text-zinc-700"
-            >
-              都道府県(任意)
-            </label>
+          <FormField
+            htmlFor="prefecture"
+            label="都道府県(任意)"
+            error={errors.prefecture?.message}
+          >
             <select
               id="prefecture"
               {...register("prefecture")}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             >
               <option value="">選択してください</option>
               {PREFECTURES.map((prefecture) => (
@@ -247,32 +203,20 @@ export default function Page() {
                 </option>
               ))}
             </select>
-            {errors.prefecture && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.prefecture.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
-          <div>
-            <label
-              htmlFor="addressLine"
-              className="text-sm font-medium text-zinc-700"
-            >
-              市区町村以下の住所(任意)
-            </label>
+          <FormField
+            htmlFor="addressLine"
+            label="市区町村以下の住所(任意)"
+            error={errors.addressLine?.message}
+          >
             <input
               id="addressLine"
               type="text"
               {...register("addressLine")}
-              className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className={formInputClass("emerald")}
             />
-            {errors.addressLine && (
-              <p role="alert" className="mt-1 text-xs text-red-600">
-                {errors.addressLine.message}
-              </p>
-            )}
-          </div>
+          </FormField>
 
           {updateProfileMutation.isError &&
             !(updateProfileMutation.error instanceof ApiValidationError) && (

@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   JOB_POSTING_PREFECTURES,
   type JobPostingValues,
@@ -65,74 +66,50 @@ export function JobPostingForm({
 
   return (
     <form onSubmit={submit} noValidate className="space-y-4">
-      <div>
-        <label htmlFor="title" className="text-sm font-medium text-zinc-700">
-          求人タイトル
-        </label>
+      <FormField htmlFor="title" label="求人タイトル" error={errors.title?.message}>
         <input
           id="title"
           type="text"
           {...register("title")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className={formInputClass("emerald")}
         />
-        {errors.title && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.title.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor="description"
-          className="text-sm font-medium text-zinc-700"
-        >
-          職務内容
-        </label>
+      <FormField
+        htmlFor="description"
+        label="職務内容"
+        error={errors.description?.message}
+      >
         <textarea
           id="description"
           {...register("description")}
           rows={5}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className={formInputClass("emerald")}
         />
-        {errors.description && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.description.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor="desiredCandidate"
-          className="text-sm font-medium text-zinc-700"
-        >
-          求める人材像
-        </label>
+      <FormField
+        htmlFor="desiredCandidate"
+        label="求める人材像"
+        error={errors.desiredCandidate?.message}
+      >
         <textarea
           id="desiredCandidate"
           {...register("desiredCandidate")}
           rows={5}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className={formInputClass("emerald")}
         />
-        {errors.desiredCandidate && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.desiredCandidate.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor="employmentType"
-          className="text-sm font-medium text-zinc-700"
-        >
-          雇用形態
-        </label>
+      <FormField
+        htmlFor="employmentType"
+        label="雇用形態"
+        error={errors.employmentType?.message}
+      >
         <select
           id="employmentType"
           {...register("employmentType")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className={formInputClass("emerald")}
         >
           <option value="">選択してください</option>
           {Object.entries(employmentTypeLabels).map(([value, label]) => (
@@ -141,24 +118,17 @@ export function JobPostingForm({
             </option>
           ))}
         </select>
-        {errors.employmentType && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.employmentType.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor="prefecture"
-          className="text-sm font-medium text-zinc-700"
-        >
-          勤務地
-        </label>
+      <FormField
+        htmlFor="prefecture"
+        label="勤務地"
+        error={errors.prefecture?.message}
+      >
         <select
           id="prefecture"
           {...register("prefecture")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className={formInputClass("emerald")}
         >
           <option value="">選択してください</option>
           {JOB_POSTING_PREFECTURES.map((prefecture) => (
@@ -167,53 +137,34 @@ export function JobPostingForm({
             </option>
           ))}
         </select>
-        {errors.prefecture && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.prefecture.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label
-            htmlFor="salaryMin"
-            className="text-sm font-medium text-zinc-700"
-          >
-            月給(下限・円)
-          </label>
+        <FormField
+          htmlFor="salaryMin"
+          label="月給(下限・円)"
+          error={errors.salaryMin?.message}
+        >
           <input
             id="salaryMin"
             type="number"
             {...register("salaryMin")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className={formInputClass("emerald")}
           />
-          {errors.salaryMin && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.salaryMin.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="salaryMax"
-            className="text-sm font-medium text-zinc-700"
-          >
-            月給(上限・円)
-          </label>
+        <FormField
+          htmlFor="salaryMax"
+          label="月給(上限・円)"
+          error={errors.salaryMax?.message}
+        >
           <input
             id="salaryMax"
             type="number"
             {...register("salaryMax")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className={formInputClass("emerald")}
           />
-          {errors.salaryMax && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.salaryMax.message}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
 
       <div className="flex justify-end">
