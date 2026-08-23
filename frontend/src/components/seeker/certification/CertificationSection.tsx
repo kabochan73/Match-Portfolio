@@ -83,7 +83,7 @@ export function CertificationSection() {
         (certifications.length === 0 ? (
           <p className="text-sm text-zinc-500">未登録です</p>
         ) : (
-          <ul className="divide-y divide-zinc-100">
+          <ul className="divide-y divide-zinc-400">
             {certifications.map((certification) => (
               <CertificationItem
                 key={certification.id}

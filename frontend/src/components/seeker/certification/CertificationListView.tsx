@@ -12,7 +12,7 @@ export function CertificationListView({
   }
 
   return (
-    <ul className="divide-y divide-zinc-100">
+    <ul className="divide-y divide-zinc-200">
       {certifications.map((certification) => (
         <li
           key={certification.id}
