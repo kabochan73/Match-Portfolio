@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { buttonClass } from "@/components/button/buttonClass";
 import { ApiValidationError } from "@/lib/api/client";
 import { useDeleteAvatar, useUpdateAvatar } from "@/hooks/seeker/useAvatar";
 import { useProfile } from "@/hooks/seeker/useProfile";
@@ -66,7 +67,7 @@ export function AvatarSection() {
         <div>
           <label
             htmlFor="avatarFile"
-            className="inline-block cursor-pointer rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
+            className={`${buttonClass("outline", "brand")} inline-block cursor-pointer`}
           >
             画像を選択
           </label>

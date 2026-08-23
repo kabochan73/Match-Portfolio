@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { buttonClass } from "@/components/button/buttonClass";
 import {
   type Education,
   useCreateEducation,
@@ -105,7 +106,7 @@ export function EducationSection() {
           <button
             type="button"
             onClick={() => setShowAddForm(true)}
-            className="rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
+            className={buttonClass("outline", "brand")}
           >
             学歴を追加する
           </button>

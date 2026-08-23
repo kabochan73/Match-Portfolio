@@ -5,6 +5,7 @@ import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import { FormField, formInputClass } from "@/components/form/FormField";
+import { buttonClass } from "@/components/button/buttonClass";
 import {
   type EducationValues,
   educationSchema,
@@ -80,7 +81,7 @@ export function EducationForm({
         <button
           type="submit"
           disabled={isSubmitting || isPending}
-          className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className={buttonClass("primary", "brand")}
         >
           {submitLabel}
         </button>
@@ -88,7 +89,7 @@ export function EducationForm({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-600 hover:bg-zinc-100"
+            className={buttonClass("secondary")}
           >
             キャンセル
           </button>
