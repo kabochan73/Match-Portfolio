@@ -136,8 +136,9 @@ erDiagram
 | website_url | string | nullable | 企業WebサイトのURL |
 | stripe_id | string | nullable, unique | Stripe顧客ID。カラム名はCashierの`Billable`トレイトが内部で決め打ち参照するため(Webhookでの顧客検索`findBillable`等)、Cashier標準の`stripe_id`に合わせる |
 | avatar_path | string | nullable | プロフィール画像(ロゴ等)。画像自体はストレージ(public disk)に保存し、相対パスのみ持つ |
-| cover_image_path | string | nullable | 企業ホーム画面のカバー画像。avatar_pathと同様、相対パスのみ持つ |
 | created_at / updated_at | timestamp | | |
+
+企業ホーム画面のカバー画像は単一の`cover_image_path`カラムとしては持たず、`company_images`(下記)の写真ギャラリーがその役割を兼ねる(先頭画像がヘッダー相当の表示になる)。
 
 所在地は検索・絞り込みには使わない(job_postings.prefectureとは無関係)ため、`prefecture`と`address_line`を分けるのは表示上の整形のためのみ。Webサイトは要件に明記がないため今回は含めない(「6. 未決事項」参照)。
 
@@ -209,6 +210,17 @@ erDiagram
 
 - unique制約: `(job_posting_id, position)`(同一求人内でのposition重複を防止)
 - 1求人あたり最大5枚という上限はDB制約ではなくアプリ側(FormRequest/Service層)で検証する(他のenum系カラムと異なり件数制約であり、CHECK制約で表現しづらいため)。
+
+### company_images(企業プロフィールに添付する写真。最大5枚)
+| カラム | 型 | 制約 | 備考 |
+|---|---|---|---|
+| id | bigint | PK | |
+| company_id | bigint FK → companies.id | not null | |
+| path | string | not null | 画像自体はストレージ(public disk)に保存し、相対パスのみ持つ |
+| position | unsigned tinyint | not null | 表示順(0始まり)。企業側で並び替え可能にする |
+| created_at / updated_at | timestamp | | |
+
+- job_posting_imagesと全く同じ構造・同じ制約方針(unique制約: `(company_id, position)`、5枚上限はアプリ側で検証)。avatar_pathとは別物で、こちらは会社紹介用に複数枚を並べて掲載する用途。企業ホーム画面・公開企業プロフィールのカバー画像(ヘッダー部分のスライドショー)も本テーブルの画像で表示する(単独の`cover_image_path`は廃止)。
 
 ### likes(応募 = 求職者からの「いいね」)
 求職者が求人に「いいね」した時点でレコードが作成される。「いいね」は求職者の応募意思そのものであり、応募(いいね)とは別に`applications`のような独立したテーブルは持たない。テーブル名は「いいね」という操作起点の呼び名を採用している。
@@ -290,6 +302,7 @@ erDiagram
 
 - `job_postings(status, prefecture, employment_type)`(検索の絞り込み)
 - `job_posting_images(job_posting_id, position)`(unique制約と兼用。求人ごとの画像一覧をposition順で取得)
+- `company_images(company_id, position)`(unique制約と兼用。企業ごとの画像一覧をposition順で取得)
 - `likes(user_id, like_type, applied_at)`(月間上限のカウント用)
 - `likes(job_posting_id)`
 - `messages(like_id, created_at)`
@@ -335,6 +348,8 @@ erDiagram
 **2026-08-10追記**: `likes.user_hidden_at` / `likes.company_hidden_at`を追加した。マッチ成立後のメッセージスレッドが一覧に溜まり続けて整理できない、という抜けが見つかったため、スレッド単位・自分側のみの論理削除(非表示)機能を追加した。相手から新着メッセージが届いた場合は自動的に再表示される。
 
 **2026-08-14追記**: `users.avatar_path`(プロフィール画像)、`companies.avatar_path`(プロフィール画像)・`companies.cover_image_path`(企業ホーム画面のカバー画像)を追加し、求人に画像(最大5枚)を添付できるよう`job_posting_images`テーブルを新設した。いずれも画像本体はストレージ(まずはpublic disk。本番化の際はRailwayの永続ボリュームかS3への切り替えを別途検討する)に保存し、DBには相対パスのみ持たせる方針とした。`job_posting_images`の並び順は`position`列で管理し、企業側で並び替え可能にする。1求人あたり最大5枚という上限はDB制約ではなくアプリ側で検証する。
+
+**2026-08-23追記**: `company_images`テーブルを新設し、企業プロフィールに写真ギャラリー(最大5枚)を添付できるようにした。REQUIREMENTS.md 4.5では当初「最大10枚、今回のMVPでは実装しない」とスコープ外にしていたが、実装することにし、`job_posting_images`との一貫性を優先して枚数を5枚に揃えた(4.3の実装済み機能に移動)。構造・制約方針は`job_posting_images`と完全に同一。あわせて`companies.cover_image_path`(単一のカバー画像)を廃止し、`company_images`のスライドショーが企業ホーム画面・公開企業プロフィールのカバー画像を兼ねる形に統合した(pre-launch段階のため、`cover_image_path`追加時点の`create_companies_table`マイグレーションを直接編集し`migrate:fresh`で反映。過去のbirth_date編集と同じ precedent)。
 
 ## 6. 未決事項
 

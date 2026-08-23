@@ -10,7 +10,7 @@ use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Company\AvatarController as CompanyAvatarController;
 use App\Http\Controllers\Company\BillingController;
-use App\Http\Controllers\Company\CoverImageController as CompanyCoverImageController;
+use App\Http\Controllers\Company\CompanyImageController;
 use App\Http\Controllers\Company\JobPostingController;
 use App\Http\Controllers\Company\JobPostingImageController;
 use App\Http\Controllers\Company\LikeController as CompanyLikeController;
@@ -129,9 +129,10 @@ Route::prefix('company')->group(function () {
         Route::post('/profile/avatar', [CompanyAvatarController::class, 'update']);
         Route::delete('/profile/avatar', [CompanyAvatarController::class, 'destroy']);
 
-        // 企業ホーム画面のカバー画像
-        Route::post('/profile/cover-image', [CompanyCoverImageController::class, 'update']);
-        Route::delete('/profile/cover-image', [CompanyCoverImageController::class, 'destroy']);
+        // 企業プロフィールの写真ギャラリー(最大5枚。企業ホーム画面のカバー画像を兼ねる)の登録・削除。
+        // POSTを使う理由は他の画像アップロードと同じ(上記コメント参照)
+        Route::post('/profile/images', [CompanyImageController::class, 'store']);
+        Route::delete('/profile/images/{image}', [CompanyImageController::class, 'destroy']);
 
         // 求人の投稿・編集・削除。公開/非公開/募集終了の切り替えは別エンドポイント(下記)で行う
         Route::get('/job-postings', [JobPostingController::class, 'index']);

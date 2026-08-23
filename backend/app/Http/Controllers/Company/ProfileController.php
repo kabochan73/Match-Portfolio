@@ -16,12 +16,12 @@ class ProfileController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
-        return response()->json($request->user('company'));
+        return response()->json($request->user('company')->load('images'));
     }
 
     /**
      * 企業の基本プロフィール(会社名・会社概要・電話番号・所在地・設立年・メンバー数・WebサイトURL)を更新する。
-     * 画像(ロゴ・カバー画像)はAvatarController/CoverImageControllerで別管理
+     * 画像(ロゴ・写真ギャラリー)はAvatarController/CompanyImageControllerで別管理
      */
     public function update(UpdateCompanyProfileRequest $request, NextjsRevalidationService $revalidator): JsonResponse
     {
@@ -31,6 +31,6 @@ class ProfileController extends Controller
 
         $revalidator->revalidate("company-{$company->id}");
 
-        return response()->json($company);
+        return response()->json($company->load('images'));
     }
 }

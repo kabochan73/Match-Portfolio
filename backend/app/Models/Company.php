@@ -22,12 +22,12 @@ use Laravel\Cashier\Billable;
 #[Fillable([
     'name', 'email', 'password', 'description', 'phone_number',
     'prefecture', 'address_line', 'founded_year', 'member_count_range', 'website_url',
-    'avatar_path', 'cover_image_path',
+    'avatar_path',
 ])]
-// avatar_path/cover_image_pathはストレージ上の相対パスという実装詳細なので隠し、
-// 代わりにavatar_url/cover_image_url(完全なURL)をJSONへ含める。stripe_idも同様に内部実装なので隠す
-#[Hidden(['password', 'avatar_path', 'cover_image_path', 'stripe_id'])]
-#[Appends(['avatar_url', 'cover_image_url'])]
+// avatar_pathはストレージ上の相対パスという実装詳細なので隠し、
+// 代わりにavatar_url(完全なURL)をJSONへ含める。stripe_idも同様に内部実装なので隠す
+#[Hidden(['password', 'avatar_path', 'stripe_id'])]
+#[Appends(['avatar_url'])]
 class Company extends Authenticatable
 {
     // 企業単位でStripeの1顧客・1サブスクリプション(name="default")として課金する(DB_DESIGN.md「4. 補足」参照)
@@ -63,19 +63,9 @@ class Company extends Authenticatable
     }
 
     /**
-     * @return Attribute<string|null, never>
-     */
-    protected function coverImageUrl(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->cover_image_path ? self::publicDisk()->url($this->cover_image_path) : null,
-        );
-    }
-
-    /**
      * Storage::disk()の戻り値はFilesystem contract型で、url()はcontractに含まれないため
      * (public/local disk限定のメソッド)、IDEが未定義メソッド扱いにしてしまう。
-     * ここで具象クラスの型を明示し、avatarUrl/coverImageUrlアクセサから使い回す
+     * ここで具象クラスの型を明示し、avatarUrlアクセサから使い回す
      */
     private static function publicDisk(): FilesystemAdapter
     {
@@ -94,7 +84,7 @@ class Company extends Authenticatable
         return [
             'id', 'name', 'description', 'phone_number',
             'prefecture', 'address_line', 'founded_year', 'member_count_range', 'website_url',
-            'avatar_path', 'cover_image_path',
+            'avatar_path',
         ];
     }
 
@@ -104,6 +94,16 @@ class Company extends Authenticatable
     public function jobPostings(): HasMany
     {
         return $this->hasMany(JobPosting::class);
+    }
+
+    /**
+     * プロフィール用の写真ギャラリー(最大5枚、job_posting_imagesと同じ仕組み)
+     *
+     * @return HasMany<CompanyImage, $this>
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(CompanyImage::class)->orderBy('position');
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * users.avatar_path / companies.avatar_path / companies.cover_image_path など、
+ * users.avatar_path / companies.avatar_path など、
  * 「public diskに1枚だけ保存し、差し替え時は古いファイルを消す」という
  * 同じ形の画像アップロード処理をコントローラ間で共有するためのtrait
  */

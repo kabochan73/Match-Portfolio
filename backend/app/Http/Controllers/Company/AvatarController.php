@@ -29,7 +29,7 @@ class AvatarController extends Controller
 
         $revalidator->revalidate("company-{$company->id}");
 
-        return response()->json($company);
+        return response()->json($company->load('images'));
     }
 
     /**

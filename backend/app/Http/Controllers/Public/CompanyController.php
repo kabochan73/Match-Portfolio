@@ -15,6 +15,7 @@ class CompanyController extends Controller
     {
         $model = Company::query()
             ->select(Company::publicColumns())
+            ->with('images')
             ->findOrFail($company);
 
         return response()->json($model);
