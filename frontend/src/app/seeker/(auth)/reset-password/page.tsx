@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionHeadingClass } from "@/lib/sectionStyles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -42,7 +43,7 @@ function ResetPasswordForm() {
   if (!token || !email) {
     return (
       <>
-        <h1 className="text-center text-xl font-bold text-zinc-900">
+        <h1 className={`${sectionHeadingClass} text-center`}>
           求職者パスワード再設定
         </h1>
         <p className="mt-6 text-sm text-zinc-600">
@@ -70,7 +71,7 @@ function ResetPasswordForm() {
 
   return (
     <>
-      <h1 className="text-center text-xl font-bold text-zinc-900">
+      <h1 className={`${sectionHeadingClass} text-center`}>
         求職者パスワード再設定
       </h1>
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">

@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionHeadingClass } from "@/lib/sectionStyles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -39,9 +40,7 @@ export default function Page() {
 
   return (
     <>
-      <h1 className="text-center text-xl font-bold text-zinc-900">
-        求職者ログイン
-      </h1>
+      <h1 className={`${sectionHeadingClass} text-center`}>求職者ログイン</h1>
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
         <FormField
           htmlFor="email"

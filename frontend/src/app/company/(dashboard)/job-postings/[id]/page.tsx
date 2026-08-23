@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import { use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -103,21 +104,21 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
       <ImageGallery images={jobPosting.job_posting_images ?? []} />
 
       <div className="py-8">
-        <h2 className="text-xl font-bold text-zinc-900">職務内容</h2>
+        <h2 className={sectionHeadingClass}>職務内容</h2>
         <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-800">
           {jobPosting.description}
         </p>
       </div>
 
-      <div className="border-t border-zinc-200 py-8">
-        <h2 className="text-xl font-bold text-zinc-900">求める人材像</h2>
+      <div className={sectionDividerClass("subtle")}>
+        <h2 className={sectionHeadingClass}>求める人材像</h2>
         <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-800">
           {jobPosting.desired_candidate}
         </p>
       </div>
 
       {profile && (
-        <div className="border-t border-zinc-200 py-8">
+        <div className={sectionDividerClass("subtle")}>
           <div className="mt-4 flex items-center gap-4">
             <AvatarView avatarUrl={profile.avatar_url} />
             <div>
@@ -147,7 +148,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
         </div>
       )}
 
-      <div className="border-t border-zinc-200 py-8">
+      <div className={sectionDividerClass("subtle")}>
         {statusActionError && (
           <p role="alert" className="mb-3 text-sm text-red-600">
             {statusActionError}

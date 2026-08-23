@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import Link from "next/link";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
 import { buttonClass } from "@/components/button/buttonClass";
@@ -46,22 +47,22 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
+      <div className={sectionDividerClass()}>
         <BasicProfileView profile={profile} />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
-        <h2 className="mb-4 text-xl font-bold text-zinc-900">職歴</h2>
+      <div className={sectionDividerClass()}>
+        <h2 className={`${sectionHeadingClass} mb-4`}>職歴</h2>
         <WorkExperienceListView workExperiences={workExperiences ?? []} />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
-        <h2 className="mb-4 text-xl font-bold text-zinc-900">学歴</h2>
+      <div className={sectionDividerClass()}>
+        <h2 className={`${sectionHeadingClass} mb-4`}>学歴</h2>
         <EducationListView educations={educations ?? []} />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
-        <h2 className="mb-4 text-xl font-bold text-zinc-900">資格</h2>
+      <div className={sectionDividerClass()}>
+        <h2 className={`${sectionHeadingClass} mb-4`}>資格</h2>
         <CertificationListView certifications={certifications ?? []} />
       </div>
     </div>

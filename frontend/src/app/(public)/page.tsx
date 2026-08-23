@@ -1,3 +1,4 @@
+import { sectionHeadingClass } from "@/lib/sectionStyles";
 import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,9 +14,17 @@ import {
 
 const steps = [
   { icon: UserPlus, title: "会員登録", description: "プロフィールを登録！" },
-  { icon: FileHeart, title: "求人に応募", description: "気になる求人にいいね！" },
+  {
+    icon: FileHeart,
+    title: "求人に応募",
+    description: "気になる求人にいいね！",
+  },
   { icon: Handshake, title: "マッチ", description: "企業からいいねでマッチ！" },
-  { icon: Mail, title: "企業とやり取り", description: "後は自由にメッセージ！" },
+  {
+    icon: Mail,
+    title: "企業とやり取り",
+    description: "後は自由にメッセージ！",
+  },
 ] as const;
 
 // トップページ。求人一覧・検索は/jobsに完結させ、
@@ -74,8 +83,8 @@ export default function Home() {
               ※ いいねは毎月復活します。企業側のいいねは無制限です。
               <br />
               ※ 毎月１つだけの特別なスーパーいいねもあります。
-              <br />
-              ※ 企業側からのスカウトは一切ありません。いいねの購入もありません。
+              <br />※
+              企業側からのスカウトは一切ありません。いいねの購入もありません。
             </p>
           </div>
         </div>
@@ -119,7 +128,7 @@ export default function Home() {
             <h2 className="mt-4 text-lg font-bold text-zinc-900">企業の方へ</h2>
             <p className="mt-2 text-sm text-zinc-600">
               求人を掲載して、
-              <br/>
+              <br />
               自社に合った人材とマッチしましょう。
             </p>
             <div className="mt-4 flex justify-center gap-2">
@@ -143,9 +152,7 @@ export default function Home() {
 
       <section className="mx-auto w-full max-w-6xl px-4 py-20">
         <div className="text-center">
-          <h2 className="mt-2 text-xl font-bold text-zinc-900">
-            求職者の方の使い方
-          </h2>
+          <h2 className={`${sectionHeadingClass} mt-2`}>求職者の方の使い方</h2>
           <div className="mx-auto mt-3 h-1 w-full rounded-full bg-brand" />
         </div>
 
@@ -165,12 +172,8 @@ export default function Home() {
                 <div className="mx-auto mt-2 flex h-14 w-14 items-center justify-center rounded-full bg-brand-light">
                   <step.icon className="text-brand" size={26} />
                 </div>
-                <p className="mt-3 font-semibold text-zinc-900">
-                  {step.title}
-                </p>
-                <p className="mt-1 text-sm text-zinc-600">
-                  {step.description}
-                </p>
+                <p className="mt-3 font-semibold text-zinc-900">{step.title}</p>
+                <p className="mt-1 text-sm text-zinc-600">{step.description}</p>
               </div>
             </Fragment>
           ))}

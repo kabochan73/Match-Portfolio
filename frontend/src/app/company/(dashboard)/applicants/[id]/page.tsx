@@ -2,6 +2,7 @@
 
 // CC。Sanctumのcookie認証データをTanStack Queryで取得するため、routeのparams(Promise)は
 // asyncにできずReact 19のuse()で受け取る
+import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import Link from "next/link";
 import { use } from "react";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
@@ -101,31 +102,31 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
         </p>
       )}
 
-      <div className="border-t border-zinc-400 py-8">
+      <div className={sectionDividerClass()}>
         <BasicProfileView profile={applicant.user} />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
-        <h2 className="mb-4 text-xl font-bold text-zinc-900">志望動機</h2>
+      <div className={sectionDividerClass()}>
+        <h2 className={`${sectionHeadingClass} mb-4`}>志望動機</h2>
         <p className="whitespace-pre-wrap text-lg text-zinc-900">
           {applicant.motivation}
         </p>
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
-        <h2 className="mb-4 text-xl font-bold text-zinc-900">職歴</h2>
+      <div className={sectionDividerClass()}>
+        <h2 className={`${sectionHeadingClass} mb-4`}>職歴</h2>
         <WorkExperienceListView
           workExperiences={applicant.user.work_experiences}
         />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
-        <h2 className="mb-4 text-xl font-bold text-zinc-900">学歴</h2>
+      <div className={sectionDividerClass()}>
+        <h2 className={`${sectionHeadingClass} mb-4`}>学歴</h2>
         <EducationListView educations={applicant.user.educations} />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
-        <h2 className="mb-4 text-xl font-bold text-zinc-900">資格</h2>
+      <div className={sectionDividerClass()}>
+        <h2 className={`${sectionHeadingClass} mb-4`}>資格</h2>
         <CertificationListView certifications={applicant.user.certifications} />
       </div>
     </div>

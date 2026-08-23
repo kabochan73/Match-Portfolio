@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionHeadingClass } from "@/lib/sectionStyles";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCreateJobPosting } from "@/hooks/company/useJobPostings";
@@ -14,7 +15,7 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
       <div className="flex items-center justify-between gap-4 pb-8">
-        <h1 className="text-xl font-bold text-zinc-900">求人投稿</h1>
+        <h1 className={sectionHeadingClass}>求人投稿</h1>
         <Link
           href="/company/job-postings"
           className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"

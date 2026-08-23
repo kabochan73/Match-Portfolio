@@ -1,3 +1,4 @@
+import { sectionHeadingClass } from "@/lib/sectionStyles";
 import Link from "next/link";
 import {
   ChevronRight,
@@ -12,7 +13,6 @@ import {
 export default function Page() {
   return (
     <div className="flex flex-1 flex-col">
-
       <section className="w-full py-16">
         <div className="mx-auto w-full max-w-4xl px-4 text-center">
           <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">
@@ -69,12 +69,10 @@ export default function Page() {
           </div>
         </div>
       </section>
-     
-
 
       <section className="mx-auto w-full max-w-6xl px-4 py-20">
         <div className="text-center">
-          <h2 className="text-xl font-bold text-zinc-900">使い方</h2>
+          <h2 className={sectionHeadingClass}>使い方</h2>
           <div className="mx-auto mt-3 h-1 w-full rounded-full bg-emerald-500" />
         </div>
 
@@ -85,9 +83,7 @@ export default function Page() {
               <FileText className="text-emerald-600" size={26} />
             </div>
             <p className="mt-3 font-semibold text-zinc-900">求人を掲載</p>
-            <p className="mt-1 text-sm text-zinc-600">
-              自社の求人情報を登録！
-            </p>
+            <p className="mt-1 text-sm text-zinc-600">自社の求人情報を登録！</p>
           </div>
 
           <ChevronRight
@@ -117,9 +113,7 @@ export default function Page() {
               <Handshake className="text-emerald-600" size={26} />
             </div>
             <p className="mt-3 font-semibold text-zinc-900">マッチ</p>
-            <p className="mt-1 text-sm text-zinc-600">
-              気になる人材にいいね！
-            </p>
+            <p className="mt-1 text-sm text-zinc-600">気になる人材にいいね！</p>
           </div>
 
           <ChevronRight
@@ -133,14 +127,10 @@ export default function Page() {
               <MessageSquare className="text-emerald-600" size={26} />
             </div>
             <p className="mt-3 font-semibold text-zinc-900">求職者とやり取り</p>
-            <p className="mt-1 text-sm text-zinc-600">
-              後は自由にメッセージ！
-            </p>
+            <p className="mt-1 text-sm text-zinc-600">後は自由にメッセージ！</p>
           </div>
         </div>
       </section>
-
-
     </div>
   );
 }

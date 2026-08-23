@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -72,7 +73,7 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
       <div className="flex items-center justify-between gap-4 pb-8">
-        <h1 className="text-xl font-bold text-zinc-900">プロフィール編集</h1>
+        <h1 className={sectionHeadingClass}>プロフィール編集</h1>
         <Link
           href="/seeker/mypage"
           className="shrink-0 text-sm font-semibold text-brand hover:underline"
@@ -81,11 +82,11 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
+      <div className={sectionDividerClass()}>
         <AvatarSection />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
+      <div className={sectionDividerClass()}>
         <form onSubmit={onSubmit} noValidate className="space-y-4">
           <FormField htmlFor="name" label="氏名" error={errors.name?.message}>
             <input
@@ -158,15 +159,15 @@ export default function Page() {
         </form>
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
+      <div className={sectionDividerClass()}>
         <WorkExperienceSection />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
+      <div className={sectionDividerClass()}>
         <EducationSection />
       </div>
 
-      <div className="border-t border-zinc-400 py-8">
+      <div className={sectionDividerClass()}>
         <CertificationSection />
       </div>
     </div>

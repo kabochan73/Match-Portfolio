@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import Link from "next/link";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { BasicProfileView } from "@/components/company/profile/BasicProfileView";
@@ -51,8 +52,8 @@ export default function Page() {
       </div>
 
       {publishedJobPostings.length > 0 && (
-        <div className="border-t border-zinc-400 py-8">
-          <h2 className="mb-4 text-xl font-bold text-zinc-900">掲載中の求人</h2>
+        <div className={sectionDividerClass()}>
+          <h2 className={`${sectionHeadingClass} mb-4`}>掲載中の求人</h2>
           <ul className="space-y-4">
             {publishedJobPostings.map((jobPosting) => (
               <li key={jobPosting.id}>

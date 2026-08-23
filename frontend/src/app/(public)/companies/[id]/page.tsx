@@ -1,3 +1,4 @@
+import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import { notFound } from "next/navigation";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { BasicProfileView } from "@/components/company/profile/BasicProfileView";
@@ -46,8 +47,8 @@ export default async function Page(props: PageProps<"/companies/[id]">) {
       </div>
 
       {jobPostings.length > 0 && (
-        <div className="border-t border-zinc-200 py-8">
-          <h2 className="mb-4 text-xl font-bold text-zinc-900">掲載中の求人</h2>
+        <div className={sectionDividerClass("subtle")}>
+          <h2 className={`${sectionHeadingClass} mb-4`}>掲載中の求人</h2>
           <ul className="space-y-4">
             {jobPostings.map((jobPosting) => (
               <li key={jobPosting.id}>

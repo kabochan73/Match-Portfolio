@@ -1,3 +1,4 @@
+import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
@@ -50,20 +51,20 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
       <ImageGallery images={jobPosting.job_posting_images} />
 
       <div className="py-8">
-        <h2 className="text-xl font-bold text-zinc-900">職務内容</h2>
+        <h2 className={sectionHeadingClass}>職務内容</h2>
         <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-800">
           {jobPosting.description}
         </p>
       </div>
 
-      <div className="border-t border-zinc-200 py-8">
-        <h2 className="text-xl font-bold text-zinc-900">求める人材像</h2>
+      <div className={sectionDividerClass("subtle")}>
+        <h2 className={sectionHeadingClass}>求める人材像</h2>
         <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap text-zinc-800">
           {jobPosting.desired_candidate}
         </p>
       </div>
 
-      <div className="border-t border-zinc-200 py-8">
+      <div className={sectionDividerClass("subtle")}>
         <div className="mt-4 flex items-center gap-4">
           <AvatarView avatarUrl={jobPosting.company.avatar_url} />
           <div>
@@ -84,7 +85,11 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
               )}
               {jobPosting.company.member_count_range && (
                 <span>
-                  {memberCountRangeLabels[jobPosting.company.member_count_range]}
+                  {
+                    memberCountRangeLabels[
+                      jobPosting.company.member_count_range
+                    ]
+                  }
                 </span>
               )}
             </div>
@@ -92,7 +97,7 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
         </div>
       </div>
 
-      <div className="border-t border-zinc-200 py-8">
+      <div className={sectionDividerClass("subtle")}>
         <div className="mt-4 flex justify-end">
           <ApplySection jobPostingId={jobPosting.id} />
         </div>

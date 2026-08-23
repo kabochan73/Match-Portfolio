@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionHeadingClass } from "@/lib/sectionStyles";
 import { useState } from "react";
 import { buttonClass } from "@/components/button/buttonClass";
 import {
@@ -67,7 +68,7 @@ export function EducationSection() {
 
   return (
     <section>
-      <h2 className="mb-4 text-xl font-bold text-zinc-900">学歴</h2>
+      <h2 className={`${sectionHeadingClass} mb-4`}>学歴</h2>
 
       {isLoading && <p className="text-sm text-zinc-500">読み込み中...</p>}
       {isError && (

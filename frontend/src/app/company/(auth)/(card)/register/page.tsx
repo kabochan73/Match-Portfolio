@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionHeadingClass } from "@/lib/sectionStyles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
@@ -46,9 +47,7 @@ export default function Page() {
 
   return (
     <>
-      <h1 className="text-center text-xl font-bold text-zinc-900">
-        企業会員登録
-      </h1>
+      <h1 className={`${sectionHeadingClass} text-center`}>企業会員登録</h1>
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
         <FormField htmlFor="name" label="会社名" error={errors.name?.message}>
           <input
