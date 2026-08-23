@@ -44,9 +44,8 @@ export default function Page() {
 
   if (!jobPostings || jobPostings.length === 0) {
     return (
-      <div className="mx-auto w-full max-w-4xl px-4 py-12">
-        <h1 className="pb-8 text-2xl font-bold text-zinc-900">応募者一覧</h1>
-        <p className="px-4 py-12 text-center text-sm text-zinc-500">
+      <div className="mx-auto w-full max-w-5xl px-4 py-12">
+        <p className="px-4 py-8 text-center text-sm text-zinc-500">
           まだ求人がありません。
         </p>
       </div>
@@ -54,16 +53,15 @@ export default function Page() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12">
-      <div className="flex items-end justify-between gap-4 pb-8">
-        <h1 className="text-2xl font-bold text-zinc-900">応募者一覧</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-12">
+      <div className="flex items-end justify-end gap-4">
 
         <div className="w-64">
           <select
             id="jobPostingSelect"
             value={activeId ?? ""}
             onChange={(event) => setSelectedId(Number(event.target.value))}
-            className="mt-1 w-full border border-zinc-300 px-4 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className="mt-1 w-full border border-zinc-400 px-4 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
           >
             {jobPostings.map((jobPosting) => (
               <option key={jobPosting.id} value={jobPosting.id}>
@@ -102,7 +100,7 @@ export default function Page() {
               <li key={applicant.id}>
                 <Link
                   href={`/company/applicants/${applicant.id}`}
-                  className="relative flex items-center gap-5 border border-zinc-200 p-5 pb-4 transition hover:border-emerald-300 hover:shadow-sm"
+                  className="relative flex items-center gap-5 border border-zinc-400 p-5 pb-4 transition hover:border-emerald-400 hover:shadow-sm"
                 >
                   <AvatarView avatarUrl={applicant.user.avatar_url} />
 
