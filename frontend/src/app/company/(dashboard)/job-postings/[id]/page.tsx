@@ -131,9 +131,15 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
           type="button"
           disabled={deleteMutation.isPending}
           onClick={() => {
-            deleteMutation.mutate(jobPostingId, {
-              onSuccess: () => router.push("/company/job-postings"),
-            });
+            if (
+              window.confirm(
+                "この求人を削除しますか？この操作は取り消せません。",
+              )
+            ) {
+              deleteMutation.mutate(jobPostingId, {
+                onSuccess: () => router.push("/company/job-postings"),
+              });
+            }
           }}
           className="rounded-full border border-red-300 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
         >
