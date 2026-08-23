@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { buttonClass } from "@/components/button/buttonClass";
 import { ApiValidationError } from "@/lib/api/client";
 import {
   type ApplyValues,
@@ -110,7 +111,7 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
         <button
           type="button"
           onClick={() => setIsFormOpen(true)}
-          className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
+          className={buttonClass("primary", "brand")}
         >
           この求人に応募する👍
         </button>
@@ -171,7 +172,7 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className={buttonClass("primary", "brand")}
         >
           応募する
         </button>
@@ -179,7 +180,7 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
           type="button"
           onClick={handleCancel}
           disabled={isSubmitting}
-          className="rounded-full border border-zinc-300 px-6 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className={buttonClass("secondary")}
         >
           キャンセル
         </button>

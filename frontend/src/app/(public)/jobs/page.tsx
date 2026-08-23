@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { buttonClass } from "@/components/button/buttonClass";
 import { FormField, formInputClass } from "@/components/form/FormField";
 import { JobPostingCard } from "@/components/public/JobPostingCard";
 import {
@@ -99,7 +100,7 @@ export default async function Page(props: PageProps<"/jobs">) {
 
         <button
           type="submit"
-          className="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
+          className={buttonClass("primary", "brand")}
         >
           検索する
         </button>
@@ -126,7 +127,7 @@ export default async function Page(props: PageProps<"/jobs">) {
           {page > 1 ? (
             <Link
               href={buildPageHref(page - 1)}
-              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+              className={buttonClass("secondary")}
             >
               前へ
             </Link>
@@ -143,7 +144,7 @@ export default async function Page(props: PageProps<"/jobs">) {
           {page < result.last_page ? (
             <Link
               href={buildPageHref(page + 1)}
-              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+              className={buttonClass("secondary")}
             >
               次へ
             </Link>
