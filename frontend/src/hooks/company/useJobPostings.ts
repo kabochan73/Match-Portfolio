@@ -90,6 +90,10 @@ export function useJobPostings() {
   return useQuery({
     queryKey: jobPostingsQueryKey,
     queryFn: () => apiFetch<JobPosting[]>("/api/company/job-postings"),
+    // 自社の求人であり、変更は作成・更新・削除・公開状態変更の各mutationが
+    // jobPostingsQueryKeyをinvalidateすることで即座に反映される(useProfile.tsと同じ方針)ため、
+    // 再取得は5分に一度で十分
+    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -97,6 +101,7 @@ export function useJobPosting(id: number) {
   return useQuery({
     queryKey: jobPostingQueryKey(id),
     queryFn: () => apiFetch<JobPosting>(`/api/company/job-postings/${id}`),
+    staleTime: 5 * 60 * 1000,
   });
 }
 
