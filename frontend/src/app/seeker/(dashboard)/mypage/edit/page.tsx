@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { buttonClass } from "@/components/button/buttonClass";
 import { FormField, formInputClass } from "@/components/form/FormField";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 import { useProfile } from "@/hooks/seeker/useProfile";
@@ -149,7 +150,7 @@ export default function Page() {
             <button
               type="submit"
               disabled={isSubmitting || updateProfileMutation.isPending}
-              className="rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-brand transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50 border border-brand"
+              className={buttonClass("outline", "brand")}
             >
               保存する
             </button>

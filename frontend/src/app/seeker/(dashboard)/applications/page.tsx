@@ -4,6 +4,7 @@
 // 再利用の予定もなくpage.tsx自体をCCにする
 import Link from "next/link";
 import { employmentTypeLabels } from "@/lib/jobPostings";
+import { buttonClass } from "@/components/button/buttonClass";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 import {
   type LikeStatus,
@@ -120,7 +121,7 @@ export default function Page() {
                         type="button"
                         onClick={() => hideLikeMutation.mutate(like.id)}
                         disabled={hideLikeMutation.isPending}
-                        className="rounded-full border border-zinc-300 px-4 py-1.5 text-xs font-semibold text-zinc-600 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        className={buttonClass("secondary")}
                       >
                         この応募を一覧から削除
                       </button>

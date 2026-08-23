@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
+import { buttonClass } from "@/components/button/buttonClass";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 import { BasicProfileView } from "@/components/seeker/profile/BasicProfileView";
 import { CertificationListView } from "@/components/seeker/certification/CertificationListView";
@@ -39,7 +40,7 @@ export default function Page() {
         </div>
         <Link
           href="/seeker/mypage/edit"
-          className="shrink-0 rounded-full border border-brand px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand-light"
+          className={`${buttonClass("outline", "brand")} shrink-0`}
         >
           編集する
         </Link>
