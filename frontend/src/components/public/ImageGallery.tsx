@@ -39,7 +39,7 @@ export function ImageGallery({ images }: { images: JobPostingImage[] }) {
               type="button"
               onClick={goToPrev}
               aria-label="前の画像"
-              className="absolute top-1/2 left-3 -translate-y-1/2 rounded-full bg-white/90 p-2 text-zinc-700 shadow transition hover:bg-white"
+              className="absolute top-1/2 left-3 -translate-y-1/2 rounded-full bg-white/60 p-2 text-zinc-700 shadow transition hover:bg-white"
             >
               ←
             </button>
@@ -47,7 +47,7 @@ export function ImageGallery({ images }: { images: JobPostingImage[] }) {
               type="button"
               onClick={goToNext}
               aria-label="次の画像"
-              className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full bg-white/90 p-2 text-zinc-700 shadow transition hover:bg-white"
+              className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full bg-white/60 p-2 text-zinc-700 shadow transition hover:bg-white"
             >
               →
             </button>
