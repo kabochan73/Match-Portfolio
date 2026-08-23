@@ -6,6 +6,7 @@ import Link from "next/link";
 import { use } from "react";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
 import { BasicProfileView } from "@/components/seeker/profile/BasicProfileView";
+import { buttonClass } from "@/components/button/buttonClass";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 import { CertificationListView } from "@/components/seeker/certification/CertificationListView";
 import { EducationListView } from "@/components/seeker/education/EducationListView";
@@ -77,7 +78,7 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
               type="button"
               onClick={() => matchMutation.mutate(likeId)}
               disabled={matchMutation.isPending}
-              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-emerald-600 transition border border-emerald-500 hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50"
+              className={buttonClass("outline", "emerald")}
             >
               マッチする
             </button>

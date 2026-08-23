@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { buttonClass } from "@/components/button/buttonClass";
 import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   JOB_POSTING_PREFECTURES,
@@ -171,7 +172,7 @@ export function JobPostingForm({
         <button
           type="submit"
           disabled={isSubmitting || isPending}
-          className="rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50 border border-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className={buttonClass("outline", "emerald")}
         >
           {submitLabel}
         </button>

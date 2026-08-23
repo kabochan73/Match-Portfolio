@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { BasicProfileView } from "@/components/company/profile/BasicProfileView";
+import { buttonClass } from "@/components/button/buttonClass";
 import { JobPostingCard } from "@/components/company/job-posting/JobPostingCard";
 import { ImageGallery } from "@/components/public/ImageGallery";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
@@ -37,7 +38,7 @@ export default function Page() {
         </div>
         <Link
           href="/company/profile/edit"
-          className="shrink-0 rounded-full border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50"
+          className={`${buttonClass("outline", "emerald")} shrink-0`}
         >
           編集する
         </Link>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useJobPostings } from "@/hooks/company/useJobPostings";
+import { buttonClass } from "@/components/button/buttonClass";
 import { JobPostingCard } from "@/components/company/job-posting/JobPostingCard";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 
@@ -13,7 +14,7 @@ export default function Page() {
       <div className="flex items-center justify-end gap-4 pb-8">
         <Link
           href="/company/job-postings/new"
-          className="shrink-0 rounded-full border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50"
+          className={`${buttonClass("outline", "emerald")} shrink-0`}
         >
           求人を新規作成する
         </Link>

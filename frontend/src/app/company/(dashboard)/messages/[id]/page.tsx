@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { use } from "react";
 import { useForm } from "react-hook-form";
+import { buttonClass } from "@/components/button/buttonClass";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 import {
   type SendMessageValues,
@@ -108,7 +109,7 @@ export default function Page(props: PageProps<"/company/messages/[id]">) {
           <button
             type="submit"
             disabled={isSubmitting || sendMessageMutation.isPending}
-            className="rounded-full bg-emerald-600 px-6 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className={buttonClass("primary", "emerald")}
           >
             送信
           </button>

@@ -6,6 +6,7 @@
 // useSearchParams()で読む必要があり、Suspense境界で本体を包んでいる
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { buttonClass } from "@/components/button/buttonClass";
 import { ApiValidationError } from "@/lib/api/client";
 import {
   type BillingStatus,
@@ -127,7 +128,7 @@ function BillingPage() {
                   type="button"
                   onClick={onStartCheckout}
                   disabled={checkoutMutation.isPending}
-                  className="shrink-0 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+                  className={`${buttonClass("primary", "emerald")} shrink-0`}
                 >
                   お支払い方法を登録する(月額1,000円)
                 </button>
@@ -138,7 +139,7 @@ function BillingPage() {
                   type="button"
                   onClick={onOpenPortal}
                   disabled={portalMutation.isPending}
-                  className="shrink-0 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+                  className={`${buttonClass("primary", "emerald")} shrink-0`}
                 >
                   お支払い方法を更新する
                 </button>

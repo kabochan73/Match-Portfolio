@@ -15,6 +15,7 @@ import {
 } from "@/hooks/company/useJobPostings";
 import { memberCountRangeLabels, useProfile } from "@/hooks/company/useProfile";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
+import { buttonClass } from "@/components/button/buttonClass";
 import { ImageGallery } from "@/components/public/ImageGallery";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 
@@ -160,7 +161,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
               type="button"
               disabled={publishMutation.isPending}
               onClick={() => publishMutation.mutate(jobPostingId)}
-              className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+              className={buttonClass("primary", "emerald")}
             >
               公開する
             </button>
@@ -171,7 +172,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
               type="button"
               disabled={publishMutation.isPending}
               onClick={() => publishMutation.mutate(jobPostingId)}
-              className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+              className={buttonClass("primary", "emerald")}
             >
               再公開する
             </button>
@@ -182,7 +183,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
               type="button"
               disabled={unpublishMutation.isPending}
               onClick={() => unpublishMutation.mutate(jobPostingId)}
-              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className={buttonClass("secondary")}
             >
               非公開にする
             </button>
@@ -193,7 +194,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
               type="button"
               disabled={closeMutation.isPending}
               onClick={() => closeMutation.mutate(jobPostingId)}
-              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className={buttonClass("secondary")}
             >
               募集終了する
             </button>
@@ -213,7 +214,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
                 });
               }
             }}
-            className="rounded-full border border-red-300 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className={buttonClass("danger")}
           >
             削除する
           </button>
