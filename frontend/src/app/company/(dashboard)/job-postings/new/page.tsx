@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCreateJobPosting } from "@/hooks/company/useJobPostings";
 import { JobPostingForm } from "@/components/company/job-posting/JobPostingForm";
 
-// 作成直後は必ずdraft(下書き)なので、公開操作は一覧から対象を選んで
-// job-postings/[id]側で行う想定
+// 作成直後は必ずdraft(下書き)。保存後はそのままjob-postings/[id](詳細/プレビュー、
+// 公開操作もここに集約)へ遷移し、内容を確認してから公開できるようにする
 export default function Page() {
   const router = useRouter();
   const createMutation = useCreateJobPosting();
@@ -27,8 +27,8 @@ export default function Page() {
         isPending={createMutation.isPending}
         onSubmit={(values, onError) => {
           createMutation.mutate(values, {
-            onSuccess: () => {
-              router.push("/company/job-postings");
+            onSuccess: (created) => {
+              router.push(`/company/job-postings/${created.id}`);
             },
             onError,
           });

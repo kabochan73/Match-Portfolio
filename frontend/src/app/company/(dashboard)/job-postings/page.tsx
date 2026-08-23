@@ -8,9 +8,8 @@ export default function Page() {
   const { data: jobPostings, isLoading, isError } = useJobPostings();
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12">
-      <div className="flex items-center justify-between gap-4 pb-8">
-        <h1 className="text-2xl font-bold text-zinc-900">求人一覧</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="flex items-center justify-end gap-4 pb-8">
         <Link
           href="/company/job-postings/new"
           className="shrink-0 rounded-full border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50"
