@@ -16,6 +16,7 @@ import {
 import { memberCountRangeLabels, useProfile } from "@/hooks/company/useProfile";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { ImageGallery } from "@/components/public/ImageGallery";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 
 // 求人の詳細(プレビュー)ページ。実際に応募者へ見える公開求人詳細ページ(/jobs/[id])と
 // 同じ構成・同じ見た目にする(画像はImageGallery、末尾に企業情報)ことで、
@@ -44,19 +45,11 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
   const closeMutation = useCloseJobPosting();
 
   if (isLoading) {
-    return (
-      <p className="px-4 py-12 text-center text-sm text-zinc-500">
-        読み込み中...
-      </p>
-    );
+    return <PageLoading />;
   }
 
   if (isError || !jobPosting) {
-    return (
-      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-        求人の取得に失敗しました。
-      </p>
-    );
+    return <PageError message="求人の取得に失敗しました。" />;
   }
 
   const statusActionError =

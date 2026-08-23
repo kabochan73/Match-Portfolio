@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useJobPostings } from "@/hooks/company/useJobPostings";
 import { JobPostingCard } from "@/components/company/job-posting/JobPostingCard";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 
 export default function Page() {
   const { data: jobPostings, isLoading, isError } = useJobPostings();
@@ -18,17 +19,9 @@ export default function Page() {
         </Link>
       </div>
 
-      {isLoading && (
-        <p className="px-4 py-12 text-center text-sm text-zinc-500">
-          読み込み中...
-        </p>
-      )}
+      {isLoading && <PageLoading />}
 
-      {isError && (
-        <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-          求人一覧の取得に失敗しました。
-        </p>
-      )}
+      {isError && <PageError message="求人一覧の取得に失敗しました。" />}
 
       {jobPostings && jobPostings.length === 0 && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">

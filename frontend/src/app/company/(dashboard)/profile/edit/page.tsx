@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import { FormField, formInputClass } from "@/components/form/FormField";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 import {
   PREFECTURES,
   memberCountRangeLabels,
@@ -70,19 +71,11 @@ export default function Page() {
   });
 
   if (isLoading) {
-    return (
-      <p className="px-4 py-12 text-center text-sm text-zinc-500">
-        読み込み中...
-      </p>
-    );
+    return <PageLoading />;
   }
 
   if (isError || !profile) {
-    return (
-      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-        プロフィールの取得に失敗しました。
-      </p>
-    );
+    return <PageError message="プロフィールの取得に失敗しました。" />;
   }
 
   return (

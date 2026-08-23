@@ -8,6 +8,7 @@ import {
 } from "@/hooks/company/useJobPostings";
 import { JobPostingForm } from "@/components/company/job-posting/JobPostingForm";
 import { JobPostingImagesSection } from "@/components/company/job-posting/JobPostingImagesSection";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 
 export default function Page(
   props: PageProps<"/company/job-postings/[id]/edit">,
@@ -20,19 +21,11 @@ export default function Page(
   const updateMutation = useUpdateJobPosting(jobPostingId);
 
   if (isLoading) {
-    return (
-      <p className="px-4 py-12 text-center text-sm text-zinc-500">
-        読み込み中...
-      </p>
-    );
+    return <PageLoading />;
   }
 
   if (isError || !jobPosting) {
-    return (
-      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-        求人の取得に失敗しました。
-      </p>
-    );
+    return <PageError message="求人の取得に失敗しました。" />;
   }
 
   return (
