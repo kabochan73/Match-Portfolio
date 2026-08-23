@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import { JobPostingCard } from "@/components/public/JobPostingCard";
 import {
   JOB_POSTING_PREFECTURES,
@@ -48,64 +49,52 @@ export default async function Page(props: PageProps<"/jobs">) {
         className="mt-6 flex flex-wrap items-end gap-4 rounded-2xl border border-zinc-400 hover:border-sky-400 bg-white p-4 shadow-sm"
       >
         <div className="min-w-40 flex-1">
-          <label
-            htmlFor="keyword"
-            className="text-sm font-medium text-zinc-800"
-          >
-            キーワード
-          </label>
-          <input
-            id="keyword"
-            name="keyword"
-            type="text"
-            defaultValue={keyword}
-            placeholder="職種・言語など"
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-          />
+          <FormField htmlFor="keyword" label="キーワード">
+            <input
+              id="keyword"
+              name="keyword"
+              type="text"
+              defaultValue={keyword}
+              placeholder="職種・言語など"
+              className={formInputClass("brand")}
+            />
+          </FormField>
         </div>
 
         <div className="w-40">
-          <label
-            htmlFor="prefecture"
-            className="text-sm font-medium text-zinc-800"
-          >
-            勤務地
-          </label>
-          <select
-            id="prefecture"
-            name="prefecture"
-            defaultValue={prefecture}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-          >
-            <option value="">指定なし</option>
-            {JOB_POSTING_PREFECTURES.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
-            ))}
-          </select>
+          <FormField htmlFor="prefecture" label="勤務地">
+            <select
+              id="prefecture"
+              name="prefecture"
+              defaultValue={prefecture}
+              className={formInputClass("brand")}
+            >
+              <option value="">指定なし</option>
+              {JOB_POSTING_PREFECTURES.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </FormField>
         </div>
 
         <div className="w-40">
-          <label
-            htmlFor="employment_type"
-            className="text-sm font-medium text-zinc-800"
-          >
-            雇用形態
-          </label>
-          <select
-            id="employment_type"
-            name="employment_type"
-            defaultValue={employmentType}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-          >
-            <option value="">指定なし</option>
-            {Object.entries(employmentTypeLabels).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
+          <FormField htmlFor="employment_type" label="雇用形態">
+            <select
+              id="employment_type"
+              name="employment_type"
+              defaultValue={employmentType}
+              className={formInputClass("brand")}
+            >
+              <option value="">指定なし</option>
+              {Object.entries(employmentTypeLabels).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </FormField>
         </div>
 
         <button
