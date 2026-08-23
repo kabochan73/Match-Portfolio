@@ -85,11 +85,8 @@ export default function Page() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12">
-      <div className="flex items-center justify-between gap-4 pb-8">
-        <h1 className="text-xl font-bold text-zinc-900">
-          企業プロフィール編集
-        </h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="flex items-center justify-end gap-4">
         <Link
           href="/company/profile"
           className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"

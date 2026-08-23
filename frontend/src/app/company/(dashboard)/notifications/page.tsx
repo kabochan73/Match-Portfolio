@@ -75,7 +75,7 @@ export default function Page() {
                     }
                   }}
                   className={`flex items-start gap-3 border p-4 transition hover:border-emerald-300 hover:shadow-sm ${
-                    isUnread ? "border-emerald-200 bg-emerald-50" : "border-zinc-200"
+                    isUnread ? "border-emerald-200 bg-emerald-50" : "border-zinc-400"
                   }`}
                 >
                   <span

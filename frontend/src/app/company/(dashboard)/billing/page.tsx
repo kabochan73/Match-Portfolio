@@ -167,7 +167,7 @@ function BillingPage() {
         )}
       </section>
 
-      <section className="mt-8 border border-zinc-400 p-6">
+      <section className="mt-4 border border-zinc-400 p-4">
         <h2 className="text-lg font-bold text-zinc-900">請求履歴</h2>
 
         {isPaymentsLoading && (
@@ -187,7 +187,7 @@ function BillingPage() {
         )}
 
         {payments && payments.length > 0 && (
-          <ul className="mt-4 divide-y divide-zinc-100">
+          <ul className="mt-2 divide-y divide-zinc-100">
             {payments.map((payment) => (
               <li
                 key={payment.id}
