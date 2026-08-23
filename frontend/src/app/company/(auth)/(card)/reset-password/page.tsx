@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   resetPasswordSchema,
   type ResetPasswordValues,
@@ -72,45 +73,31 @@ function ResetPasswordForm() {
         企業パスワード再設定
       </h1>
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        <div>
-          <label
-            htmlFor="password"
-            className="text-sm font-medium text-zinc-700"
-          >
-            新しいパスワード
-          </label>
+        <FormField
+          htmlFor="password"
+          label="新しいパスワード"
+          error={errors.password?.message}
+        >
           <input
             id="password"
             type="password"
             {...register("password")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className={formInputClass("emerald")}
           />
-          {errors.password && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="passwordConfirmation"
-            className="text-sm font-medium text-zinc-700"
-          >
-            新しいパスワード(確認用)
-          </label>
+        <FormField
+          htmlFor="passwordConfirmation"
+          label="新しいパスワード(確認用)"
+          error={errors.passwordConfirmation?.message}
+        >
           <input
             id="passwordConfirmation"
             type="password"
             {...register("passwordConfirmation")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className={formInputClass("emerald")}
           />
-          {errors.passwordConfirmation && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.passwordConfirmation.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
         {resetPasswordMutation.isError &&
           !(resetPasswordMutation.error instanceof ApiValidationError) && (
