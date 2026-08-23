@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   type WorkExperienceValues,
   workExperienceSchema,
@@ -65,89 +66,61 @@ export function WorkExperienceForm({
 
   return (
     <form onSubmit={submit} noValidate className="space-y-4">
-      <div>
-        <label
-          htmlFor={`${formId}-companyName`}
-          className="text-sm font-medium text-zinc-700"
-        >
-          会社名
-        </label>
+      <FormField
+        htmlFor={`${formId}-companyName`}
+        label="会社名"
+        error={errors.companyName?.message}
+      >
         <input
           id={`${formId}-companyName`}
           type="text"
           {...register("companyName")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          className={`${formInputClass("brand")} bg-white`}
         />
-        {errors.companyName && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.companyName.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor={`${formId}-employmentType`}
-          className="text-sm font-medium text-zinc-700"
-        >
-          雇用形態
-        </label>
+      <FormField
+        htmlFor={`${formId}-employmentType`}
+        label="雇用形態"
+        error={errors.employmentType?.message}
+      >
         <select
           id={`${formId}-employmentType`}
           {...register("employmentType")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          className={`${formInputClass("brand")} bg-white`}
         >
           <option value="">選択してください</option>
           <option value="full_time">正社員</option>
           <option value="contract">契約社員</option>
           <option value="part_time">アルバイト</option>
         </select>
-        {errors.employmentType && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.employmentType.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor={`${formId}-startedOn`}
-          className="text-sm font-medium text-zinc-700"
-        >
-          在籍開始年月日
-        </label>
+      <FormField
+        htmlFor={`${formId}-startedOn`}
+        label="在籍開始年月日"
+        error={errors.startedOn?.message}
+      >
         <input
           id={`${formId}-startedOn`}
           type="date"
           {...register("startedOn")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          className={`${formInputClass("brand")} bg-white`}
         />
-        {errors.startedOn && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.startedOn.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor={`${formId}-endedOn`}
-          className="text-sm font-medium text-zinc-700"
-        >
-          在籍終了年月日(在籍中は空欄)
-        </label>
+      <FormField
+        htmlFor={`${formId}-endedOn`}
+        label="在籍終了年月日(在籍中は空欄)"
+        error={errors.endedOn?.message}
+      >
         <input
           id={`${formId}-endedOn`}
           type="date"
           {...register("endedOn")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          className={`${formInputClass("brand")} bg-white`}
         />
-        {errors.endedOn && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.endedOn.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       <div className="flex items-center gap-3 pt-2">
         <button

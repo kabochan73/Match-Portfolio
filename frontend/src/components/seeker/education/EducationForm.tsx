@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   type EducationValues,
   educationSchema,
@@ -62,25 +63,18 @@ export function EducationForm({
 
   return (
     <form onSubmit={submit} noValidate className="space-y-4">
-      <div>
-        <label
-          htmlFor={`${formId}-schoolName`}
-          className="text-sm font-medium text-zinc-700"
-        >
-          学校名
-        </label>
+      <FormField
+        htmlFor={`${formId}-schoolName`}
+        label="学校名"
+        error={errors.schoolName?.message}
+      >
         <input
           id={`${formId}-schoolName`}
           type="text"
           {...register("schoolName")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          className={`${formInputClass("brand")} bg-white`}
         />
-        {errors.schoolName && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.schoolName.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       <div className="flex items-center gap-3 pt-2">
         <button

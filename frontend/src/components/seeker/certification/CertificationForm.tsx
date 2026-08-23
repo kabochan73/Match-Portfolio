@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   type CertificationValues,
   certificationSchema,
@@ -55,25 +56,18 @@ export function CertificationForm({
 
   return (
     <form onSubmit={submit} noValidate className="space-y-4">
-      <div>
-        <label
-          htmlFor={`${formId}-name`}
-          className="text-sm font-medium text-zinc-700"
-        >
-          資格名
-        </label>
+      <FormField
+        htmlFor={`${formId}-name`}
+        label="資格名"
+        error={errors.name?.message}
+      >
         <input
           id={`${formId}-name`}
           type="text"
           {...register("name")}
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          className={`${formInputClass("brand")} bg-white`}
         />
-        {errors.name && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {errors.name.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       <div className="flex items-center gap-3 pt-2">
         <button
