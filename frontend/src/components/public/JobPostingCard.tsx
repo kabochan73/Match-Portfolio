@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { badgeClass } from "@/lib/badgeClass";
 import {
   employmentTypeLabels,
   type PublicJobPostingListItem,
@@ -46,7 +47,7 @@ export function JobPostingCard({
         </p>
       </div>
 
-      <span className="absolute right-5 bottom-4 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-brand">
+      <span className={`absolute right-5 bottom-4 ${badgeClass} bg-sky-50 text-brand`}>
         ♡ {jobPosting.likes_count}
       </span>
     </Link>

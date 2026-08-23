@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { buttonClass } from "@/components/button/buttonClass";
 import { ApiValidationError } from "@/lib/api/client";
+import { badgeClass } from "@/lib/badgeClass";
 import {
   type BillingStatus,
   type PaymentStatus,
@@ -118,7 +119,7 @@ function BillingPage() {
           <>
             <div className="mt-4 flex items-center justify-between gap-4">
               <span
-                className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${billingStatusBadgeClasses[billingStatus.status]}`}
+                className={`inline-flex items-center ${badgeClass} ${billingStatusBadgeClasses[billingStatus.status]}`}
               >
                 {billingStatusLabels[billingStatus.status]}
               </span>
@@ -203,7 +204,7 @@ function BillingPage() {
                   </p>
                 </div>
                 <span
-                  className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${paymentStatusBadgeClasses[payment.status]}`}
+                  className={`shrink-0 ${badgeClass} ${paymentStatusBadgeClasses[payment.status]}`}
                 >
                   {paymentStatusLabels[payment.status]}
                 </span>

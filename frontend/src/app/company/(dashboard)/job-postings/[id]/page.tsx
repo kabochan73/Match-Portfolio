@@ -1,6 +1,7 @@
 "use client";
 
 import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
+import { badgeClass } from "@/lib/badgeClass";
 import { use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -62,7 +63,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
       <div className="flex items-center justify-between gap-4">
-        <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
+        <span className={`${badgeClass} bg-emerald-100 text-emerald-700`}>
           {jobPostingStatusLabels[jobPosting.status]}
         </span>
         <div className="flex items-center gap-4">
@@ -87,7 +88,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
         </h1>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
+          <span className={`${badgeClass} bg-emerald-50 text-emerald-700`}>
             {employmentTypeLabels[jobPosting.employment_type]}
           </span>
           <span className="text-sm text-zinc-600">{jobPosting.prefecture}</span>
@@ -95,7 +96,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
             月給 {jobPosting.salary_min.toLocaleString()}円 〜{" "}
             {jobPosting.salary_max.toLocaleString()}円
           </span>
-          <span className="ml-auto rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+          <span className={`ml-auto ${badgeClass} bg-emerald-50 text-emerald-700`}>
             ♡ {jobPosting.likes_count ?? 0}
           </span>
         </div>

@@ -3,6 +3,7 @@
 // CC。Sanctumのcookie認証データをTanStack Queryで取得するため、routeのparams(Promise)は
 // asyncにできずReact 19のuse()で受け取る
 import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
+import { badgeClass } from "@/lib/badgeClass";
 import Link from "next/link";
 import { use } from "react";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
@@ -49,7 +50,7 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
       <div className="flex items-center justify-between gap-4 pb-2">
         <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${statusBadgeClasses[applicant.status]}`}
+          className={`${badgeClass} ${statusBadgeClasses[applicant.status]}`}
         >
           {likeStatusLabels[applicant.status]}
         </span>

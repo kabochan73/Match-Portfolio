@@ -1,4 +1,5 @@
 import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
+import { badgeClass } from "@/lib/badgeClass";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
@@ -34,7 +35,7 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
         </h1>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <span className="rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-brand">
+          <span className={`${badgeClass} bg-sky-50 text-brand`}>
             {employmentTypeLabels[jobPosting.employment_type]}
           </span>
           <span className="text-sm text-zinc-600">{jobPosting.prefecture}</span>
@@ -42,7 +43,7 @@ export default async function Page(props: PageProps<"/jobs/[id]">) {
             月給 {jobPosting.salary_min.toLocaleString()}円 〜{" "}
             {jobPosting.salary_max.toLocaleString()}円
           </span>
-          <span className="ml-auto rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-brand">
+          <span className={`ml-auto ${badgeClass} bg-sky-50 text-brand`}>
             ♡ {jobPosting.likes_count}
           </span>
         </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
+import { badgeClass } from "@/lib/badgeClass";
 import { useJobPostings } from "@/hooks/company/useJobPostings";
 import {
   type LikeStatus,
@@ -111,7 +112,7 @@ export default function Page() {
                   </div>
 
                   <span
-                    className={`absolute right-5 bottom-6 rounded-full px-3 py-1 text-xs font-semibold ${statusBadgeClasses[applicant.status]}`}
+                    className={`absolute right-5 bottom-6 ${badgeClass} ${statusBadgeClasses[applicant.status]}`}
                   >
                     {likeStatusLabels[applicant.status]}
                   </span>

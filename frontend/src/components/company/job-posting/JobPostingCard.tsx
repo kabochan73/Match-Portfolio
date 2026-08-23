@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { badgeClass } from "@/lib/badgeClass";
 import {
   type JobPosting,
   type JobPostingStatus,
@@ -59,13 +60,13 @@ export function JobPostingCard({
 
       {showStatusBadge && (
         <span
-          className={`absolute top-5 right-5 rounded-full px-3 py-1 text-xs font-semibold ${statusBadgeClasses[jobPosting.status]}`}
+          className={`absolute top-5 right-5 ${badgeClass} ${statusBadgeClasses[jobPosting.status]}`}
         >
           {jobPostingStatusLabels[jobPosting.status]}
         </span>
       )}
 
-      <span className="absolute right-5 bottom-4 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+      <span className={`absolute right-5 bottom-4 ${badgeClass} bg-emerald-50 text-emerald-700`}>
         ♡ {jobPosting.likes_count ?? 0}
       </span>
     </Link>

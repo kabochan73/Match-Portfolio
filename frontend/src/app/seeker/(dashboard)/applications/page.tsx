@@ -4,6 +4,7 @@
 // 再利用の予定もなくpage.tsx自体をCCにする
 import Link from "next/link";
 import { employmentTypeLabels } from "@/lib/jobPostings";
+import { badgeClass } from "@/lib/badgeClass";
 import { buttonClass } from "@/components/button/buttonClass";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
 import {
@@ -95,7 +96,7 @@ export default function Page() {
                 </div>
 
                 <span
-                  className={`absolute right-5 bottom-4 rounded-full px-3 py-1 text-xs font-semibold ${statusBadgeClasses[like.status]}`}
+                  className={`absolute right-5 bottom-4 ${badgeClass} ${statusBadgeClasses[like.status]}`}
                 >
                   {likeStatusLabels[like.status]}
                 </span>
