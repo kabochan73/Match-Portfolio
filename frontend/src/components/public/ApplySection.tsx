@@ -19,7 +19,7 @@ import { useProfile } from "@/hooks/seeker/useProfile";
 // 今月の残りいいね数(通常・スーパー別枠)を1行で表示する
 function RemainingLikesNote({ remaining }: { remaining: LikesRemaining }) {
   return (
-    <p className="text-xs text-zinc-700">
+    <p className="text-sm text-zinc-800">
       今月の残り いいね {remaining.standard.remaining}/
       {remaining.standard.limit} ・ スーパーいいね {remaining.super.remaining}
       /{remaining.super.limit}
@@ -127,18 +127,15 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
       )}
 
       <div>
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-zinc-700">
-            いいねの種類
-          </span>
+        <div className="flex items-center justify-end">
           {remaining && <RemainingLikesNote remaining={remaining} />}
         </div>
         <div className="mt-1 flex gap-4">
-          <label className="flex items-center gap-1.5 text-sm text-zinc-700">
+          <label className="flex items-center gap-1.5 text-sm text-zinc-800">
             <input type="radio" value="standard" {...register("likeType")} />
             いいね
           </label>
-          <label className="flex items-center gap-1.5 text-sm text-zinc-700">
+          <label className="flex items-center gap-1.5 text-sm text-zinc-800">
             <input type="radio" value="super" {...register("likeType")} />
             スーパーいいね
           </label>
@@ -153,7 +150,7 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
       <div>
         <label
           htmlFor="motivation"
-          className="text-sm font-medium text-zinc-700"
+          className="text-xl font-bold text-zinc-800"
         >
           志望動機
         </label>
@@ -161,7 +158,7 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
           id="motivation"
           {...register("motivation")}
           rows={5}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          className="mt-1 w-full rounded-lg border border-zinc-400 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
         />
         {errors.motivation && (
           <p role="alert" className="mt-1 text-xs text-red-600">
@@ -170,7 +167,7 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
         )}
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 justify-end">
         <button
           type="submit"
           disabled={isSubmitting}
