@@ -17,7 +17,7 @@ export function AvatarView({ avatarUrl }: { avatarUrl: string | null }) {
       alt="ロゴ画像"
       width={96}
       height={96}
-      className="size-24 shrink-0  bg-white object-contain rounded-full border border-zinc-200"
+      className="size-24 shrink-0 rounded-full border border-zinc-200 bg-white object-cover"
     />
   );
 }
