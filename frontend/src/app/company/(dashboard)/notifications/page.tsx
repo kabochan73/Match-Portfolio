@@ -39,8 +39,7 @@ export default function Page() {
   const markReadMutation = useMarkNotificationRead();
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-12">
-      <h1 className="pb-8 text-2xl font-bold text-zinc-900">通知</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-12">
 
       {isLoading && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">
