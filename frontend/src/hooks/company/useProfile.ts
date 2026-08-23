@@ -33,5 +33,8 @@ export function useProfile() {
     // 未ログイン時の401は「ログインしていないだけ」の正常系であり、リトライしても結果は
     // 変わらない。Header.tsxの同じクエリキーへの問い合わせと挙動を揃える意味でも明示しておく
     retry: false,
+    // 自分自身のデータであり、更新はmutation成功時のsetQueryDataで即座に反映される
+    // (useUpdateProfile/useAvatar/useCoverImage参照)ため、再取得は5分に一度で十分
+    staleTime: 5 * 60 * 1000,
   });
 }
