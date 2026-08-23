@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 import { useJobPostings } from "@/hooks/company/useJobPostings";
 import {
   type LikeStatus,
@@ -35,11 +36,7 @@ export default function Page() {
   } = useApplicants(activeId ?? 0);
 
   if (isJobPostingsLoading) {
-    return (
-      <p className="px-4 py-12 text-center text-sm text-zinc-500">
-        読み込み中...
-      </p>
-    );
+    return <PageLoading />;
   }
 
   if (!jobPostings || jobPostings.length === 0) {
@@ -73,19 +70,10 @@ export default function Page() {
       </div>
 
       <div className="mt-8">
-        {isApplicantsLoading && (
-          <p className="px-4 py-12 text-center text-sm text-zinc-500">
-            読み込み中...
-          </p>
-        )}
+        {isApplicantsLoading && <PageLoading />}
 
         {!isApplicantsLoading && (isError || !applicants) && (
-          <p
-            role="alert"
-            className="px-4 py-12 text-center text-sm text-red-600"
-          >
-            応募者の取得に失敗しました。
-          </p>
+          <PageError message="応募者の取得に失敗しました。" />
         )}
 
         {applicants && applicants.length === 0 && (

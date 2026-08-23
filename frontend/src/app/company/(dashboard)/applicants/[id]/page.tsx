@@ -6,6 +6,7 @@ import Link from "next/link";
 import { use } from "react";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
 import { BasicProfileView } from "@/components/seeker/profile/BasicProfileView";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 import { CertificationListView } from "@/components/seeker/certification/CertificationListView";
 import { EducationListView } from "@/components/seeker/education/EducationListView";
 import { WorkExperienceListView } from "@/components/seeker/work-experience/WorkExperienceListView";
@@ -31,19 +32,11 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
   const matchMutation = useMatchApplicant();
 
   if (isLoading) {
-    return (
-      <p className="px-4 py-12 text-center text-sm text-zinc-500">
-        読み込み中...
-      </p>
-    );
+    return <PageLoading />;
   }
 
   if (isError || !applicant) {
-    return (
-      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-        応募者情報の取得に失敗しました。
-      </p>
-    );
+    return <PageError message="応募者情報の取得に失敗しました。" />;
   }
 
   const canMatch =
