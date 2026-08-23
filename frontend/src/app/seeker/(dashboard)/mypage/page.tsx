@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 import { BasicProfileView } from "@/components/seeker/profile/BasicProfileView";
 import { CertificationListView } from "@/components/seeker/certification/CertificationListView";
 import { EducationListView } from "@/components/seeker/education/EducationListView";
@@ -22,19 +23,11 @@ export default function Page() {
   const { data: certifications } = useCertifications();
 
   if (isLoading) {
-    return (
-      <p className="px-4 py-12 text-center text-sm text-zinc-500">
-        読み込み中...
-      </p>
-    );
+    return <PageLoading />;
   }
 
   if (isError || !profile) {
-    return (
-      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-        プロフィールの取得に失敗しました。
-      </p>
-    );
+    return <PageError message="プロフィールの取得に失敗しました。" />;
   }
 
   return (

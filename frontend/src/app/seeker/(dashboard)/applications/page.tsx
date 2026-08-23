@@ -4,6 +4,7 @@
 // 再利用の予定もなくpage.tsx自体をCCにする
 import Link from "next/link";
 import { employmentTypeLabels } from "@/lib/jobPostings";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 import {
   type LikeStatus,
   likeStatusLabels,
@@ -27,17 +28,9 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
 
-      {isLoading && (
-        <p className="px-4 py-12 text-center text-sm text-zinc-500">
-          読み込み中...
-        </p>
-      )}
+      {isLoading && <PageLoading />}
 
-      {isError && (
-        <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-          応募状況の取得に失敗しました。
-        </p>
-      )}
+      {isError && <PageError message="応募状況の取得に失敗しました。" />}
 
       {likes && likes.length === 0 && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { use } from "react";
 import { useForm } from "react-hook-form";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 import {
   type SendMessageValues,
   sendMessageSchema,
@@ -33,19 +34,11 @@ export default function Page(props: PageProps<"/seeker/messages/[id]">) {
   });
 
   if (isLoading) {
-    return (
-      <p className="px-4 py-12 text-center text-sm text-zinc-500">
-        読み込み中...
-      </p>
-    );
+    return <PageLoading />;
   }
 
   if (isError || !messages) {
-    return (
-      <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-        メッセージの取得に失敗しました。
-      </p>
-    );
+    return <PageError message="メッセージの取得に失敗しました。" />;
   }
 
   return (

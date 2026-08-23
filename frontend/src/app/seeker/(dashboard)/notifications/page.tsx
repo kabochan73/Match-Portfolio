@@ -3,6 +3,7 @@
 // CC。Sanctumのcookie認証データをTanStack Queryで取得する単発の一覧表示のみのページなので、
 // 再利用の予定もなくpage.tsx自体をCCにする
 import Link from "next/link";
+import { PageError, PageLoading } from "@/components/status/PageStatus";
 import {
   NOTIFICATION_TYPE,
   type AppNotification,
@@ -40,17 +41,9 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
-      {isLoading && (
-        <p className="px-4 py-12 text-center text-sm text-zinc-500">
-          読み込み中...
-        </p>
-      )}
+      {isLoading && <PageLoading />}
 
-      {isError && (
-        <p role="alert" className="px-4 py-12 text-center text-sm text-red-600">
-          通知の取得に失敗しました。
-        </p>
-      )}
+      {isError && <PageError message="通知の取得に失敗しました。" />}
 
       {notifications && notifications.length === 0 && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">
