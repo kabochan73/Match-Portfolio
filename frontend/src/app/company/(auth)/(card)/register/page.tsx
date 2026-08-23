@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import { FormField, formInputClass } from "@/components/form/FormField";
+import { buttonClass } from "@/components/button/buttonClass";
 import {
   registerSchema,
   type RegisterValues,
@@ -107,7 +108,7 @@ export default function Page() {
         <button
           type="submit"
           disabled={isSubmitting || registerMutation.isPending}
-          className="w-full rounded-full bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className={`${buttonClass("primary", "emerald")} w-full`}
         >
           登録する
         </button>
