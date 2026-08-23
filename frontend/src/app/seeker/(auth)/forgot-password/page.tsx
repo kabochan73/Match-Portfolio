@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   forgotPasswordSchema,
   type ForgotPasswordValues,
@@ -52,25 +53,18 @@ export default function Page() {
         求職者パスワード再設定リクエスト
       </h1>
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        <div>
-          <label
-            htmlFor="email"
-            className="text-sm font-medium text-zinc-700"
-          >
-            メールアドレス
-          </label>
+        <FormField
+          htmlFor="email"
+          label="メールアドレス"
+          error={errors.email?.message}
+        >
           <input
             id="email"
             type="email"
             {...register("email")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.email && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
         <button
           type="submit"
