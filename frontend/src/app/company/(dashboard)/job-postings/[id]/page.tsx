@@ -77,13 +77,12 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
           >
             編集する
           </Link>
-          <button
-            type="button"
-            onClick={() => router.back()}
+          <Link
+            href="/company/job-postings"
             className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
           >
-            戻る
-          </button>
+            一覧に戻る
+          </Link>
         </div>
       </div>
 
