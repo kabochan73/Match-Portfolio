@@ -15,7 +15,7 @@ import {
   useUpdateProfile,
 } from "@/hooks/company/useUpdateProfile";
 import { AvatarSection } from "@/components/company/avatar/AvatarSection";
-import { CoverImageSection } from "@/components/company/cover-image/CoverImageSection";
+import { CompanyImagesSection } from "@/components/company/profile/CompanyImagesSection";
 
 // バックエンドのフィールド名(snake_case) → フォームのフィールド名(camelCase)
 const serverFieldMap: Record<string, keyof UpdateProfileValues> = {
@@ -103,7 +103,7 @@ export default function Page() {
       </div>
 
       <div className="py-8">
-        <CoverImageSection />
+        <CompanyImagesSection images={profile.images ?? []} />
       </div>
 
       <div className="py-8">

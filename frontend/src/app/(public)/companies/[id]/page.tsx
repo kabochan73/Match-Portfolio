@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { BasicProfileView } from "@/components/company/profile/BasicProfileView";
-import { CoverImageView } from "@/components/company/cover-image/CoverImageView";
 import { BackButton } from "@/components/public/BackButton";
+import { ImageGallery } from "@/components/public/ImageGallery";
 import { JobPostingCard } from "@/components/public/JobPostingCard";
 import { getCompany } from "@/lib/companies";
 import { getCompanyJobPostings } from "@/lib/jobPostings";
@@ -39,9 +39,7 @@ export default async function Page(props: PageProps<"/companies/[id]">) {
         <h1 className="text-4xl font-bold text-zinc-900">{company.name}</h1>
       </div>
 
-      <div className="pb-8">
-        <CoverImageView coverImageUrl={company.cover_image_url} />
-      </div>
+      <ImageGallery images={company.images} />
 
       <div className="py-8">
         <BasicProfileView profile={company} />
@@ -49,9 +47,7 @@ export default async function Page(props: PageProps<"/companies/[id]">) {
 
       {jobPostings.length > 0 && (
         <div className="border-t border-zinc-200 py-8">
-          <h2 className="mb-4 text-xl font-bold text-zinc-900">
-            掲載中の求人
-          </h2>
+          <h2 className="mb-4 text-xl font-bold text-zinc-900">掲載中の求人</h2>
           <ul className="space-y-4">
             {jobPostings.map((jobPosting) => (
               <li key={jobPosting.id}>

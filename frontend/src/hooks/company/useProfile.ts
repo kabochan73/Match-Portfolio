@@ -10,6 +10,13 @@ export { PREFECTURES } from "@/lib/prefectures";
 export type { MemberCountRange } from "@/lib/memberCountRanges";
 export { memberCountRangeLabels } from "@/lib/memberCountRanges";
 
+// バックエンドのCompanyImageモデルのJSON表現。job_posting_imagesと同じ構造
+export type CompanyImage = {
+  id: number;
+  url: string;
+  position: number;
+};
+
 // バックエンドのCompanyモデルのJSON表現
 export type CompanyProfile = {
   id: number;
@@ -23,7 +30,7 @@ export type CompanyProfile = {
   member_count_range: MemberCountRange | null;
   website_url: string | null;
   avatar_url: string | null;
-  cover_image_url: string | null;
+  images: CompanyImage[];
 };
 
 export function useProfile() {
@@ -34,7 +41,7 @@ export function useProfile() {
     // 変わらない。Header.tsxの同じクエリキーへの問い合わせと挙動を揃える意味でも明示しておく
     retry: false,
     // 自分自身のデータであり、更新はmutation成功時のsetQueryDataで即座に反映される
-    // (useUpdateProfile/useAvatar/useCoverImage参照)ため、再取得は5分に一度で十分
+    // (useUpdateProfile/useAvatar/useCompanyImages参照)ため、再取得は5分に一度で十分
     staleTime: 5 * 60 * 1000,
   });
 }

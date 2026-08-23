@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { BasicProfileView } from "@/components/company/profile/BasicProfileView";
-import { CoverImageView } from "@/components/company/cover-image/CoverImageView";
 import { JobPostingCard } from "@/components/company/job-posting/JobPostingCard";
+import { ImageGallery } from "@/components/public/ImageGallery";
 import { useProfile } from "@/hooks/company/useProfile";
 import { useJobPostings } from "@/hooks/company/useJobPostings";
 
 // 企業プロフィールの表示専用ページ。編集はすべて/company/profile/editで行う。
 // 表示コンポーネント(src/components/company/配下の*View)はデータ取得を持たないため、
-// 公開企業ページ(/companies/[id])や求人詳細ページ(/jobs/[id])でも同じものを使い回している
+// 公開企業ページ(/companies/[id])や求人詳細ページ(/jobs/[id])でも同じものを使い回している。
+// カバー画像はcompany_images(写真ギャラリー)が兼ねるため、単独のカバー画像コンポーネントは持たない
 export default function Page() {
   const { data: profile, isLoading, isError } = useProfile();
   const { data: jobPostings } = useJobPostings();
@@ -49,9 +50,7 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="pb-8">
-        <CoverImageView coverImageUrl={profile.cover_image_url} />
-      </div>
+      <ImageGallery images={profile.images} />
 
       <div className="py-8">
         <BasicProfileView profile={profile} />

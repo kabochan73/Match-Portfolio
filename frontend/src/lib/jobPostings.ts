@@ -64,7 +64,6 @@ export type PublicJobPostingDetail = {
     member_count_range: MemberCountRange | null;
     website_url: string | null;
     avatar_url: string | null;
-    cover_image_url: string | null;
   };
 };
 
