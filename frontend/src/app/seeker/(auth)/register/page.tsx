@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
+import { FormField, formInputClass } from "@/components/form/FormField";
 import {
   registerSchema,
   type RegisterValues,
@@ -51,142 +52,92 @@ export default function Page() {
         求職者会員登録
       </h1>
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        <div>
-          <label htmlFor="name" className="text-sm font-medium text-zinc-700">
-            氏名
-          </label>
+        <FormField htmlFor="name" label="氏名" error={errors.name?.message}>
           <input
             id="name"
             type="text"
             {...register("name")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.name && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.name.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="email"
-            className="text-sm font-medium text-zinc-700"
-          >
-            メールアドレス
-          </label>
+        <FormField
+          htmlFor="email"
+          label="メールアドレス"
+          error={errors.email?.message}
+        >
           <input
             id="email"
             type="email"
             {...register("email")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.email && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="password"
-            className="text-sm font-medium text-zinc-700"
-          >
-            パスワード
-          </label>
+        <FormField
+          htmlFor="password"
+          label="パスワード"
+          error={errors.password?.message}
+        >
           <input
             id="password"
             type="password"
             {...register("password")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.password && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="passwordConfirmation"
-            className="text-sm font-medium text-zinc-700"
-          >
-            パスワード(確認用)
-          </label>
+        <FormField
+          htmlFor="passwordConfirmation"
+          label="パスワード(確認用)"
+          error={errors.passwordConfirmation?.message}
+        >
           <input
             id="passwordConfirmation"
             type="password"
             {...register("passwordConfirmation")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.passwordConfirmation && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.passwordConfirmation.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="birthDate"
-            className="text-sm font-medium text-zinc-700"
-          >
-            生年月日
-          </label>
+        <FormField
+          htmlFor="birthDate"
+          label="生年月日"
+          error={errors.birthDate?.message}
+        >
           <input
             id="birthDate"
             type="date"
             {...register("birthDate")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.birthDate && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.birthDate.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="comment"
-            className="text-sm font-medium text-zinc-700"
-          >
-            自己紹介コメント(任意)
-          </label>
+        <FormField
+          htmlFor="comment"
+          label="自己紹介コメント(任意)"
+          error={errors.comment?.message}
+        >
           <textarea
             id="comment"
             {...register("comment")}
             rows={3}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.comment && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.comment.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label
-            htmlFor="portfolioUrl"
-            className="text-sm font-medium text-zinc-700"
-          >
-            ポートフォリオURL(任意)
-          </label>
+        <FormField
+          htmlFor="portfolioUrl"
+          label="ポートフォリオURL(任意)"
+          error={errors.portfolioUrl?.message}
+        >
           <input
             id="portfolioUrl"
             type="text"
             {...register("portfolioUrl")}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            className={formInputClass("brand")}
           />
-          {errors.portfolioUrl && (
-            <p role="alert" className="mt-1 text-xs text-red-600">
-              {errors.portfolioUrl.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
         {registerMutation.isError &&
           !(registerMutation.error instanceof ApiValidationError) && (
