@@ -6,6 +6,7 @@
 // useSearchParams()で読む必要があり、Suspense境界で本体を包んでいる
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { ApiValidationError } from "@/lib/api/client";
 import {
   type BillingStatus,
   type PaymentStatus,
@@ -72,8 +73,17 @@ function BillingPage() {
     });
   };
 
+  const checkoutErrorMessage =
+    checkoutMutation.error instanceof ApiValidationError
+      ? checkoutMutation.error.errors.billing?.[0]
+      : undefined;
+  const portalErrorMessage =
+    portalMutation.error instanceof ApiValidationError
+      ? portalMutation.error.errors.billing?.[0]
+      : undefined;
+
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-12">
+    <div className="mx-auto w-full max-w-5xl px-4 py-12">
       <h1 className="pb-8 text-2xl font-bold text-zinc-900">
         課金ステータス確認・請求履歴
       </h1>
@@ -90,7 +100,7 @@ function BillingPage() {
         </p>
       )}
 
-      <section className="border border-zinc-200 p-6">
+      <section className="border border-zinc-400 p-6">
         <h2 className="text-lg font-bold text-zinc-900">課金ステータス</h2>
 
         {isStatusLoading && (
@@ -143,20 +153,21 @@ function BillingPage() {
 
             {checkoutMutation.isError && (
               <p role="alert" className="mt-3 text-sm text-red-600">
-                お支払い手続きの開始に失敗しました。
+                {checkoutErrorMessage ?? "お支払い手続きの開始に失敗しました。"}
               </p>
             )}
 
             {portalMutation.isError && (
               <p role="alert" className="mt-3 text-sm text-red-600">
-                お支払い方法の更新ページを開けませんでした。
+                {portalErrorMessage ??
+                  "お支払い方法の更新ページを開けませんでした。"}
               </p>
             )}
           </>
         )}
       </section>
 
-      <section className="mt-8 border border-zinc-200 p-6">
+      <section className="mt-8 border border-zinc-400 p-6">
         <h2 className="text-lg font-bold text-zinc-900">請求履歴</h2>
 
         {isPaymentsLoading && (
