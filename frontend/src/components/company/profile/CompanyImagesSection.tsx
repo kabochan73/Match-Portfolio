@@ -53,23 +53,21 @@ export function CompanyImagesSection({ images }: { images: CompanyImage[] }) {
         写真ギャラリー({images.length}/{MAX_IMAGES}枚)
       </h2>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col gap-3">
         {images.map((image) => (
           <div key={image.id} className="group relative">
-            {/* eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外 */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- 外部(Laravelのpublic disk)から配信される画像なのでnext/imageの最適化対象外。公開ページのImageGalleryと同じ表示サイズに揃えている */}
             <img
               src={image.url}
               alt=""
-              width={112}
-              height={112}
-              className="size-28 rounded-lg border border-zinc-200 object-cover"
+              className="h-120 w-full border border-zinc-200 bg-zinc-50 object-cover"
             />
             <button
               type="button"
               disabled={deleteMutation.isPending}
               onClick={() => deleteMutation.mutate(image.id)}
               aria-label="この画像を削除する"
-              className="absolute top-1 right-1 rounded-full bg-white/90 px-2 py-0.5 text-xs font-semibold text-red-600 opacity-0 shadow transition group-hover:opacity-100 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+              className="absolute top-2 right-2 rounded-full bg-white/90 px-2 py-0.5 text-xs font-semibold text-red-600 opacity-0 shadow transition group-hover:opacity-100 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
             >
               削除
             </button>
@@ -79,7 +77,7 @@ export function CompanyImagesSection({ images }: { images: CompanyImage[] }) {
         {canAddMore && (
           <label
             htmlFor="companyImageFile"
-            className="flex size-28 shrink-0 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-zinc-300 text-xs font-semibold text-zinc-500 transition hover:border-emerald-400 hover:text-emerald-600"
+            className="flex h-120 w-full cursor-pointer flex-col items-center justify-center border border-dashed border-zinc-300 text-xs font-semibold text-zinc-500 transition hover:border-emerald-400 hover:text-emerald-600"
           >
             + 画像を追加
           </label>

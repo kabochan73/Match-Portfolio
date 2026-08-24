@@ -53,12 +53,12 @@ export function AvatarSection() {
           <img
             src={profile.avatar_url}
             alt="ロゴ画像"
-            width={128}
-            height={128}
-            className="size-16 shrink-0 rounded-full border border-zinc-200 bg-white object-cover"
+            width={112}
+            height={112}
+            className="size-28 shrink-0 rounded-full border border-zinc-200 bg-white object-cover"
           />
         ) : (
-          <div className="flex size-16 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs text-zinc-400">
+          <div className="flex size-28 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs text-zinc-400">
             未設定
           </div>
         )}
