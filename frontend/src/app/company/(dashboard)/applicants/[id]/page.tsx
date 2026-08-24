@@ -74,7 +74,7 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
         </div>
 
         <div className="flex shrink-0 flex-col items-end gap-2">
-          <span className="rounded-full bg-emerald-50 p-2 px-4 text-sm font-semibold border border-emerald-500 text-emerald-700">
+          <span className="rounded-full bg-emerald-50 mb-3 px-4 py-2 text-sm font-semibold border border-emerald-500 text-emerald-700">
             {likeTypeLabels[applicant.like_type]}👍されました
           </span>
 

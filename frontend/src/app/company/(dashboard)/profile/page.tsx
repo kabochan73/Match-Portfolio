@@ -31,7 +31,7 @@ export default function Page() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-12">
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
       <div className="flex items-center justify-between gap-4 pb-8">
         <div className="flex items-center gap-4">
           <AvatarView avatarUrl={profile.avatar_url} />
