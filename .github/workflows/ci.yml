@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# 同じブランチへの連続pushで古い実行が走り続けないよう、新しい実行が来たら前の実行をキャンセルする
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    # ローカル開発(docker-compose.yml)・Railway本番と同じPostgresを使う。
+    # 開発用DBとは分離せず、CIではこのサービスコンテナ自体がテスト専用なのでPOSTGRES_DBを
+    # そのままphpunit.xmlのDB_DATABASE(match_portfolio_test)に合わせて作成する
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: match_portfolio_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # backend/Dockerfile(本番・ローカル共通)と同じPHP 8.4 + 拡張機能に揃える
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: pdo, pdo_pgsql, pgsql, bcmath, mbstring, zip, intl, gd
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-
+
+      - run: composer install --no-interaction --prefer-dist --no-progress
+
+      - run: cp .env.example .env
+      - run: php artisan key:generate
+
+      - name: Run database migrations
+        run: php artisan migrate --force
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: match_portfolio_test
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
+
+      - name: Check code style (Pint)
+        run: ./vendor/bin/pint --test
+
+      - name: Run tests
+        run: composer test
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: match_portfolio_test
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+
+      - name: Check formatting (Prettier)
+        run: npm run format:check
+
+      - name: Lint (ESLint)
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Run tests (Vitest)
+        run: npm run test -- --run
+
+      - name: Build
+        run: npm run build
