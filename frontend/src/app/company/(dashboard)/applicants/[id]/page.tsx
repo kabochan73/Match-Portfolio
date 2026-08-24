@@ -56,10 +56,7 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
         >
           {likeStatusLabels[applicant.status]}
         </span>
-        <Link
-          href="/company/applicants"
-          className={textLinkClass("emerald")}
-        >
+        <Link href="/company/applicants" className={textLinkClass("emerald")}>
           <ChevronLeft size={18} />
           一覧に戻る
         </Link>

@@ -98,10 +98,7 @@ export default async function Page(props: PageProps<"/jobs">) {
           </FormField>
         </div>
 
-        <button
-          type="submit"
-          className={buttonClass("primary", "brand")}
-        >
+        <button type="submit" className={buttonClass("primary", "brand")}>
           検索する
         </button>
       </form>
