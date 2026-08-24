@@ -104,6 +104,12 @@ jobs:
       - name: Lint (ESLint)
         run: npm run lint
 
+      # PageProps/LayoutProps等はNext.jsが.next/types配下に生成する型なので、
+      # tsc --noEmitの前に用意しておく必要がある(next buildは内部でも型チェックするが、
+      # 早く失敗させるためここでも独立に走らせる)
+      - name: Generate Next.js route types
+        run: npx next typegen
+
       - name: Type check
         run: npx tsc --noEmit
 
