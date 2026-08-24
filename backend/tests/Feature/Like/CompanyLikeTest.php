@@ -21,6 +21,18 @@ it('lists applicants for the authenticated company\'s own job posting, newest fi
         ->and($response->json('0.user.name'))->toBe('応募太郎');
 });
 
+it('excludes applicants the company has hidden from its own applicant list', function () {
+    $company = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($company)->create();
+    $visible = Like::factory()->for($jobPosting)->create();
+    Like::factory()->for($jobPosting)->create(['company_hidden_at' => now()]);
+
+    $response = $this->actingAs($company, 'company')->getJson("/api/company/job-postings/{$jobPosting->id}/likes");
+
+    $response->assertOk();
+    expect($response->json('*.id'))->toBe([$visible->id]);
+});
+
 it('prevents listing applicants for another company\'s job posting', function () {
     $company = Company::factory()->create();
     $other = Company::factory()->create();
@@ -108,6 +120,29 @@ it('prevents matching an applicant of another company\'s job posting', function 
     $response->assertNotFound();
 });
 
+it('lets a company hide an applicant from its applicant list regardless of match status', function () {
+    $company = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($company)->create();
+    $like = Like::factory()->for($jobPosting)->create(['status' => 'matched']);
+
+    $response = $this->actingAs($company, 'company')->patchJson("/api/company/likes/{$like->id}/hide");
+
+    $response->assertNoContent();
+    expect($like->fresh()->company_hidden_at)->not->toBeNull();
+});
+
+it('prevents hiding an applicant of another company\'s job posting', function () {
+    $company = Company::factory()->create();
+    $other = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($other)->create();
+    $like = Like::factory()->for($jobPosting)->create();
+
+    $response = $this->actingAs($company, 'company')->patchJson("/api/company/likes/{$like->id}/hide");
+
+    $response->assertNotFound();
+    expect($like->fresh()->company_hidden_at)->toBeNull();
+});
+
 it('rejects unauthenticated requests', function () {
     $jobPosting = JobPosting::factory()->create();
     $like = Like::factory()->for($jobPosting)->create();
@@ -115,4 +150,5 @@ it('rejects unauthenticated requests', function () {
     $this->getJson("/api/company/job-postings/{$jobPosting->id}/likes")->assertUnauthorized();
     $this->getJson("/api/company/likes/{$like->id}")->assertUnauthorized();
     $this->patchJson("/api/company/likes/{$like->id}/match")->assertUnauthorized();
+    $this->patchJson("/api/company/likes/{$like->id}/hide")->assertUnauthorized();
 });

@@ -236,8 +236,8 @@ erDiagram
 | applied_at | timestamp | not null | 求職者が「いいね」した日時 |
 | response_deadline | timestamp | not null | `applied_at` + 7日。企業の反応期限(`like_type`によらず共通) |
 | company_responded_at | timestamp | nullable | 企業が「気になる」を押した日時 |
-| user_hidden_at | timestamp | nullable | 求職者がこのスレッド(メッセージ一覧)を自分の一覧から非表示にした日時 |
-| company_hidden_at | timestamp | nullable | 企業がこのスレッド(メッセージ一覧)を自分の一覧から非表示にした日時 |
+| user_hidden_at | timestamp | nullable | 求職者がこのスレッド(メッセージ一覧)、または応募状況一覧からこの応募を非表示にした日時 |
+| company_hidden_at | timestamp | nullable | 企業がこのスレッド(メッセージ一覧)、または応募者一覧からこの応募者を非表示にした日時 |
 | created_at / updated_at | timestamp | | |
 
 - 部分ユニークインデックス: `UNIQUE (user_id, job_posting_id) WHERE status <> 'expired'`(反応待ち・マッチ成立中の同一求人への重複応募を防止する一方、`expired`[マッチ不成立]になった求人には再度いいね[応募]できるようにするため、`expired`のレコードはこの一意制約の対象外とする)
@@ -250,6 +250,8 @@ erDiagram
 マッチ成立後の選考プロセス(書類選考・面接・内定など)はステータスとして管理しない(要件4.2「選考ステータス管理機能は設けない」)。そのためステータス変更履歴テーブルは持たない。
 
 **メッセージ一覧からの削除(非表示)**: 求職者・企業はそれぞれ、自分のメッセージ一覧からスレッド(=`likes`1件)単位で「削除」できる。実体は自分側からの論理的な非表示であり、`messages`のレコードは削除しない(相手側の一覧には引き続き表示される)。削除操作時に自分側の`user_hidden_at`/`company_hidden_at`へ現在時刻を記録し、一覧取得時にこれがnullでないスレッドを除外する。相手から新着メッセージが届いた場合は、`messages`作成時に受信側の`hidden_at`をnullにリセットする処理を行い、再び一覧に表示させる。
+
+**応募状況一覧・応募者一覧からの非表示**: メッセージ一覧の非表示と同じ`user_hidden_at`/`company_hidden_at`列を使い回す(専用の列は追加しない)。求職者側(`Seeker\LikeController::hide`)は「公開中の求人への応募は削除できない」制約を課すが、企業側(`Company\LikeController::hide`)にはこの制約がなく、いつでも応募者を一覧から片付けられる(求人自体は他の応募者を引き続き受け付けるため、求職者側のような取り消し防止の必要がない)。同じ列を使い回す結果、マッチ成立済みの応募者を一覧から非表示にすると、メッセージ一覧からも同時に消える(逆方向も同様)。
 
 **月間上限(通常10件/スーパー1件、月初リセット)の数え方**: 専用のカウンタテーブルは設けず、`likes`を`user_id` + `like_type` + `applied_at`(当月分)でカウントするクエリで判定する。カウンタを別テーブルで持つと応募の取消等が発生した際に同期ズレのリスクがあるため、都度集計する方針とする。
 
@@ -350,6 +352,8 @@ erDiagram
 **2026-08-14追記**: `users.avatar_path`(プロフィール画像)、`companies.avatar_path`(プロフィール画像)・`companies.cover_image_path`(企業ホーム画面のカバー画像)を追加し、求人に画像(最大5枚)を添付できるよう`job_posting_images`テーブルを新設した。いずれも画像本体はストレージ(まずはpublic disk。本番化の際はRailwayの永続ボリュームかS3への切り替えを別途検討する)に保存し、DBには相対パスのみ持たせる方針とした。`job_posting_images`の並び順は`position`列で管理し、企業側で並び替え可能にする。1求人あたり最大5枚という上限はDB制約ではなくアプリ側で検証する。
 
 **2026-08-23追記**: `company_images`テーブルを新設し、企業プロフィールに写真ギャラリー(最大5枚)を添付できるようにした。REQUIREMENTS.md 4.5では当初「最大10枚、今回のMVPでは実装しない」とスコープ外にしていたが、実装することにし、`job_posting_images`との一貫性を優先して枚数を5枚に揃えた(4.3の実装済み機能に移動)。構造・制約方針は`job_posting_images`と完全に同一。あわせて`companies.cover_image_path`(単一のカバー画像)を廃止し、`company_images`のスライドショーが企業ホーム画面・公開企業プロフィールのカバー画像を兼ねる形に統合した(pre-launch段階のため、`cover_image_path`追加時点の`create_companies_table`マイグレーションを直接編集し`migrate:fresh`で反映。過去のbirth_date編集と同じ precedent)。
+
+**2026-08-24追記**: 企業側の応募者一覧に、マッチ後にメッセージ一覧から削除した相手がずっと残り続ける抜けが見つかったため、応募者一覧からの非表示機能(`Company\LikeController::hide`)を追加した。新しい列は追加せず、既存の`likes.company_hidden_at`(メッセージ一覧の非表示と同じ列)を使い回す方針にした。求職者側の応募状況一覧の非表示(`Seeker\LikeController::hide`、`user_hidden_at`を使い回す)は既存実装だがこれまでDB_DESIGN.mdに記載していなかったため、あわせて追記した。
 
 ## 6. 未決事項
 

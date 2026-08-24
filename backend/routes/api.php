@@ -157,6 +157,9 @@ Route::prefix('company')->group(function () {
         // 応募者への「気になる」。7日以内に反応しないと自動的にマッチ不成立になる(likes:expireバッチ)
         Route::patch('/likes/{like}/match', [CompanyLikeController::class, 'match']);
 
+        // 応募者一覧からの非表示。message-threadsのhideと同じcompany_hidden_at列を使い回す
+        Route::patch('/likes/{like}/hide', [CompanyLikeController::class, 'hide']);
+
         // 企業のメッセージスレッド(マッチ成立済みのlikes)一覧・非表示
         Route::get('/message-threads', [CompanyMessageThreadController::class, 'index']);
         Route::patch('/message-threads/{like}/hide', [CompanyMessageThreadController::class, 'hide']);

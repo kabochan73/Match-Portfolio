@@ -109,3 +109,24 @@ export function useMatchApplicant() {
     },
   });
 }
+
+// 応募者一覧からの非表示。message-threadsのhideと同じcompany_hidden_at列を使い回すため、
+// マッチ成立済みの応募者を非表示にするとメッセージスレッド一覧からも消える。
+// 「気になる」と同様、一覧・詳細どちらから呼ばれるか分からないため、
+// company/jobPostings配下に加えmessageThreadsのキーもまとめてinvalidateする
+export function useHideApplicant() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (likeId: number) =>
+      apiFetch<void>(`/api/company/likes/${likeId}/hide`, {
+        method: "PATCH",
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["company", "jobPostings"] });
+      queryClient.invalidateQueries({
+        queryKey: ["company", "messageThreads"],
+      });
+    },
+  });
+}

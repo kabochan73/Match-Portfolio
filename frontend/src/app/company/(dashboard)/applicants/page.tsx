@@ -12,6 +12,7 @@ import {
   likeStatusLabels,
   likeTypeLabels,
   useApplicants,
+  useHideApplicant,
 } from "@/hooks/company/useLikes";
 
 // ステータスごとのバッジ色。job-postings一覧の配色方針(緑=順調・琥珀=要注目・
@@ -35,6 +36,7 @@ export default function Page() {
     isLoading: isApplicantsLoading,
     isError,
   } = useApplicants(activeId ?? 0);
+  const hideApplicantMutation = useHideApplicant();
 
   if (isJobPostingsLoading) {
     return <PageLoading />;
@@ -86,7 +88,7 @@ export default function Page() {
         {applicants && applicants.length > 0 && (
           <ul className="space-y-4">
             {applicants.map((applicant) => (
-              <li key={applicant.id}>
+              <li key={applicant.id} className="relative">
                 <Link
                   href={`/company/applicants/${applicant.id}`}
                   className="relative flex items-center gap-5 border border-zinc-400 p-5 pb-4 transition hover:border-emerald-400 hover:shadow-sm"
@@ -117,6 +119,21 @@ export default function Page() {
                     {likeStatusLabels[applicant.status]}
                   </span>
                 </Link>
+
+                {/* Linkの兄弟要素として右上に重ねる(aの中にbuttonを入れるとネストしたクリック要素になり
+                    カード全体のリンクと競合するため。company/messages一覧の削除ボタンと同じ配置) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm("この応募者を一覧から削除しますか？")) {
+                      hideApplicantMutation.mutate(applicant.id);
+                    }
+                  }}
+                  disabled={hideApplicantMutation.isPending}
+                  className="absolute right-5 top-4 rounded-full border border-red-400 bg-white px-3 py-1 text-xs font-bold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  削除
+                </button>
               </li>
             ))}
           </ul>
