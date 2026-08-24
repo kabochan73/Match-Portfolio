@@ -45,6 +45,8 @@ class JobPostingImageController extends Controller
         // 求人画像は公開求人詳細・一覧のカードにも表示されるため、
         // Company\JobPostingController(update等)と同様にISRのオンデマンド再検証を行う
         $revalidator->revalidate("job-posting-{$model->id}");
+        // /companies/[id]の掲載求人一覧(company-{id}タグ)のサムネイルにも即時反映する
+        $revalidator->revalidate("company-{$model->company_id}");
 
         return response()->json($image, 201);
     }
@@ -58,6 +60,7 @@ class JobPostingImageController extends Controller
         $jobPostingImage->delete();
 
         $revalidator->revalidate("job-posting-{$model->id}");
+        $revalidator->revalidate("company-{$model->company_id}");
 
         return response()->noContent();
     }
