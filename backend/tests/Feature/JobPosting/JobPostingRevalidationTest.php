@@ -91,3 +91,57 @@ it('revalidates the company tag when a job posting image is deleted', function (
 
     Http::assertSent(fn ($request) => $request['tag'] === "company-{$company->id}");
 });
+
+// /jobs/[id]は求人情報にcompanyの基本情報を丸ごと埋め込んで表示するため、プロフィール/ロゴの
+// 変更時はcompany-{id}だけでなく、その企業が持つ全求人のjob-posting-{id}も再検証する必要がある
+it('revalidates every job posting tag when the company profile is updated', function () {
+    $company = Company::factory()->create();
+    $jobPostingA = JobPosting::factory()->for($company)->create();
+    $jobPostingB = JobPosting::factory()->for($company)->create();
+
+    $this->actingAs($company, 'company')->putJson('/api/company/profile', [
+        'name' => '新株式会社',
+    ])->assertOk();
+
+    Http::assertSent(fn ($request) => $request['tag'] === "company-{$company->id}");
+    Http::assertSent(fn ($request) => $request['tag'] === "job-posting-{$jobPostingA->id}");
+    Http::assertSent(fn ($request) => $request['tag'] === "job-posting-{$jobPostingB->id}");
+});
+
+it('does not revalidate another company\'s job postings when a profile is updated', function () {
+    $company = Company::factory()->create();
+    $other = Company::factory()->create();
+    $otherJobPosting = JobPosting::factory()->for($other)->create();
+
+    $this->actingAs($company, 'company')->putJson('/api/company/profile', [
+        'name' => '新株式会社',
+    ])->assertOk();
+
+    Http::assertNotSent(fn ($request) => $request['tag'] === "job-posting-{$otherJobPosting->id}");
+});
+
+it('revalidates every job posting tag when the company avatar is updated', function () {
+    Storage::fake('public');
+    $company = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($company)->create();
+
+    $this->actingAs($company, 'company')->postJson('/api/company/profile/avatar', [
+        'image' => UploadedFile::fake()->image('avatar.png'),
+    ])->assertOk();
+
+    Http::assertSent(fn ($request) => $request['tag'] === "company-{$company->id}");
+    Http::assertSent(fn ($request) => $request['tag'] === "job-posting-{$jobPosting->id}");
+});
+
+it('revalidates every job posting tag when the company avatar is deleted', function () {
+    Storage::fake('public');
+    $company = Company::factory()->create();
+    $jobPosting = JobPosting::factory()->for($company)->create();
+    $this->actingAs($company, 'company')->postJson('/api/company/profile/avatar', [
+        'image' => UploadedFile::fake()->image('avatar.png'),
+    ]);
+
+    $this->actingAs($company, 'company')->deleteJson('/api/company/profile/avatar')->assertNoContent();
+
+    Http::assertSent(fn ($request) => $request['tag'] === "job-posting-{$jobPosting->id}");
+});

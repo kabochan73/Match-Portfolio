@@ -16,7 +16,8 @@ class AvatarController extends Controller
 
     /**
      * 企業のプロフィール画像(ロゴ等)を登録・差し替えする。avatar_urlは公開企業プロフィールにも
-     * 表示されるため、Company\ProfileController::update()と同様にISRのオンデマンド再検証を行う
+     * 求人詳細ページ(company列に埋め込み)にも表示されるため、Company\ProfileController::update()
+     * と同様にrevalidateCompanyProfile()でISRのオンデマンド再検証を行う
      */
     public function update(UpdateImageRequest $request, NextjsRevalidationService $revalidator): JsonResponse
     {
@@ -27,7 +28,7 @@ class AvatarController extends Controller
         $company->avatar_path = $this->storeProfileImage($request->file('image'), 'avatars/companies');
         $company->save();
 
-        $revalidator->revalidate("company-{$company->id}");
+        $revalidator->revalidateCompanyProfile($company);
 
         return response()->json($company->load('images'));
     }
@@ -44,7 +45,7 @@ class AvatarController extends Controller
         $company->avatar_path = null;
         $company->save();
 
-        $revalidator->revalidate("company-{$company->id}");
+        $revalidator->revalidateCompanyProfile($company);
 
         return response()->noContent();
     }

@@ -109,7 +109,9 @@ export function getCompanyJobPostings(companyId: string) {
   );
 }
 
-// /jobs/[id]はISR対象。2時間を上限に再検証する(オンデマンド再検証は未実装、将来追加予定)
+// /jobs/[id]はISR対象。2時間を上限に再検証する。オンデマンド再検証は、求人自体の変更
+// (Company\JobPostingController・JobPostingImageController)、および埋め込んで表示している
+// 企業プロフィールの変更(Company\ProfileController・AvatarController)の両方でトリガーされる
 export function getJobPosting(id: string) {
   return publicFetch<PublicJobPostingDetail>(`/api/job-postings/${id}`, {
     // タグはバックエンドの求人更新エンドポイントが/api/revalidateを叩く際の

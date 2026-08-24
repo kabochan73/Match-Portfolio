@@ -29,7 +29,7 @@ class ProfileController extends Controller
 
         $company->update($request->validated());
 
-        $revalidator->revalidate("company-{$company->id}");
+        $revalidator->revalidateCompanyProfile($company);
 
         return response()->json($company->load('images'));
     }

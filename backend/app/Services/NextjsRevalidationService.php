@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Company;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -37,6 +38,21 @@ class NextjsRevalidationService
                 'tag' => $tag,
                 'error' => $e->getMessage(),
             ]);
+        }
+    }
+
+    /**
+     * 企業プロフィール(基本情報・ロゴ)の変更を反映する。company-{id}タグ(公開企業プロフィール)
+     * に加え、その企業が持つ全求人のjob-posting-{id}タグもrevalidateする。/jobs/[id]は
+     * company列を丸ごと埋め込んで表示しているため、プロフィール側だけを再検証すると
+     * 求人詳細ページの会社名・ロゴ等が古いまま最大2時間残ってしまうことへの対応
+     */
+    public function revalidateCompanyProfile(Company $company): void
+    {
+        $this->revalidate("company-{$company->id}");
+
+        foreach ($company->jobPostings()->pluck('id') as $jobPostingId) {
+            $this->revalidate("job-posting-{$jobPostingId}");
         }
     }
 }
