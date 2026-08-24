@@ -44,10 +44,10 @@ export default async function Page(props: PageProps<"/jobs">) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-4 hover:border-sky-400">
+    <div className="mx-auto w-full max-w-5xl px-4 py-4">
       <form
         method="get"
-        className="mt-6 flex flex-wrap items-end gap-4 rounded-2xl border border-zinc-400 hover:border-sky-400 bg-white p-4 shadow-sm"
+        className="mt-2 flex flex-wrap items-end gap-4 rounded-2xl bg-white p-4"
       >
         <div className="min-w-40 flex-1">
           <FormField htmlFor="keyword" label="キーワード">
@@ -106,7 +106,7 @@ export default async function Page(props: PageProps<"/jobs">) {
         </button>
       </form>
 
-      <div className="mt-8">
+      <div className="mt-4">
         {result === null || result.data.length === 0 ? (
           <p className="px-4 py-12 text-center text-sm text-zinc-500">
             該当する求人が見つかりませんでした。

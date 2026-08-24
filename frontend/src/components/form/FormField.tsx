@@ -16,7 +16,7 @@ export function FormField({
 }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="text-sm font-medium text-zinc-700">
+      <label htmlFor={htmlFor} className="text-sm font-medium text-zinc-800">
         {label}
       </label>
       {children}
