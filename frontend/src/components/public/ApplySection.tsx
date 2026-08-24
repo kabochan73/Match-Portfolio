@@ -22,8 +22,8 @@ function RemainingLikesNote({ remaining }: { remaining: LikesRemaining }) {
   return (
     <p className="text-sm text-zinc-800">
       今月の残り いいね {remaining.standard.remaining}/
-      {remaining.standard.limit} ・ スーパーいいね {remaining.super.remaining}
-      /{remaining.super.limit}
+      {remaining.standard.limit} ・ スーパーいいね {remaining.super.remaining}/
+      {remaining.super.limit}
     </p>
   );
 }
@@ -149,10 +149,7 @@ export function ApplySection({ jobPostingId }: { jobPostingId: number }) {
       </div>
 
       <div>
-        <label
-          htmlFor="motivation"
-          className="text-xl font-bold text-zinc-800"
-        >
+        <label htmlFor="motivation" className="text-xl font-bold text-zinc-800">
           志望動機
         </label>
         <textarea

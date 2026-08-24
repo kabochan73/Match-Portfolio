@@ -10,7 +10,9 @@ import { apiFetch } from "@/lib/api/client";
 export const resetPasswordSchema = z
   .object({
     password: z.string().min(8, "パスワードは8文字以上で入力してください"),
-    passwordConfirmation: z.string().min(1, "確認用パスワードを入力してください"),
+    passwordConfirmation: z
+      .string()
+      .min(1, "確認用パスワードを入力してください"),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "パスワードが一致しません",
@@ -19,7 +21,10 @@ export const resetPasswordSchema = z
 
 export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
-type ResetPasswordPayload = ResetPasswordValues & { token: string; email: string };
+type ResetPasswordPayload = ResetPasswordValues & {
+  token: string;
+  email: string;
+};
 
 export function useResetPassword() {
   const router = useRouter();

@@ -66,7 +66,9 @@ export function JobPostingCard({
         </span>
       )}
 
-      <span className={`absolute right-5 bottom-4 ${badgeClass} bg-emerald-50 text-emerald-700`}>
+      <span
+        className={`absolute right-5 bottom-4 ${badgeClass} bg-emerald-50 text-emerald-700`}
+      >
         ♡ {jobPosting.likes_count ?? 0}
       </span>
     </Link>

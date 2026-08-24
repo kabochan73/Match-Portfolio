@@ -67,7 +67,11 @@ export function JobPostingForm({
 
   return (
     <form onSubmit={submit} noValidate className="space-y-4">
-      <FormField htmlFor="title" label="求人タイトル" error={errors.title?.message}>
+      <FormField
+        htmlFor="title"
+        label="求人タイトル"
+        error={errors.title?.message}
+      >
         <input
           id="title"
           type="text"

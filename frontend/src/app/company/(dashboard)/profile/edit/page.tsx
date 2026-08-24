@@ -84,10 +84,7 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-8">
       <div className="flex items-center justify-end gap-4">
-        <Link
-          href="/company/profile"
-          className={textLinkClass("emerald")}
-        >
+        <Link href="/company/profile" className={textLinkClass("emerald")}>
           <ChevronLeft size={18} />
           プロフィール表示に戻る
         </Link>

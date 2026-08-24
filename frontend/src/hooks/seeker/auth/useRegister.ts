@@ -16,7 +16,9 @@ export const registerSchema = z
       .min(1, "メールアドレスを入力してください")
       .max(255),
     password: z.string().min(8, "パスワードは8文字以上で入力してください"),
-    passwordConfirmation: z.string().min(1, "確認用パスワードを入力してください"),
+    passwordConfirmation: z
+      .string()
+      .min(1, "確認用パスワードを入力してください"),
     comment: z.string().max(200, "200文字以内で入力してください").optional(),
     portfolioUrl: z
       .union([z.url("URLの形式で入力してください"), z.literal("")])

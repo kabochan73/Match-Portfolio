@@ -48,10 +48,7 @@ export default function Page(props: PageProps<"/company/messages/[id]">) {
     <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-12">
       <h1 className="sr-only">メッセージ詳細</h1>
       <div className="flex justify-end pb-8">
-        <Link
-          href="/company/messages"
-          className={textLinkClass("emerald")}
-        >
+        <Link href="/company/messages" className={textLinkClass("emerald")}>
           <ChevronLeft size={18} />
           メッセージ一覧に戻る
         </Link>

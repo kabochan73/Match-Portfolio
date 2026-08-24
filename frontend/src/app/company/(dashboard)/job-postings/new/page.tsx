@@ -18,10 +18,7 @@ export default function Page() {
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
       <div className="flex items-center justify-between gap-4 pb-8">
         <h1 className={sectionHeadingClass}>求人投稿</h1>
-        <Link
-          href="/company/job-postings"
-          className={textLinkClass("emerald")}
-        >
+        <Link href="/company/job-postings" className={textLinkClass("emerald")}>
           <ChevronLeft size={18} />
           一覧に戻る
         </Link>

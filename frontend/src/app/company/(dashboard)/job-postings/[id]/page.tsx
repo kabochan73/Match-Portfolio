@@ -99,7 +99,9 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
             月給 {jobPosting.salary_min.toLocaleString()}円 〜{" "}
             {jobPosting.salary_max.toLocaleString()}円
           </span>
-          <span className={`ml-auto ${badgeClass} bg-emerald-50 text-emerald-700`}>
+          <span
+            className={`ml-auto ${badgeClass} bg-emerald-50 text-emerald-700`}
+          >
             ♡ {jobPosting.likes_count ?? 0}
           </span>
         </div>

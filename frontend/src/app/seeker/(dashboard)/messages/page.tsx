@@ -5,7 +5,10 @@
 import Link from "next/link";
 import { AvatarView } from "@/components/company/avatar/AvatarView";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
-import { useHideThread, useMessageThreads } from "@/hooks/seeker/useMessageThreads";
+import {
+  useHideThread,
+  useMessageThreads,
+} from "@/hooks/seeker/useMessageThreads";
 
 export default function Page() {
   const { data: threads, isLoading, isError } = useMessageThreads();
@@ -13,7 +16,6 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
-
       {isLoading && <PageLoading />}
 
       {isError && <PageError message="メッセージ一覧の取得に失敗しました。" />}
@@ -42,7 +44,8 @@ export default function Page() {
                     {thread.job_posting.title}
                   </p>
                   <p className="mt-1 truncate text-sm text-zinc-500">
-                    {thread.latest_message?.body ?? "まだメッセージはありません"}
+                    {thread.latest_message?.body ??
+                      "まだメッセージはありません"}
                   </p>
                 </div>
 

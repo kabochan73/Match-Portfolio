@@ -29,7 +29,6 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
-
       {isLoading && <PageLoading />}
 
       {isError && <PageError message="応募状況の取得に失敗しました。" />}
@@ -45,7 +44,8 @@ export default function Page() {
           {likes.map((like) => {
             // 求人が非公開/募集終了になった後は、公開求人詳細ページ(/jobs/[id])が
             // 404を返すため、公開中の求人だけをリンクにする(それ以外はクリックできないカードにする)
-            const isJobPostingAvailable = like.job_posting.status === "published";
+            const isJobPostingAvailable =
+              like.job_posting.status === "published";
 
             const cardContent = (
               <>

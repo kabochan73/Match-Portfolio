@@ -41,7 +41,6 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
-
       {isLoading && <PageLoading />}
 
       {isError && <PageError message="通知の取得に失敗しました。" />}
@@ -68,7 +67,9 @@ export default function Page() {
                     }
                   }}
                   className={`flex items-start gap-3 border p-4 transition hover:border-emerald-300 hover:shadow-sm ${
-                    isUnread ? "border-emerald-200 bg-emerald-50" : "border-zinc-400"
+                    isUnread
+                      ? "border-emerald-200 bg-emerald-50"
+                      : "border-zinc-400"
                   }`}
                 >
                   <span

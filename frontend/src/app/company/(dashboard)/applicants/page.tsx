@@ -55,7 +55,6 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-8">
       <div className="flex items-end justify-end gap-4">
-
         <div className="w-64">
           <select
             id="jobPostingSelect"
