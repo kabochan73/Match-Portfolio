@@ -71,7 +71,7 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
         <div className="flex items-center gap-4">
           <Link
             href={`/company/job-postings/${jobPostingId}/edit`}
-            className={textLinkClass("emerald")}
+            className={buttonClass("outline", "emerald")}
           >
             編集する
           </Link>
