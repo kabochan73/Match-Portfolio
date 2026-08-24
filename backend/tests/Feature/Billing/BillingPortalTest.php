@@ -14,7 +14,7 @@ it('creates a stripe billing portal session for a company with a stripe customer
 
     $response->assertOk();
     expect($response->json('portal_url'))->toStartWith('https://billing.stripe.com/');
-});
+})->skip(fn () => blank(config('cashier.secret')), 'STRIPE_SECRETが未設定のためスキップ(CI環境などStripeテストキーを持たない環境向け)');
 
 it('rejects requesting a portal session before any stripe customer has been created', function () {
     $company = Company::factory()->create();

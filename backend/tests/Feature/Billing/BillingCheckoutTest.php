@@ -13,7 +13,7 @@ it('creates a stripe checkout session for an uncontracted company', function () 
 
     $response->assertOk();
     expect($response->json('checkout_url'))->toStartWith('https://checkout.stripe.com/');
-});
+})->skip(fn () => blank(config('cashier.secret')), 'STRIPE_SECRETが未設定のためスキップ(CI環境などStripeテストキーを持たない環境向け)');
 
 it('rejects starting checkout when already actively subscribed', function () {
     $company = Company::factory()->create();
