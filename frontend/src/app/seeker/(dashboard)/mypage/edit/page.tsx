@@ -2,12 +2,14 @@
 
 import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import { buttonClass } from "@/components/button/buttonClass";
 import { FormField, formInputClass } from "@/components/form/FormField";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
+import { textLinkClass } from "@/lib/textLinkClass";
 import { useProfile } from "@/hooks/seeker/useProfile";
 import {
   type UpdateProfileValues,
@@ -71,13 +73,13 @@ export default function Page() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12">
-      <div className="flex items-center justify-between gap-4 pb-8">
-        <h1 className={sectionHeadingClass}>プロフィール編集</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="flex items-center justify-end gap-4 pb-4">
         <Link
           href="/seeker/mypage"
-          className="shrink-0 text-sm font-semibold text-brand hover:underline"
+          className={textLinkClass("brand")}
         >
+          <ChevronLeft size={18} />
           マイページ表示に戻る
         </Link>
       </div>

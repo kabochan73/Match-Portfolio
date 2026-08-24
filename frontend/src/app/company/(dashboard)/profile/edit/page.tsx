@@ -1,12 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ApiValidationError } from "@/lib/api/client";
 import { buttonClass } from "@/components/button/buttonClass";
 import { FormField, formInputClass } from "@/components/form/FormField";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
+import { textLinkClass } from "@/lib/textLinkClass";
 import {
   PREFECTURES,
   memberCountRangeLabels,
@@ -84,8 +86,9 @@ export default function Page() {
       <div className="flex items-center justify-end gap-4">
         <Link
           href="/company/profile"
-          className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
+          className={textLinkClass("emerald")}
         >
+          <ChevronLeft size={18} />
           プロフィール表示に戻る
         </Link>
       </div>

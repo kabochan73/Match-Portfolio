@@ -3,11 +3,13 @@
 // CC。Sanctumのcookie認証データをTanStack Queryで取得するため、routeのparams(Promise)は
 // asyncにできずReact 19のuse()で受け取る
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
 import { useForm } from "react-hook-form";
 import { buttonClass } from "@/components/button/buttonClass";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
+import { textLinkClass } from "@/lib/textLinkClass";
 import {
   type SendMessageValues,
   sendMessageSchema,
@@ -48,9 +50,10 @@ export default function Page(props: PageProps<"/seeker/messages/[id]">) {
       <div className="pb-8 flex justify-end">
         <Link
           href="/seeker/messages"
-          className="text-sm font-semibold text-brand hover:underline"
+          className={textLinkClass("brand")}
         >
-          ← メッセージ一覧に戻る
+          <ChevronLeft size={18} />
+          メッセージ一覧に戻る
         </Link>
       </div>
 

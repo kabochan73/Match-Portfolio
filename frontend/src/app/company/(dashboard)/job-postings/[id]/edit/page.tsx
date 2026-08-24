@@ -1,6 +1,8 @@
 "use client";
 
 import { sectionHeadingClass } from "@/lib/sectionStyles";
+import { textLinkClass } from "@/lib/textLinkClass";
+import { ChevronLeft } from "lucide-react";
 import { use } from "react";
 import Link from "next/link";
 import {
@@ -35,8 +37,9 @@ export default function Page(
         <h1 className={sectionHeadingClass}>求人編集</h1>
         <Link
           href={`/company/job-postings/${jobPostingId}`}
-          className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
+          className={textLinkClass("emerald")}
         >
+          <ChevronLeft size={18} />
           詳細に戻る
         </Link>
       </div>

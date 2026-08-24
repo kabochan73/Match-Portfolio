@@ -4,12 +4,14 @@
 // asyncにできずReact 19のuse()で受け取る
 import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import { badgeClass } from "@/lib/badgeClass";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
 import { AvatarView } from "@/components/seeker/avatar/AvatarView";
 import { BasicProfileView } from "@/components/seeker/profile/BasicProfileView";
 import { buttonClass } from "@/components/button/buttonClass";
 import { PageError, PageLoading } from "@/components/status/PageStatus";
+import { textLinkClass } from "@/lib/textLinkClass";
 import { CertificationListView } from "@/components/seeker/certification/CertificationListView";
 import { EducationListView } from "@/components/seeker/education/EducationListView";
 import { WorkExperienceListView } from "@/components/seeker/work-experience/WorkExperienceListView";
@@ -56,8 +58,9 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
         </span>
         <Link
           href="/company/applicants"
-          className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
+          className={textLinkClass("emerald")}
         >
+          <ChevronLeft size={18} />
           一覧に戻る
         </Link>
       </div>
@@ -89,7 +92,7 @@ export default function Page(props: PageProps<"/company/applicants/[id]">) {
           {applicant.status === "matched" && (
             <Link
               href={`/company/messages/${applicant.id}`}
-              className="text-sm font-semibold text-emerald-600 hover:underline"
+              className={textLinkClass("emerald")}
             >
               メッセージを見る →
             </Link>

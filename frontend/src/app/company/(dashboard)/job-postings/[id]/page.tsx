@@ -2,6 +2,8 @@
 
 import { sectionDividerClass, sectionHeadingClass } from "@/lib/sectionStyles";
 import { badgeClass } from "@/lib/badgeClass";
+import { textLinkClass } from "@/lib/textLinkClass";
+import { ChevronLeft } from "lucide-react";
 import { use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -69,14 +71,15 @@ export default function Page(props: PageProps<"/company/job-postings/[id]">) {
         <div className="flex items-center gap-4">
           <Link
             href={`/company/job-postings/${jobPostingId}/edit`}
-            className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
+            className={textLinkClass("emerald")}
           >
             編集する
           </Link>
           <Link
             href="/company/job-postings"
-            className="shrink-0 text-sm font-semibold text-emerald-600 hover:underline"
+            className={textLinkClass("emerald")}
           >
+            <ChevronLeft size={18} />
             一覧に戻る
           </Link>
         </div>
