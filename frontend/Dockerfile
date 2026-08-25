@@ -25,9 +25,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Next.jsのビルドステージ。NEXT_PUBLIC_API_URLはNext.jsがビルド時にクライアントバンドルへ
-# 焼き込む(ブラウザから直接Laravel APIを叩くため)。Railwayのbuild argとして
-# backendサービスの公開URLを渡す必要がある
+# Next.jsのビルドステージ。next.config.tsのrewrites()はビルド時に1回だけ評価されて
+# 結果が固定化される(standaloneサーバーが実行時に再評価するわけではない)ため、
+# プロキシ先のAPI_URL(backendのプライベートURL)をビルド時点で渡す必要がある
 FROM node:22-alpine AS build
 
 WORKDIR /app
@@ -35,8 +35,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ARG API_URL
+ENV API_URL=${API_URL}
 
 RUN npm run build
 
