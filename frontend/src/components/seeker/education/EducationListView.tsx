@@ -8,7 +8,7 @@ export function EducationListView({ educations }: { educations: Education[] }) {
   }
 
   return (
-    <ul className="divide-y divide-zinc-100">
+    <ul className="divide-y divide-zinc-400">
       {educations.map((education) => (
         <li
           key={education.id}
