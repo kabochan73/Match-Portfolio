@@ -1,4 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+// next.config.tsのrewritesがこのNext.jsサーバー自身を経由してbackendへ中継するため、
+// ブラウザからは常に自分自身のオリジンに対する相対パスでアクセスする(絶対URLにしない)
+const API_URL = "";
 
 /**
  * LaravelのFormRequestバリデーション失敗(422)を表すエラー。
